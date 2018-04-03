@@ -1,0 +1,107 @@
+program_name,total,category,country,year,subcategory,source,cluster_code
+Improved Border Inspection,3000000,Borders & Counternarcotics,Guatemala,2016,,,1
+Regional  Maritime and Land Interdiction,2750000,Borders & Counternarcotics,Guatemala,2016,,,1
+Demand Reduction,1050000,Borders & Counternarcotics,Guatemala,2016,,,1
+International Military Education and Training: ,775000,Borders & Counternarcotics,Guatemala,2016,,,1
+Foreign Military Financing Program,1740000,Borders & Counternarcotics,Guatemala,2016,,,1
+Section 1004,29783000,Borders & Counternarcotics,Guatemala,2016,,,1
+Improved Border Inspection,2600000,Borders & Counternarcotics,ElSalvador,2016,,INCLE,1
+Regional  Maritime and Land Interdiction,1500000,Borders & Counternarcotics,ElSalvador,2016,,INCLE,1
+Demand Reduction,750000,Borders & Counternarcotics,ElSalvador,2016,,INCLE,1
+International Military Education and Training: ,1000000,Borders & Counternarcotics,ElSalvador,2016,,Budget Report,1
+Foreign Military Financing Program,1900000,Borders & Counternarcotics,ElSalvador,2016,,Budget Report,1
+Improved Border Inspection,5750000,Borders & Counternarcotics,Honduras,2016,,,1
+Regional  Maritime and Land Interdiction,2950000,Borders & Counternarcotics,Honduras,2016,,,1
+Demand Reduction,500000,Borders & Counternarcotics,Honduras,2016,,,1
+International Military Education and Training: ,750000,Borders & Counternarcotics,Honduras,2016,,,1
+Foreign Military Financing Program,4500000,Borders & Counternarcotics,Honduras,2016,,,1
+Section 1004,9239000,Borders & Counternarcotics,Honduras,2016,,,1
+Section 1033,3561000,Borders & Counternarcotics,Honduras,2016,,,1
+Global Health,13000000,Development,Guatemala,2016,Health - Subgroup,,3
+Good Governance (econ./devel),2232000,Development,Guatemala,2016,Enviorment/Climate Change - Subgroup,,3
+Water Supply and Sanitation (econ./devel),4000000,Development,Guatemala,2016,Enviorment/Climate Change - Subgroup,,3
+Agriculture (econ./devel) ,17000000,Development,Guatemala,2016,Enviorment/Climate Change - Subgroup,,3
+Climate Change - Adaptation (econ./devel) ,75000,Development,Guatemala,2016,Enviorment/Climate Change - Subgroup,,3
+Environment  (trade),5000000,Development,Guatemala,2016,Enviorment/Climate Change - Subgroup,,3
+Climate Change - Adaptation (trade) ,2925000,Development,Guatemala,2016,Enviorment/Climate Change - Subgroup,,3
+Climate Change - Sustainable Landscapes (trade) ,5500000,Development,Guatemala,2016,Enviorment/Climate Change - Subgroup,,3
+Human rights (Mitigate climate change) ,1500000,Development,Guatemala,2016,Enviorment/Climate Change - Subgroup,,3
+Private Sector Productivity (econ./devel) ,15000000,Development,Guatemala,2016,Economic Development- Subgroup,,3
+Basic education (econ./devel),10000000,Development,Guatemala,2016,Education - Subgroup,,3
+Higher education (econ./devel),3000000,Development,Guatemala,2016,Education - Subgroup,,3
+Workforce development (econ./devel) ,5000000,Development,Guatemala,2016,Education - Subgroup,,3
+Trade and Investment,11135000,Development,ElSalvador,2016,Economic Development- Subgroup,USAID,3
+Private Sector Productivity,1024000,Development,ElSalvador,2016,Economic Development- Subgroup,USAID,3
+Program Design and Learning (improve business),330000,Development,ElSalvador,2016,Economic Development- Subgroup,USAID,3
+Administration and Oversight (improve business),609000,Development,ElSalvador,2016,Economic Development- Subgroup,USAID,3
+Evaluation (improve business),45000,Development,ElSalvador,2016,Economic Development- Subgroup,USAID,3
+Good Governance (workforce and education),3587000,Development,ElSalvador,2016,Education - Subgroup,USAID,3
+Basic Education,6000000,Development,ElSalvador,2016,Education - Subgroup,USAID,3
+Higher Education,4350000,Development,ElSalvador,2016,Education - Subgroup,USAID,3
+Workforce Development,6779000,Development,ElSalvador,2016,Education - Subgroup,USAID,3
+Private Sector Productivity (renewable energy/climate change,6284000,Development,ElSalvador,2016,Enviorment/Climate Change - Subgroup,USAID,3
+Macro Foundation for Growth,,Development,ElSalvador,2016,Enviorment/Climate Change - Subgroup,,3
+Private Sector Productivity  (poverty in w. Honduras),15039000,Development,Honduras,2016,Economic Development- Subgroup,,3
+Good Governance (poverty in w. honduras),16500000,Development,Honduras,2016,Economic Development- Subgroup,,3
+Environment  (poverty in w. Honduras),5000000,Development,Honduras,2016,Enviorment/Climate Change - Subgroup,,3
+Climate Change  (poverty in w. Honduras),3000000,Development,Honduras,2016,Enviorment/Climate Change - Subgroup,,3
+Agriculture (poverty in w. Honduras),15000000,Development,Honduras,2016,Enviorment/Climate Change - Subgroup,,3
+Basic Education (poverty in w. Honduras) ,13820000,Development,Honduras,2016,Education - Subgroup,,3
+Justice Sector Reform,9500000,Justice and Rule of law,Guatemala,2016,,,2
+CICIG (Not Carsi),7500000,Justice and Rule of law,Guatemala,2016,,,2
+Good governance (public resource management),6762000,Justice and Rule of law,Guatemala,2016,,,2
+Good governance (transparency),12000000,Justice and Rule of law,Guatemala,2016,,,2
+Civil Society (transparency),5000000,Justice and Rule of law,Guatemala,2016,,,2
+Human Rights (transparency),1750000,Justice and Rule of law,Guatemala,2016,,,2
+Economic Support Fund (justice reform) ,10616667,Justice and Rule of law,Guatemala,2016,,,2
+Rule of Law (Security/justice),2700000,Justice and Rule of law,Guatemala,2016,,,2
+Justice Sector Reform,9100000,Justice and Rule of Law,ElSalvador,2016,,INCLE,2
+Rule of Law (Security/Human rights),1600000,Justice and Rule of Law,ElSalvador,2016,,USAID,2
+Human Rights (Security/Human rights) ,2400000,Justice and Rule of Law,ElSalvador,2016,,USAID,2
+Rule of Law (Justice/Accountability),2089000,Justice and Rule of Law,ElSalvador,2016,,USAID,2
+Good Governance (Justice/Accountability),3500000,Justice and Rule of Law,ElSalvador,2016,,USAID,2
+Civil Society (Justice/Accountability),3500000,Justice and Rule of Law,ElSalvador,2016,,USAID,2
+Good Governance (Transperancy),7700000,Justice and Rule of Law,ElSalvador,2016,,USAID,2
+Economic Support Fund,11833333,Justice and Rule of Law,ElSalvador,2016,,,2
+Justice Sector Reform,16900000,Justice and Rule of Law,Honduras,2016,,,2
+Rule of Law (citizen security in urban/high crime areas),1760000,Justice and Rule of Law,Honduras,2016,,,2
+Good Governance (citizen security in urban/high crime areas),1800000,Justice and Rule of Law,Honduras,2016,,,2
+Human Rights (citizen security in urban/high crime areas),4240000,Justice and Rule of Law,Honduras,2016,,,2
+Good governance (transparency/acctability in public administration),6700000,Justice and Rule of Law,Honduras,2016,,,2
+Civil Society (transparency/acctability in public administration),5000000,Justice and Rule of Law,Honduras,2016,,,2
+Economic Support Fund (Justice system) ,11833333,Justice and Rule of Law,Honduras,2016,,,2
+Community Policing,10250000,Law Enforcement,Guatemala,2016,,,4
+Regional Equipment and Training for Law Enforcement,2050000,Law Enforcement,Guatemala,2016,,,4
+Vetted Units,3900000,Law Enforcement,Guatemala,2016,,,4
+Guatemala Police Assault Units (not Carsi),3000000,Law Enforcement,Guatemala,2016,,,4
+Improved Police Academies and Training,1500000,Law Enforcement,Guatemala,2016,,,4
+Economic Support Fund (community policing) ,10616667,Law Enforcement,Guatemala,2016,,,4
+Trafficking in persons (Security/justice),1500000,Law Enforcement,Guatemala,2016,,,4
+Prison Management,7750000,Law Enforcement,Guatemala,2016,,,4
+Capacity Enhancement ,2000000,Law Enforcement,Guatemala,2016,,,4
+Capacity Enhancement ,2350000,Law Enforcement,Guatemala,2016,,,4
+Regional Equipment and Training for Law Enforcement,2350000,Law Enforcement,ElSalvador,2016,,INCLE,4
+Community Policing,8000000,Law Enforcement,ElSalvador,2016,,INCLE,4
+Improved Police Academies and Training,1000000,Law Enforcement,ElSalvador,2016,,INCLE,4
+Vetted Units,4100000,Law Enforcement,ElSalvador,2016,,INCLE,4
+Asset Forefeiture and Anti-Money Laundering,1500000,Law Enforcement,ElSalvador,2016,,INCLE,4
+Prison Management,4000000,Law Enforcement,ElSalvador,2016,,INCLE,4
+Capacity Enhancement ,2000000,Law Enforcement,ElSalvador,2016,,INCLE,4
+Capacity Enhancement ,1000000,Law Enforcement,ElSalvador,2016,,INCLE,4
+Regional Equipment and Training for Law Enforcement,2350000,Law Enforcement,Honduras,2016,,,4
+Community Policing,11550000,Law Enforcement,Honduras,2016,,,4
+Improved Police Academies and Training,1500000,Law Enforcement,Honduras,2016,,,4
+Vetted Units,2500000,Law Enforcement,Honduras,2016,,,4
+Economic Support Fund (community police) ,11833333,Law Enforcement,Honduras,2016,,,4
+Capacity Enhancement ,1000000,Law Enforcement,Honduras,2016,,,4
+Asset Forefeiture and Anti-Money Laundering,1500000,Law Enforcement,Honduras,2016,,,4
+Capacity Enhancement ,2750000,Law Enforcement,Honduras,2016,,,4
+Economic Support Fund (violence prevention - regional) ,5116667,Violence Prevention,Guatemala,2016,,,5
+Economic Support Fund (violence prevention),10616667,Violence Prevention,Guatemala,2016,,,5
+Civil Society  (econ./devel),11056000,Violence Prevention,Guatemala,2016,,,5
+Good Governance (Security/Human rights),4028000,Violence Prevention,ElSalvador,2016,,USAID,5
+Economic Support Fund,23666667,Violence Prevention,ElSalvador,2016,,ESF,5
+Economic Support Fund (violence prevention - regional) ,5116667,Violence Prevention,ElSalvador,2016,,ESF,5
+Basic Education (citizen security in urban/high crime areas),5141000,Violence Prevention,Honduras,2016,,,5
+Economic Support Fund (violence prevention) ,11833333,Violence Prevention,Honduras,2016,,,5
+Economic Support Fund (violence prevention - regional) ,5116667,Violence Prevention,Honduras,2016,,,5

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Demo</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="description" content="Demo project">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://unpkg.com/carbon-components/css/carbon-components.min.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<style type="text/css"></style>
+</head>
+<body>
+
+	<div class="toolbar-container">
+		<div id="countries-toolbar" class="toolbar">
+			<a href="#" id="all-countries" class="button active">All Countries</a>
+			<a href="#" id="Guatemala" class="button">Guatemala</a>		  
+			<a href="#" id="ElSalvador" class="button">El Salvador</a>
+			<a href="#" id="Honduras" class="button">Honduras</a>
+		</div>
+		
+		<div id="years-toolbar" class="toolbar">
+			<a href="#" id="all-years" class="button active">All Years</a>
+		</div>
+	</div>
+
+	<div id="bar-chart"></div>
+
+	<div id="bubble-toolbar" class="toolbar">
+		<a href="#" id="all" class="button active">All Categories</a>
+		<a href="#" id="Borders & Counternarcotics" class="button">Borders & Counternarcotics</a>		  
+		<a href="#" id="Development" class="button">Development</a>
+		<a href="#" id="Justice and Rule of Law" class="button">Justice and Rule of Law</a>
+		<a href="#" id="Law Enforcement" class="button">Law Enforcement</a>
+		<a href="#" id="Violence Prevention" class="button">Violence Prevention</a>
+		<div class="select-style">
+			<select name="year" id="year">
+			</select>
+		</div>
+	</div>
+
+	<div id="vis"></div>
+
+	<div class="bx--data-table-v2-container" data-table-v2 id="sort">
+		<h4 class="bx--data-table-v2-header">All Programs</h4>
+		<div class="bx--table-toolbar">
+			<div class="bx--toolbar-search-container">
+				<div data-search class="bx--search bx--search--sm" role="search">
+					<svg class="bx--search-magnifier" width="16" height="16" viewBox="0 0 16 16" fill-rule="evenodd">
+						<path d="M6 2c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4 1.8-4 4-4zm0-2C2.7 0 0 2.7 0 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6zM16 13.8L13.8 16l-3.6-3.6 2.2-2.2z"></path>
+						<path d="M16 13.8L13.8 16l-3.6-3.6 2.2-2.2z"></path>
+					</svg>
+					<label id="search-input-label-10" class="bx--label" for="search__input-10">Search</label>
+					<input class="bx--search-input search" type="text" id="search__input-10" role="search" placeholder="Search" aria-labelledby="search-input-label-10">
+					<svg class="bx--search-close bx--search-close--hidden" width="10" height="10" viewBox="0 0 10 10" fill-rule="evenodd">
+						<path d="M9.8 8.6L8.4 10 5 6.4 1.4 10 0 8.6 3.6 5 .1 1.4 1.5 0 5 3.6 8.6 0 10 1.4 6.4 5z"></path>
+					</svg>
+				</div>
+			</div>
+		</div>
+
+		<table class="bx--data-table-v2" id="table">
+			<thead>
+				<tr>
+					<th></th>
+					<th class="program">
+						<button class="bx--table-sort-v2 sort" data-event="sort" data-sort="program">
+							<span class="bx--table-header-label">Program</span>
+							<svg class="bx--table-sort-v2__icon" width='10' height='5' viewBox='0 0 10 5' fill-rule='evenodd'>
+								<path d='M10 0L5 5 0 0z'></path>
+							</svg>
+						</button>
+					</th>
+					<th class="total">
+						<button class="bx--table-sort-v2 sort" data-event="sort" data-sort="total">
+							<span class="bx--table-header-label">Total</span>
+							<svg class="bx--table-sort-v2__icon" width='10' height='5' viewBox='0 0 10 5' fill-rule='evenodd'>
+								<path d='M10 0L5 5 0 0z'></path>
+							</svg>
+						</button>
+					</th>
+					<th class="year">
+						<button class="bx--table-sort-v2 sort" data-event="sort" data-sort="year">
+							<span class="bx--table-header-label">Year</span>
+							<svg class="bx--table-sort-v2__icon" width='10' height='5' viewBox='0 0 10 5' fill-rule='evenodd'>
+								<path d='M10 0L5 5 0 0z'></path>
+							</svg>
+						</button>
+					</th>
+					<th class="category">
+						<button class="bx--table-sort-v2 sort" data-event="sort" data-sort="category">
+							<span class="bx--table-header-label">Category</span>
+							<svg class="bx--table-sort-v2__icon" width='10' height='5' viewBox='0 0 10 5' fill-rule='evenodd'>
+								<path d='M10 0L5 5 0 0z'></path>
+							</svg>
+						</button>
+					</th>
+					<th class="country">
+						<button class="bx--table-sort-v2 sort" data-event="sort" data-sort="country">
+							<span class="bx--table-header-label">Country</span>
+							<svg class="bx--table-sort-v2__icon" width='10' height='5' viewBox='0 0 10 5' fill-rule='evenodd'>
+								<path d='M10 0L5 5 0 0z'></path>
+							</svg>
+						</button>
+					</th>
+					<th class="account">
+						<button class="bx--table-sort-v2 sort" data-event="sort" data-sort="account">
+							<span class="bx--table-header-label">Account</span>
+							<svg class="bx--table-sort-v2__icon" width='10' height='5' viewBox='0 0 10 5' fill-rule='evenodd'>
+								<path d='M10 0L5 5 0 0z'></path>
+							</svg>
+						</button>
+					</th>
+					<th class="source">
+						<button class="bx--table-sort-v2 sort" data-event="sort" data-sort="source">
+							<span class="bx--table-header-label">Source</span>
+							<svg class="bx--table-sort-v2__icon" width='10' height='5' viewBox='0 0 10 5' fill-rule='evenodd'>
+								<path d='M10 0L5 5 0 0z'></path>
+							</svg>
+						</button>
+					</th>
+				</tr>
+			</thead>
+			<tbody id="table-body" class="list">
+			</tbody>
+		</table>
+			<div class="bx--pagination" data-pagination>
+				<div class="bx--pagination__left">
+					<span class="bx--pagination__text">Items per page:</span>
+					<div class="bx--select bx--select--inline">
+						<label for="select-id-pagination" class="bx--visually-hidden">Number of items per page</label>
+						<select id="select-id-pagination" class="bx--select-input" data-items-per-page>
+							<option class="bx--select-option" value="10" selected>10</option>
+							<option class="bx--select-option" value="20">20</option>
+							<option class="bx--select-option" value="30">30</option>
+							<option class="bx--select-option" value="40">40</option>
+							<option class="bx--select-option" value="50">50</option>
+						</select>
+						<svg class="bx--select__arrow" width="10" height="5" viewBox="0 0 10 5" fill-rule="evenodd">
+							<path d="M10 0L5 5 0 0z"></path>
+						</svg>
+					</div>
+					<span class="bx--pagination__text">
+						<span>|&nbsp;</span>
+						<span data-displayed-item-range>1-10</span> of
+						<span data-total-items>40</span> items</span>
+					</div>
+					<div class="bx--pagination__right bx--pagination--inline">
+						<span class="bx--pagination__text">
+							<span data-displayed-page-number>1</span> of
+							<span data-total-pages>4</span> pages</span>
+							<button class="bx--pagination__button bx--pagination__button--backward" data-page-backward aria-label="Backward button">
+								<svg class="bx--pagination__button-icon" width="8" height="12" viewBox="0 0 8 12" fill-rule="evenodd">
+									<path d="M7.5 10.6L2.8 6l4.7-4.6L6.1 0 0 6l6.1 6z"></path>
+								</svg>
+							</button>
+							<label for="page-number-input" class="bx--visually-hidden">Page number input</label>
+							<div class="bx--select bx--select--inline">
+								<!-- <label for="select-id-pagination" class="bx--visually-hidden">Number of items per page</label> -->
+								<ul class="pagination">
+								</ul>
+		<!-- 	      <svg class="bx--select__arrow" width="10" height="5" viewBox="0 0 10 5" fill-rule="evenodd">
+			        <path d="M10 0L5 5 0 0z"></path>
+			    </svg> -->
+			</div>
+			<button class="bx--pagination__button bx--pagination__button--forward" data-page-forward aria-label="Forward button">
+				<svg class="bx--pagination__button-icon" width="8" height="12" viewBox="0 0 8 12" fill-rule="evenodd">
+					<path d="M0 10.6L4.7 6 0 1.4 1.4 0l6.1 6-6.1 6z"></path>
+				</svg>
+			</button>
+		</div>
+		</div>
+	</div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="src/main.min.js"></script>
+<script type="text/javascript">
+</script>
+</body>
+</html>
