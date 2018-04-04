@@ -429,6 +429,11 @@ body {
 	max-width:48rem
 }
 
+.toolbar-container .toolbar { 
+  width: auto;
+  float: left;
+}
+
 .footer {
 	text-align: center;
 }
