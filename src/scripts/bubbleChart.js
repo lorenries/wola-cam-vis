@@ -7,7 +7,7 @@ d3.tip = d3Tip;
 function bubbleChart() {
   // Constants for sizing
   var width = 1500;
-  var height = 800;
+  var height = 700;
 
   // tooltip for mouseover functionality
   // var tooltip = floatingTooltip('gates_tooltip', 240);
@@ -175,8 +175,17 @@ function bubbleChart() {
      .attr('stroke-width', 1)
        // .style('opacity', 0)
        // .on('click', showDetail)
-       .on('mouseover', (d) => { tooltip.show(d, d3.event.target) })
-       .on('mouseout', tooltip.hide);
+     .on('mouseover', (d) => { 
+        console.log(d3.select(d3.event.target))
+        d3.select(d3.event.target).attr('stroke', d3.rgb(fillColor(d.category)).darker());
+        d3.select(d3.event.target).attr('stroke-width', 1.5);
+        tooltip.show(d, d3.event.target);
+      })
+     .on('mouseout', (d) => {
+        d3.select(d3.event.target).attr('stroke', fillColor(d.category));
+        d3.select(d3.event.target).attr('stroke-width', 1);
+        tooltip.hide(d, d3.event.target);
+     });
 
      // @v4 Merge the original empty selection and the enter selection
      bubbles = bubbles.merge(bubblesE);
@@ -321,10 +330,6 @@ function bubbleChart() {
    * details of a bubble in the tooltip.
    */
    function showDetail(d) {
-    // change outline to indicate hover state.
-
-    d3.select(this).attr('stroke', d3.rgb(fillColor(d.category)).darker() )
-    .attr('stroke-width', 1.5);
 
     var content = '<span class="name">Title: </span><span class="value">' +
     d.name +
@@ -337,18 +342,6 @@ function bubbleChart() {
     '</span>';
 
     return content;
-  }
-
-  /*
-   * Hides tooltip
-   */
-   function hideDetail(d) {
-    // reset outline
-    d3.select(this)
-    .attr('stroke', d3.rgb(fillColor(d.category)))
-    .attr('stroke-width', 1);
-
-    tooltip.hideTooltip();
   }
 
 

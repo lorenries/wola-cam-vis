@@ -10,8 +10,9 @@ import Pagination from 'carbon-components/es/components/pagination/pagination';
 import bubbleChart from './bubbleChart.js';
 import barChart from './barChart.js';
 import List from 'list.js';
+import pym from 'pym.js';
 
-console.log(DataTableV2)
+var pymChild = new pym.Child();
 
 function pivotTable(data) {
 
@@ -71,8 +72,6 @@ function pivotTable(data) {
 
   // console.log(document.querySelector(paginationInstance.options.selectorItemsPerPageInput).value)
   // DataTableV2.refreshRows();
-
-  console.log(tableInstance)
 
   // const paginationElement = document.querySelector('[data-pagination]');
   // const paginationInstance = Pagination.create(tableElement);
