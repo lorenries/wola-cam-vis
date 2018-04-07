@@ -12,8 +12,6 @@ import barChart from './barChart.js';
 import List from 'list.js';
 import pym from 'pym.js';
 
-var pymChild = new pym.Child();
-
 function pivotTable(data) {
 
   function rowTemplate(d) {
@@ -130,6 +128,7 @@ function pivotTable(data) {
   bubbleChart(data);
   barChart(data);
   pivotTable(data);
+  var pymChild = new pym.Child();
 }
 
 var dataUrl = 'https://s3.amazonaws.com/wola-cam//19dwn5dI7bjj0hS4SNY-uE-lfPq0NrbRMZh5p2ofU4Zo';
