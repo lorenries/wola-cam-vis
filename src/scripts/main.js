@@ -135,4 +135,4 @@ var dataUrl = 'https://s3.amazonaws.com/wola-cam//19dwn5dI7bjj0hS4SNY-uE-lfPq0Nr
 
 var localJson = '../data/data.json';
 // Load the data.
-d3.json(dataUrl, display);
+d3.json(localJson, display);

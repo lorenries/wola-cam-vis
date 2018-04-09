@@ -48,7 +48,7 @@ function bubbleChart() {
   .force('x', d3.forceX(nodeCountryPos).strength(0.2))
   .force('y-center', d3.forceY(center.y).strength(0.15))
   .force('y', d3.forceY(function(d) {
-    var yScale = d3.scaleLinear().domain([1, 5]).range([250,height-250]);
+    var yScale = d3.scaleLinear().domain([1, 5]).range([200,height-200]);
     d.scalePos = yScale(d.group);
     return yScale(d.group)
   }).strength(0.4))

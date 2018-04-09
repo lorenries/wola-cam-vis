@@ -425,10 +425,6 @@ body {
 	font-size: 14px;
 }
 
-#bar-chart {
-	max-width:48rem
-}
-
 .toolbar-container .toolbar { 
   width: auto;
   float: left;
@@ -444,7 +440,6 @@ body {
   white-space: nowrap;
   overflow-x: auto;
   display: flex;
-  justify-content: flex-start;
 }
 
 .button {
