@@ -1,6 +1,7 @@
 import addCommas from './addCommas.js';
 import fillColor from './fillColor.js'
 import d3Tip from 'd3-tip';
+import pym from 'pym.js';
 d3.tip = d3Tip;
 
 function barChart(data) {
@@ -215,7 +216,7 @@ function barChart(data) {
           tooltip.hide(d)
         });
 
-        pymChild.sendHeight()
+        // pymChild.sendHeight()
   }
 
   // console.log(nestData('all', 'all'))

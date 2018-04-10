@@ -131,7 +131,6 @@ function pivotTable(data) {
 
   // Create a SVG element inside the provided selector
   // with desired size.
-
   bubbleChart(data);
   barChart(data);
   pivotTable(data);

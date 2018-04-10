@@ -2,6 +2,7 @@ import floatingTooltip from './tooltip.js';
 import fillColor from './fillColor.js';
 import addCommas from './addCommas.js';
 import d3Tip from 'd3-tip';
+import pym from 'pym.js';
 d3.tip = d3Tip;
 
 function bubbleChart() {
@@ -203,7 +204,7 @@ function bubbleChart() {
      // Set initial layout to single group.
      showCountryTotals(filtered || nodes);
      simulation.alpha(1).restart();
-     pymChild.sendHeight()
+     // pymChild.sendHeight()
    };
 
   /*
