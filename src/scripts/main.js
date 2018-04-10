@@ -75,25 +75,33 @@ function pivotTable(data) {
   // const paginationInstance = Pagination.create(tableElement);
   var options = {
     valueNames: [ "program", "total", "year", "category", "country", "account", "source" ],
-    page: 10,
-    pagination: [{
-      name: "pagination",
-      paginationClass: "pagination", 
-      innerWindow: 0
-    }]
+    page: 10
   };
   var list = new List('sort', options);
+  console.log(list);
   tableInstance.refreshRows();
 
   var numberOfItems = document.querySelector('[data-total-items]');
+  var selectItemsPerPage = document.querySelector('[data-items-per-page]');
+  var forwardPaginationButton = document.querySelector('[data-page-forward]');
+  var backwardPaginationButton = document.querySelector('[data-page-backward]');
+  var paginationSelect = document.querySelector('[data-page-number-input]');
+
+  numberOfItems.innerHTML = list.matchingItems.length;
+  updateRange();
+
+  var numberOfPages = +numberOfItems.innerHTML / +selectItemsPerPage.value;
+  
+  console.log(numberOfPages)
 
   list.on('updated', function() {
     numberOfItems.innerHTML = list.matchingItems.length;
     updateRange()
     tableInstance.refreshRows();
+    pymChild.sendHeight()
   });
 
-  var selectItemsPerPage = document.querySelector('[data-items-per-page]');
+  // forwardPaginationButton.addEventListener
 
   selectItemsPerPage.addEventListener('change', (e) => {
     var numItems = e.target.value;
@@ -107,7 +115,6 @@ function pivotTable(data) {
     var numberOfItems = selectItemsPerPage.value;
     var displayedItemRange = document.querySelector('[data-displayed-item-range]')
     var range = +list.i + +numberOfItems - 1;
-    console.log(range)
     displayedItemRange.innerHTML = `${list.i}-${range}`;
   }
 
@@ -135,4 +142,4 @@ var dataUrl = 'https://s3.amazonaws.com/wola-cam//19dwn5dI7bjj0hS4SNY-uE-lfPq0Nr
 
 var localJson = '../data/data.json';
 // Load the data.
-d3.json(localJson, display);
+d3.json(dataUrl, display);

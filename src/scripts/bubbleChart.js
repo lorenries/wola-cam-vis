@@ -176,7 +176,6 @@ function bubbleChart() {
        // .style('opacity', 0)
        // .on('click', showDetail)
      .on('mouseover', (d) => { 
-        console.log(d3.select(d3.event.target))
         d3.select(d3.event.target).attr('stroke', d3.rgb(fillColor(d.category)).darker());
         d3.select(d3.event.target).attr('stroke-width', 1.5);
         tooltip.show(d, d3.event.target);
@@ -204,6 +203,7 @@ function bubbleChart() {
      // Set initial layout to single group.
      showCountryTotals(filtered || nodes);
      simulation.alpha(1).restart();
+     pymChild.sendHeight()
    };
 
   /*

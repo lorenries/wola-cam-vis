@@ -556,3 +556,28 @@ td {
 .country text, text.total {
   font-size: 20px;
 }
+
+li.disabled {
+  display: none;
+}
+
+li.active a {
+  text-decoration: none;
+  padding: .25rem;
+  color: #3d70b2;
+  font-weight: 600;
+}
+
+ul.pagination li:not(.active):not(:first-child) a {
+  text-decoration: none;
+  border-right: 0;
+  height: 100%;
+  border-left: 1px solid #dfe3e6;
+  width: 2.625rem;
+  margin: 0;
+  cursor: pointer;
+  background: none;
+}
+
+ul.pagination li:not(.active):not(:first-child) a::after {
+}

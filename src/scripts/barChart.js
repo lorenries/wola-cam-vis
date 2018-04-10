@@ -214,6 +214,8 @@ function barChart(data) {
             .attr('stroke-width', 1);
           tooltip.hide(d)
         });
+
+        pymChild.sendHeight()
   }
 
   // console.log(nestData('all', 'all'))
