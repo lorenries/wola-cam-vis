@@ -40,6 +40,7 @@ function bubbleChart() {
   }
 
   var maxRadius = height*0.1;
+  var scale;
 
   // Here we create a force layout and
   // @v4 We create a force simulation now and
@@ -79,8 +80,8 @@ function bubbleChart() {
 
     // Sizes bubbles based on area.
     // @v4: new flattened scale names.
-    var radiusScale = d3.scalePow()
-    .exponent(0.5)
+    var radiusScale = d3.scaleSqrt()
+    // .exponent(0.5)
     .range([4, maxRadius])
     .domain([0, maxAmount]);
 
@@ -107,7 +108,13 @@ function bubbleChart() {
     // sort them to prevent occlusion of smaller nodes.
     myNodes.sort(function (a, b) { return b.value - a.value; });
 
+    scale = radiusScale;
+
     return myNodes;
+  }
+
+  function createLegend(scale) {
+
   }
 
   /*
@@ -130,6 +137,7 @@ function bubbleChart() {
     yearFilter();
     displayFilter();
     chart.updateData(filterState.display, filterState.year);
+    createLegend(scale);
   };
 
   /*
@@ -296,7 +304,7 @@ function bubbleChart() {
     .append('text')
     .attr('text-anchor', 'middle')
     .attr('x', function (d) { return countryCenters[d].x; })
-    .attr('y', 40)
+    .attr('y', 60)
     .text(function (d) { if (d === 'ElSalvador') return 'El Salvador'; else return d });
   }
 
@@ -319,7 +327,7 @@ function bubbleChart() {
     totals.enter().append('text')
     .attr('class', 'total')
     .attr('x', function (d) { return countryCenters[d].x; })
-    .attr('y', 65)
+    .attr('y', 85)
     .attr('text-anchor', 'middle')
     .text(function (d) { return '$' + addCommas(countryTotal(d).toString()); })
     .merge(totals);
@@ -332,15 +340,23 @@ function bubbleChart() {
    */
    function showDetail(d) {
 
-    var content = '<span class="name">Title: </span><span class="value">' +
-    d.name +
-    '</span><br/>' +
-    '<span class="name">Amount: </span><span class="value">$' +
-    addCommas((d.value)) +
-    '</span><br/>' +
-    '<span class="name">Year: </span><span class="value">' +
-    d.year +
-    '</span>';
+    // var content = '<span class="name">Program: </span><span class="value">' +
+    // d.name +
+    // '</span><br/>' +
+    // '<span class="name">Total: </span><span class="value">$' +
+    // addCommas((d.value)) +
+    // '</span><br/>' +
+    // '<span class="name">Year: </span><span class="value">' +
+    // d.year +
+    // '</span>';
+
+    var content = `
+      <div class="pa1 lh-title">
+        <div class=""><span class="name b">Program: </span><span class="value">${d.name}</span></div>
+        <div class=""><span class="name b">Total: </span><span class="value">$${addCommas((d.value))}</span></div>
+        <div class=""><span class="name b">Year: </span><span class="value">${d.year}</span></div>
+      </div>
+    `
 
     return content;
   }

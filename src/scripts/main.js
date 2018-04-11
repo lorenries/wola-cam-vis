@@ -7,6 +7,7 @@
  */
 import DataTableV2 from 'carbon-components/es/components/data-table-v2/data-table-v2';
 import Pagination from 'carbon-components/es/components/pagination/pagination';
+import addCommas from './addCommas.js';
 import bubbleChart from './bubbleChart.js';
 import barChart from './barChart.js';
 import List from 'list.js';
@@ -15,6 +16,15 @@ import pym from 'pym.js';
 function pivotTable(data) {
 
   function rowTemplate(d) {
+
+    var country;
+
+    if (d.country === 'ElSalvador') {
+      country = 'El Salvador';
+    } else {
+      country = d.country;
+    }
+
     return `
     <tr class="bx--parent-row-v2" data-parent-row>
       <td class="bx--table-expand-v2" data-event="expand">
@@ -25,12 +35,12 @@ function pivotTable(data) {
         </button>
       </td>
       <td class="program">${d.program_name}</td>
-      <td class="total">${d.total}</td>
+      <td class="total">$${addCommas(d.total)}</td>
       <td class="year">${d.year}</td>
       <td class="category">${d.category}</td>
-      <td class="country">${d.country}</td>
-      <td class="account">${d.account}</td>
-      <td class="source">${d.source}</td>
+      <td class="country">${country}</td>
+      <td class="account">${ d.account ? d.account : '' }</td>
+      <td class="source">${ d.source ? d.source : '' }</td>
     </tr>
     <tr class="bx--expandable-row-v2 bx--expandable-row--hidden-v2" data-child-row>
       <td colspan="8">
@@ -59,20 +69,6 @@ function pivotTable(data) {
   const tableElement = document.querySelector('[data-table-v2]');
   const tableInstance = DataTableV2.create(tableElement)
 
-  // const paginationEl = document.querySelector('[data-pagination]');
-  // const paginationInstance = Pagination.create(paginationEl);
-
-  // paginationEl.addEventListener('eventPageChange', function(e) { console.log('fired') })
-
-  // paginationEl.addEventListener('eventPageChange', function(e) {
-  //   console.log(document.querySelector(paginationInstance.options.selectorItemsPerPageInput).value)
-  // })
-
-  // console.log(document.querySelector(paginationInstance.options.selectorItemsPerPageInput).value)
-  // DataTableV2.refreshRows();
-
-  // const paginationElement = document.querySelector('[data-pagination]');
-  // const paginationInstance = Pagination.create(tableElement);
   var options = {
     valueNames: [ "program", "total", "year", "category", "country", "account", "source" ],
     page: 10
@@ -86,33 +82,98 @@ function pivotTable(data) {
   var forwardPaginationButton = document.querySelector('[data-page-forward]');
   var backwardPaginationButton = document.querySelector('[data-page-backward]');
   var paginationSelect = document.querySelector('[data-page-number-input]');
+  var displayedPageNumber = document.querySelector('[data-displayed-page-number]');
+  var totalPages = document.querySelector('[data-total-pages]')
+
+  // update pagination function
+  // number of pages = number of items / items per page
+  // append appropriate number to select
+
+  function updatePagination() {
+    var numberOfPages = Math.ceil(list.matchingItems.length / list.page);
+    var range = document.createRange();
+    range.selectNodeContents(paginationSelect);
+    range.deleteContents();
+    for (var i = 1; i <= numberOfPages; i++) {
+      var option = document.createElement('option');
+      option.classList.add('bx--select-option');
+      option.setAttribute('value', i);
+      option.innerHTML = i;
+      paginationSelect.appendChild(option);
+    }
+    paginationSelect.selectedIndex = (list.i - 1) / list.page;
+  }
+
+  updatePagination();
+  updatePaginationRange();
+
+  // on forward click
+  // list.i = select value + 1 * list.page
+  // select goes up 1
+  // table.show(i, list.page)
+
+  forwardPaginationButton.addEventListener('click', function(e) {
+    if (paginationSelect.value != paginationSelect.length) {
+      list.i = (paginationSelect.value * list.page) + 1;
+      paginationSelect.selectedIndex++;
+      list.show(list.i, list.page);
+    }
+  });
+
+  // on backward click
+  // list.i = select value - 1 * list.page
+  // select value goes down one
+  // table.show(i, list.page)
+
+  backwardPaginationButton.addEventListener('click', function(e) {
+    if (paginationSelect.value != 1) {
+      // console.log('list.i = ' + list.i + '   ' + 'list.page = ' + list.page)
+      list.i = list.i - list.page;
+      paginationSelect.selectedIndex--;
+      list.show(list.i, list.page); 
+    }
+  });
+
+  // on select change
+  // list.i = select value * list.page
+  // table.show(list.i, list.page)
+
+  paginationSelect.addEventListener('change', function(e) {
+    list.i = ((e.target.value - 1) * list.page) + 1;
+    list.show(list.i, list.page);
+  });
 
   numberOfItems.innerHTML = list.matchingItems.length;
   updateRange();
 
   var numberOfPages = +numberOfItems.innerHTML / +selectItemsPerPage.value;
-  
-  console.log(numberOfPages)
 
-  list.on('updated', function() {
+  list.on('updated', function(e) {
+    console.log('list updated');
     numberOfItems.innerHTML = list.matchingItems.length;
-    updateRange()
+    updateRange();
+    updatePagination();
+    updatePaginationRange();
     tableInstance.refreshRows();
-    pymChild.sendHeight()
+    // pymChild.sendHeight()
   });
-
-  // forwardPaginationButton.addEventListener
 
   selectItemsPerPage.addEventListener('change', (e) => {
     var numItems = e.target.value;
     list.page = numItems;
     updateRange();
     list.update();
-    console.log(numItems)
   })
 
+  function updatePaginationRange() {
+    var numberOfPages = Math.ceil(list.matchingItems.length / list.page);
+    var currentPage = paginationSelect.value;
+    totalPages.innerHTML = numberOfPages;
+    displayedPageNumber.innerHTML = currentPage;
+  }
+
   function updateRange() {
-    var numberOfItems = selectItemsPerPage.value;
+    var numberOfItems = list.page;
     var displayedItemRange = document.querySelector('[data-displayed-item-range]')
     var range = +list.i + +numberOfItems - 1;
     displayedItemRange.innerHTML = `${list.i}-${range}`;
