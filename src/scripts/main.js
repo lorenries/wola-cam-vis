@@ -35,7 +35,7 @@ function pivotTable(data) {
         </button>
       </td>
       <td class="program">${d.program_name}</td>
-      <td class="total">$${addCommas(d.total)}</td>
+      <td class="total" data-total="${d.total}">$${addCommas(d.total)}</td>
       <td class="year">${d.year}</td>
       <td class="category">${d.category}</td>
       <td class="country">${country}</td>
@@ -70,11 +70,11 @@ function pivotTable(data) {
   const tableInstance = DataTableV2.create(tableElement)
 
   var options = {
-    valueNames: [ "program", "total", "year", "category", "country", "account", "source" ],
+    valueNames: [ "program", { name: 'total', attr: 'data-total'}, "year", "category", "country", "account", "source" ],
     page: 10
   };
   var list = new List('sort', options);
-  console.log(list);
+
   tableInstance.refreshRows();
 
   var numberOfItems = document.querySelector('[data-total-items]');
@@ -127,7 +127,6 @@ function pivotTable(data) {
 
   backwardPaginationButton.addEventListener('click', function(e) {
     if (paginationSelect.value != 1) {
-      // console.log('list.i = ' + list.i + '   ' + 'list.page = ' + list.page)
       list.i = list.i - list.page;
       paginationSelect.selectedIndex--;
       list.show(list.i, list.page); 
@@ -149,7 +148,6 @@ function pivotTable(data) {
   var numberOfPages = +numberOfItems.innerHTML / +selectItemsPerPage.value;
 
   list.on('updated', function(e) {
-    console.log('list updated');
     numberOfItems.innerHTML = list.matchingItems.length;
     updateRange();
     updatePagination();
@@ -176,6 +174,9 @@ function pivotTable(data) {
     var numberOfItems = list.page;
     var displayedItemRange = document.querySelector('[data-displayed-item-range]')
     var range = +list.i + +numberOfItems - 1;
+    if (range > list.matchingItems.length) {
+      range = list.matchingItems.length;
+    }
     displayedItemRange.innerHTML = `${list.i}-${range}`;
   }
 

@@ -10,7 +10,8 @@
     "build": "rollup -c",
     "watch": "rollup -c -w",
     "dev": "npm-run-all --parallel start watch",
-    "start": "whs"
+    "start": "whs",
+    "deploy": "npm run build && git push"
   },
   "author": "",
   "license": "ISC",

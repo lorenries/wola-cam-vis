@@ -150,15 +150,6 @@ function barChart(data) {
         .call(yAxis)
         .attr('transform', 'translate(-15, 0)');
 
-      // add a label to the yAxis
-      var yText = yAxisEle.append('text')
-        .attr('transform', 'rotate(-90)translate(-' + height/2 + ',0)')
-        .style('text-anchor', 'middle')
-        .style('fill', 'black')
-        .attr('dy', '-2.5em')
-        .style('font-size', 14)
-        .text('Total');
-
     const tooltip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) { return `$${addCommas(d.total)}` });
 
     svg.call(tooltip);
@@ -197,7 +188,7 @@ function barChart(data) {
         })
         .attr('fill', function (d) { return fillColor(d.key); })
         .attr('fill-opacity', 0.2)
-        .attr('stroke', function (d) { console.log(d.key + ": " + fillColor(d.key)); return fillColor(d.key); })
+        .attr('stroke', function (d) { return fillColor(d.key); })
         .attr('stroke-width', 1)
         .on('mouseover', function(d) {  
           var target = d3.event.target;
@@ -209,8 +200,6 @@ function barChart(data) {
           })
         .on('mouseout', function(d) {
           d3.select(this)
-            .transition()
-            .duration(250)
             .attr('stroke', fillColor(d.key))
             .attr('stroke-width', 1);
           tooltip.hide(d)
@@ -219,7 +208,6 @@ function barChart(data) {
         // pymChild.sendHeight()
   }
 
-  // console.log(nestData('all', 'all'))
   setupButtons();
 
 }

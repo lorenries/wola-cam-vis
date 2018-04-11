@@ -16,7 +16,7 @@ function bubbleChart() {
 
   // Locations to move bubbles towards, depending
   // on which view mode is selected.
-  var center = { x: width / 2, y: height / 2 };
+  var center = { x: width / 2, y: height / 2 - 100 };
 
   var countryCenters = {
     Guatemala: { x: width / 6, y: height / 2 },
@@ -39,7 +39,8 @@ function bubbleChart() {
     year: null,
   }
 
-  var maxRadius = height*0.1;
+  var maxRadius = height*0.06;
+  var maxDatum;
   var scale;
 
   // Here we create a force layout and
@@ -47,13 +48,13 @@ function bubbleChart() {
   //  add forces to it.
   var simulation = d3.forceSimulation()
   .velocityDecay(0.6)
-  .force('x', d3.forceX(nodeCountryPos).strength(0.2))
-  .force('y-center', d3.forceY(center.y).strength(0.15))
+  .force('x', d3.forceX(nodeCountryPos).strength(0.4))
+  .force('y-center', d3.forceY(center.y).strength(0.1))
   .force('y', d3.forceY(function(d) {
     var yScale = d3.scaleLinear().domain([1, 5]).range([200,height-200]);
     d.scalePos = yScale(d.group);
     return yScale(d.group)
-  }).strength(0.4))
+  }).strength(0.8))
   .force("collide", d3.forceCollide(function(d) { return d.radius + 2 }))
   .on('tick', ticked);
 
@@ -77,7 +78,7 @@ function bubbleChart() {
     // Use the max total_amount in the data as the max in the scale's domain
     // note we have to ensure the total_amount is a number.
     var maxAmount = d3.max(rawData, function (d) { return +d.total; });
-
+    maxDatum = maxAmount;
     // Sizes bubbles based on area.
     // @v4: new flattened scale names.
     var radiusScale = d3.scaleSqrt()
@@ -113,10 +114,6 @@ function bubbleChart() {
     return myNodes;
   }
 
-  function createLegend(scale) {
-
-  }
-
   /*
    * Main entry point to the bubble chart. This function is returned
    * by the parent closure. It prepares the rawData for visualization
@@ -137,7 +134,6 @@ function bubbleChart() {
     yearFilter();
     displayFilter();
     chart.updateData(filterState.display, filterState.year);
-    createLegend(scale);
   };
 
   /*
@@ -212,6 +208,46 @@ function bubbleChart() {
      // Set initial layout to single group.
      showCountryTotals(filtered || nodes);
      simulation.alpha(1).restart();
+
+     var l = circleLegend(svg)
+         .domain([0, maxDatum]) // the dataset min and max
+         .range([4, maxRadius]) // the circle area/size mapping
+         .values( [3000000, 30000000] ) // pass in values (e.g. min,mean/median & max)
+         // optional
+         .width(300) // it centers to this
+         .height(1200) // it centers to this
+         .suffix('') // ability to pass in a suffix e.g. '%'
+         .circleColor( '#888') // stroke of the circles
+         .textPadding(25) // left padding on text
+         .textColor( '#454545') // the fill for text
+
+     // and render it
+     l.render()
+
+     svg.append("g")
+       .attr("class", "legendOrdinal")
+       .attr("transform", "translate(440,590)");
+
+     var legendOrdinal = d3.legendColor()
+       //d3 symbol creates a path-string, for example
+       //"M0,-8.059274488676564L9.306048591020996,
+       //8.059274488676564 -9.306048591020996,8.059274488676564Z"
+       .shapePadding(160)
+       .shapeWidth(45)
+       .shapeHeight(20)
+       .labelOffset(15)
+       .orient('horizontal')
+       // .labelWrap(40)
+       //use cellFilter to hide the "e" cell
+       .scale(fillColor);
+
+     svg.select(".legendOrdinal")
+       .call(legendOrdinal);
+
+     svg.selectAll(".legendOrdinal .swatch")
+        .style('fill-opacity', 0.2)
+        .style('stroke', function(d) { return fillColor(d) })
+
      // pymChild.sendHeight()
    };
 
@@ -304,7 +340,7 @@ function bubbleChart() {
     .append('text')
     .attr('text-anchor', 'middle')
     .attr('x', function (d) { return countryCenters[d].x; })
-    .attr('y', 60)
+    .attr('y', 50)
     .text(function (d) { if (d === 'ElSalvador') return 'El Salvador'; else return d });
   }
 
@@ -327,7 +363,7 @@ function bubbleChart() {
     totals.enter().append('text')
     .attr('class', 'total')
     .attr('x', function (d) { return countryCenters[d].x; })
-    .attr('y', 85)
+    .attr('y', 75)
     .attr('text-anchor', 'middle')
     .text(function (d) { return '$' + addCommas(countryTotal(d).toString()); })
     .merge(totals);
@@ -340,16 +376,6 @@ function bubbleChart() {
    */
    function showDetail(d) {
 
-    // var content = '<span class="name">Program: </span><span class="value">' +
-    // d.name +
-    // '</span><br/>' +
-    // '<span class="name">Total: </span><span class="value">$' +
-    // addCommas((d.value)) +
-    // '</span><br/>' +
-    // '<span class="name">Year: </span><span class="value">' +
-    // d.year +
-    // '</span>';
-
     var content = `
       <div class="pa1 lh-title">
         <div class=""><span class="name b">Program: </span><span class="value">${d.name}</span></div>
@@ -360,6 +386,95 @@ function bubbleChart() {
 
     return content;
   }
+
+  function circleLegend(selection) {
+
+      let instance = {}
+
+      // set some defaults 
+      const api = {
+          domain: [0, 100], // the values min and max
+          range: [0, 80], // the circle area/size mapping
+          values: [8, 34, 89], // values for circles
+          width: 500,
+          height: 500,
+          suffix:'', // ability to pass in a suffix
+          circleColor: '#888',
+          textPadding: 40,
+          textColor: '#454545'
+      }
+      
+      const sqrtScale = scale;
+
+      instance.render = function () {
+
+          const s = selection.append('g')
+              .attr('class', 'legend-wrap')
+              // push down to radius of largest circle
+              .attr('transform', 'translate(0,' + sqrtScale(d3.max(api.values)) + ')')
+
+          // append the values for circles
+          s.append('g')
+              .attr('class', 'values-wrap')
+              .selectAll('circle')
+              .data(api.values)
+              .enter().append('circle')
+              .attr('class', d => 'values values-' + d)
+              .attr('r', d => sqrtScale(d))
+              .attr('cx', api.width/2)
+              .attr('cy', d => api.height/2 - sqrtScale(d))
+              .style('fill', 'none') 
+              .style('stroke', api.circleColor) 
+              .style('opacity', 0.5) 
+
+          // append some lines based on values
+          s.append('g')
+              .attr('class', 'values-line-wrap')
+              .selectAll('.values-labels')
+              .data(api.values)
+              .enter().append('line')
+              .attr('x1', d => api.width/2 + sqrtScale(d))
+              .attr('x2', api.width/2 + sqrtScale(api.domain[1]) + 20)
+              .attr('y1', d => api.height/2 - sqrtScale(d))
+              .attr('y2', d => api.height/2 - sqrtScale(d))
+              .style('stroke', api.textColor)
+              .style('stroke-dasharray', ('2,2'))
+
+          // append some labels from values
+          s.append('g')
+              .attr('class', 'values-labels-wrap')
+              .selectAll('.values-labels')
+              .data(api.values)
+              .enter().append('text')
+              .attr('x', api.width/2 + sqrtScale(api.domain[1]) + api.textPadding)
+              .attr('y', d => (api.height/2 - sqrtScale(d)) + 5)
+              .attr('shape-rendering', 'crispEdges')
+              .style('text-anchor', 'start')
+              .style('fill', api.textColor)
+              .text(d => d3.format("$.0s")(d) + api.suffix )
+
+          return instance;
+      }
+
+      for (let key in api) {
+          instance[key] = getSet(key, instance).bind(api)
+      }
+
+      return instance;
+
+      // https://gist.github.com/gneatgeek/5892586
+      function getSet(option, component) {
+          return function (_) {
+              if (! arguments.length) {
+                  return this[option];
+              }
+          this[option] = _;
+          return component;
+        }
+      }
+      
+  };
+
 
 
   // return the chart function from closure.
