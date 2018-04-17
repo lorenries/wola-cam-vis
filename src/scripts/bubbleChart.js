@@ -1,9 +1,9 @@
-import floatingTooltip from './tooltip.js';
-import fillColor from './fillColor.js';
-import addCommas from './addCommas.js';
-import d3Tip from 'd3-tip';
+import {fillColor} from './fillColor.js';
+import {addCommas} from './addCommas.js';
+import tip from 'd3-tip';
 import pym from 'pym.js';
-d3.tip = d3Tip;
+// d3.tip = d3Tip;
+import {legendColor} from 'd3-svg-legend';
 
 function bubbleChart() {
   // Constants for sizing
@@ -11,8 +11,7 @@ function bubbleChart() {
   var height = 700;
 
   // tooltip for mouseover functionality
-  // var tooltip = floatingTooltip('gates_tooltip', 240);
-  const tooltip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) { return showDetail(d) })
+  const tooltip = tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) { return showDetail(d) })
 
   // Locations to move bubbles towards, depending
   // on which view mode is selected.
@@ -52,7 +51,6 @@ function bubbleChart() {
   .force('y-center', d3.forceY(center.y).strength(0.1))
   .force('y', d3.forceY(function(d) {
     var yScale = d3.scaleLinear().domain([1, 5]).range([200,height-200]);
-    d.scalePos = yScale(d.group);
     return yScale(d.group)
   }).strength(0.8))
   .force("collide", d3.forceCollide(function(d) { return d.radius + 2 }))
@@ -82,7 +80,6 @@ function bubbleChart() {
     // Sizes bubbles based on area.
     // @v4: new flattened scale names.
     var radiusScale = d3.scaleSqrt()
-    // .exponent(0.5)
     .range([4, maxRadius])
     .domain([0, maxAmount]);
 
@@ -154,7 +151,6 @@ function bubbleChart() {
       var filtered = nodes.filter(function(val) { return +val.year === +yearFilter});
       simulation.force('y', d3.forceY(function(d) {
         var yScale = d3.scaleLinear().domain([1, 5]).range([250,height-250]);
-        d.scalePos = yScale(d.group);
         return yScale(d.group)
       }).strength(0.4));
     }
@@ -171,6 +167,26 @@ function bubbleChart() {
      // Initially, their radius (r attribute) will be 0.
      // @v4 Selections are immutable, so lets capture the
      //  enter selection to apply our transtition to below.
+
+     var tooltipOpen = false;
+
+     d3.select("body").on("click", function() {
+
+        var inside = d3.selectAll('.selected, .d3-tip, .d3-tip *');
+
+        var outside = inside.filter( function() { return this === d3.event.target } ).empty();
+
+        if (outside && tooltipOpen) {
+          d3.select('.selected').attr('stroke', function(d) {
+            return fillColor(d.category)
+          });
+          d3.select('.selected').attr('stroke-width', 1);
+          d3.select('.selected').classed('selected', false)
+          tooltip.hide(d3.select('.selected'));
+          tooltipOpen = false;
+        }
+     });
+
      var bubblesE = bubbles.enter().append('circle')
      .classed('bubble', true)
      .attr('r', 0)
@@ -178,17 +194,27 @@ function bubbleChart() {
      .attr('fill-opacity', 0.2)
      .attr('stroke', function (d) { return fillColor(d.category); })
      .attr('stroke-width', 1)
-       // .style('opacity', 0)
-       // .on('click', showDetail)
      .on('mouseover', (d) => { 
-        d3.select(d3.event.target).attr('stroke', d3.rgb(fillColor(d.category)).darker());
-        d3.select(d3.event.target).attr('stroke-width', 1.5);
-        tooltip.show(d, d3.event.target);
+        if (!tooltipOpen) {
+          d3.select(d3.event.target).attr('stroke', d3.rgb(fillColor(d.category)).darker());
+          d3.select(d3.event.target).attr('stroke-width', 1.5);
+          tooltip.show(d, d3.event.target);
+        }
       })
      .on('mouseout', (d) => {
-        d3.select(d3.event.target).attr('stroke', fillColor(d.category));
-        d3.select(d3.event.target).attr('stroke-width', 1);
-        tooltip.hide(d, d3.event.target);
+       if (!tooltipOpen) {
+          d3.select(d3.event.target).attr('stroke', fillColor(d.category));
+          d3.select(d3.event.target).attr('stroke-width', 1);
+          tooltip.hide(d, d3.event.target);
+        }
+     })
+     .on('click', (d) => {
+        var target = d3.select(d3.event.target);
+        target.attr('stroke', d3.rgb(fillColor(d.category)).darker());
+        target.attr('stroke-width', 1.5);
+        target.classed('selected', true);
+        tooltipOpen = true;
+        tooltip.show(d, d3.event.target);
      });
 
      // @v4 Merge the original empty selection and the enter selection
@@ -228,7 +254,7 @@ function bubbleChart() {
        .attr("class", "legendOrdinal")
        .attr("transform", "translate(440,590)");
 
-     var legendOrdinal = d3.legendColor()
+     var legendOrdinal = legendColor()
        //d3 symbol creates a path-string, for example
        //"M0,-8.059274488676564L9.306048591020996,
        //8.059274488676564 -9.306048591020996,8.059274488676564Z"

@@ -7,9 +7,9 @@
  */
 import DataTableV2 from 'carbon-components/es/components/data-table-v2/data-table-v2';
 import Pagination from 'carbon-components/es/components/pagination/pagination';
-import addCommas from './addCommas.js';
-import bubbleChart from './bubbleChart.js';
+import {addCommas} from './addCommas.js';
 import barChart from './barChart.js';
+import bubbleChart from './bubbleChart.js';
 import List from 'list.js';
 import pym from 'pym.js';
 

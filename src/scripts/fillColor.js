@@ -5,4 +5,4 @@ var fillColor = d3.scaleOrdinal()
 .domain(['Borders & Counternarcotics', 'Development', 'Justice and Rule of Law', 'Law Enforcement', 'Violence Prevention'])
 .range(['#404041', '#00B5EF', '#65BD60', '#DA1A32', '#F9C606']);
 
-export default fillColor;
+export {fillColor};

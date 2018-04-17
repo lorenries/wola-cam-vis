@@ -15,4 +15,4 @@
   return x1 + x2;
 }
 
-export default addCommas;
+export {addCommas};

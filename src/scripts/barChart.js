@@ -1,8 +1,8 @@
-import addCommas from './addCommas.js';
-import fillColor from './fillColor.js'
-import d3Tip from 'd3-tip';
+import {fillColor} from './fillColor.js'
+import {addCommas} from './addCommas.js';
+import tip from 'd3-tip';
 import pym from 'pym.js';
-d3.tip = d3Tip;
+// d3.tip = d3Tip;
 
 function barChart(data) {
 
@@ -150,7 +150,7 @@ function barChart(data) {
         .call(yAxis)
         .attr('transform', 'translate(-15, 0)');
 
-    const tooltip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) { return `$${addCommas(d.total)}` });
+    const tooltip = tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) { return `$${addCommas(d.total)}` });
 
     svg.call(tooltip);
 
