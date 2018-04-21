@@ -1,372 +1,191 @@
-/*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */
-
-/* Document
-   ========================================================================== */
-
-/**
- * 1. Correct the line height in all browsers.
- * 2. Prevent adjustments of font size after orientation changes in iOS.
- */
-
-html {
-  line-height: 1.15; /* 1 */
-  -webkit-text-size-adjust: 100%; /* 2 */
+.wola-blue {
+  color: #00b5ef;
+}
+.bg-wola-blue {
+  background-color: #00b5ef;
+}
+.b--wola-blue {
+  border-color: #00b5ef;
 }
 
-/* Sections
-   ========================================================================== */
-
-/**
- * Remove the margin in all browsers.
- */
-
-body {
-  margin: 0;
+.hover-wola-blue:hover,
+.hover-wola-blue:focus {
+  color: #00b5ef;
 }
 
-/**
- * Correct the font size and margin on `h1` elements within `section` and
- * `article` contexts in Chrome, Firefox, and Safari.
- */
-
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
+.hover-bg-wola-blue:hover,
+.hover-bg-wola-blue:focus {
+  background-color: #00b5ef;
 }
 
-/* Grouping content
-   ========================================================================== */
-
-/**
- * 1. Add the correct box sizing in Firefox.
- * 2. Show the overflow in Edge and IE.
- */
-
-hr {
-  box-sizing: content-box; /* 1 */
-  height: 0; /* 1 */
-  overflow: visible; /* 2 */
+.wola-purple {
+  color: #603f99;
+}
+.bg-wola-purple {
+  background-color: #603f99;
+}
+.b--wola-purple {
+  border-color: #603f99;
 }
 
-/**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
- */
-
-pre {
-  font-family: monospace, monospace; /* 1 */
-  font-size: 1em; /* 2 */
+.hover-wola-purple:hover,
+.hover-wola-purple:focus {
+  color: #603f99;
 }
 
-/* Text-level semantics
-   ========================================================================== */
-
-/**
- * Remove the gray background on active links in IE 10.
- */
-
-a {
-  background-color: transparent;
+.hover-bg-wola-purple:hover,
+.hover-bg-wola-purple:focus {
+  background-color: #603f99;
 }
 
-/**
- * 1. Remove the bottom border in Chrome 57-
- * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
- */
-
-abbr[title] {
-  border-bottom: none; /* 1 */
-  text-decoration: underline; /* 2 */
-  text-decoration: underline dotted; /* 2 */
+.wola-green {
+  color: #65bd60;
+}
+.bg-wola-green {
+  background-color: #65bd60;
+}
+.b--wola-green {
+  border-color: #65bd60;
 }
 
-/**
- * Add the correct font weight in Chrome, Edge, and Safari.
- */
-
-b,
-strong {
-  font-weight: bolder;
+.hover-wola-green:hover,
+.hover-wola-green:focus {
+  color: #65bd60;
 }
 
-/**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
- */
-
-code,
-kbd,
-samp {
-  font-family: monospace, monospace; /* 1 */
-  font-size: 1em; /* 2 */
+.hover-bg-wola-green:hover,
+.hover-bg-wola-green:focus {
+  background-color: #65bd60;
 }
 
-/**
- * Add the correct font size in all browsers.
- */
-
-small {
-  font-size: 80%;
+.wola-gray {
+  color: #404041;
+}
+.bg-wola-gray {
+  background-color: #404041;
+}
+.b--wola-gray {
+  border-color: #404041;
 }
 
-/**
- * Prevent `sub` and `sup` elements from affecting the line height in
- * all browsers.
- */
-
-sub,
-sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
+.hover-wola-gray:hover,
+.hover-wola-gray:focus {
+  color: #404041;
 }
 
-sub {
-  bottom: -0.25em;
+.hover-bg-wola-gray:hover,
+.hover-bg-wola-gray:focus {
+  background-color: #404041;
 }
 
-sup {
-  top: -0.5em;
+.wola-warm-gray {
+  color: #d5d0ca;
+}
+.bg-wola-warm-gray {
+  background-color: #d5d0ca;
+}
+.b--wola-warm-gray {
+  border-color: #d5d0ca;
 }
 
-/* Embedded content
-   ========================================================================== */
-
-/**
- * Remove the border on images inside links in IE 10.
- */
-
-img {
-  border-style: none;
+.hover-wola-warm-gray:hover,
+.hover-wola-warm-gray:focus {
+  color: #d5d0ca;
 }
 
-/* Forms
-   ========================================================================== */
-
-/**
- * 1. Change the font styles in all browsers.
- * 2. Remove the margin in Firefox and Safari.
- */
-
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: inherit; /* 1 */
-  font-size: 100%; /* 1 */
-  line-height: 1.15; /* 1 */
-  margin: 0; /* 2 */
+.hover-bg-wola-warm-gray:hover,
+.hover-bg-wola-warm-gray:focus {
+  background-color: #d5d0ca;
 }
 
-/**
- * Show the overflow in IE.
- * 1. Show the overflow in Edge.
- */
-
-button,
-input { /* 1 */
-  overflow: visible;
+.wola-red {
+  color: #da1a32;
+}
+.bg-wola-red {
+  background-color: #da1a32;
+}
+.b--wola-red {
+  border-color: #da1a32;
 }
 
-/**
- * Remove the inheritance of text transform in Edge, Firefox, and IE.
- * 1. Remove the inheritance of text transform in Firefox.
- */
-
-button,
-select { /* 1 */
-  text-transform: none;
+.hover-wola-red:hover,
+.hover-wola-red:focus {
+  color: #da1a32;
 }
 
-/**
- * Correct the inability to style clickable types in iOS and Safari.
- */
-
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
-  -webkit-appearance: button;
+.hover-bg-wola-red:hover,
+.hover-bg-wola-red:focus {
+  background-color: #da1a32;
 }
 
-/**
- * Remove the inner border and padding in Firefox.
- */
-
-button::-moz-focus-inner,
-[type="button"]::-moz-focus-inner,
-[type="reset"]::-moz-focus-inner,
-[type="submit"]::-moz-focus-inner {
-  border-style: none;
-  padding: 0;
+.wola-orange {
+  color: #f26322;
+}
+.bg-wola-orange {
+  background-color: #f26322;
+}
+.b--wola-orange {
+  border-color: #f26322;
 }
 
-/**
- * Restore the focus styles unset by the previous rule.
- */
-
-button:-moz-focusring,
-[type="button"]:-moz-focusring,
-[type="reset"]:-moz-focusring,
-[type="submit"]:-moz-focusring {
-  outline: 1px dotted ButtonText;
+.hover-wola-orange:hover,
+.hover-wola-orange:focus {
+  color: #f26322;
 }
 
-/**
- * Correct the padding in Firefox.
- */
-
-fieldset {
-  padding: 0.35em 0.75em 0.625em;
+.hover-bg-wola-orange:hover,
+.hover-bg-wola-orange:focus {
+  background-color: #f26322;
 }
 
-/**
- * 1. Correct the text wrapping in Edge and IE.
- * 2. Correct the color inheritance from `fieldset` elements in IE.
- * 3. Remove the padding so developers are not caught out when they zero out
- *    `fieldset` elements in all browsers.
- */
-
-legend {
-  box-sizing: border-box; /* 1 */
-  color: inherit; /* 2 */
-  display: table; /* 1 */
-  max-width: 100%; /* 1 */
-  padding: 0; /* 3 */
-  white-space: normal; /* 1 */
+.wola-yellow {
+  color: #f9c606;
+}
+.bg-wola-yellow {
+  background-color: #f9c606;
+}
+.b--wola-yellow {
+  border-color: #f9c606;
 }
 
-/**
- * Add the correct vertical alignment in Chrome, Firefox, and Opera.
- */
-
-progress {
-  vertical-align: baseline;
+.hover-wola-yellow:hover,
+.hover-wola-yellow:focus {
+  color: #f9c606;
 }
 
-/**
- * Remove the default vertical scrollbar in IE 10+.
- */
-
-textarea {
-  overflow: auto;
-}
-
-/**
- * 1. Add the correct box sizing in IE 10.
- * 2. Remove the padding in IE 10.
- */
-
-[type="checkbox"],
-[type="radio"] {
-  box-sizing: border-box; /* 1 */
-  padding: 0; /* 2 */
-}
-
-/**
- * Correct the cursor style of increment and decrement buttons in Chrome.
- */
-
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
-  height: auto;
-}
-
-/**
- * 1. Correct the odd appearance in Chrome and Safari.
- * 2. Correct the outline style in Safari.
- */
-
-[type="search"] {
-  -webkit-appearance: textfield; /* 1 */
-  outline-offset: -2px; /* 2 */
-}
-
-/**
- * Remove the inner padding in Chrome and Safari on macOS.
- */
-
-[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-
-/**
- * 1. Correct the inability to style clickable types in iOS and Safari.
- * 2. Change font properties to `inherit` in Safari.
- */
-
-::-webkit-file-upload-button {
-  -webkit-appearance: button; /* 1 */
-  font: inherit; /* 2 */
-}
-
-/* Interactive
-   ========================================================================== */
-
-/*
- * Add the correct display in Edge, IE 10+, and Firefox.
- */
-
-details {
-  display: block;
-}
-
-/*
- * Add the correct display in all browsers.
- */
-
-summary {
-  display: list-item;
-}
-
-/* Misc
-   ========================================================================== */
-
-/**
- * Add the correct display in IE 10+.
- */
-
-template {
-  display: none;
-}
-
-/**
- * Add the correct display in IE 10.
- */
-
-[hidden] {
-  display: none;
+.hover-bg-wola-yellow:hover,
+.hover-bg-wola-yellow:focus {
+  background-color: #f9c606;
 }
 
 body {
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-	padding: 2rem 3%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  padding: 2rem 3%;
 }
 
 .tooltip {
-	position: absolute;
-	top: 100px;
-	left: 100px;
-	-moz-border-radius:5px;
-	border-radius: 5px;
-	border: 1px solid #979797;
-	background: rgba(255,255,255,0.9);
-	color: black;
-	padding: 10px;
-	width: 300px;
-	font-size: 12px;
-	z-index: 10;
-	box-shadow: 1px 1px 6px rgba(0,0,0,0.3);
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #979797;
+  background: rgba(255, 255, 255, 0.9);
+  color: black;
+  padding: 10px;
+  width: 300px;
+  font-size: 12px;
+  z-index: 10;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
 }
 
 .tooltip .title {
-	font-size: 13px;
+  font-size: 13px;
 }
 
 .tooltip .name {
-	font-weight:bold;
+  font-weight: bold;
 }
 
 .bar-tooltip {
@@ -374,164 +193,164 @@ body {
   padding-left: 1rem 2rem;
   background-color: #fff;
   position: absolute;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .1); 
-  border: 1px solid #DFE3E6;
-  padding: .25rem .5rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid #dfe3e6;
+  padding: 0.25rem 0.5rem;
   pointer-events: none;
   display: none;
 }
-   
+
 .bar-tooltip:after {
   content: '';
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
   position: absolute;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 5px solid #fff;
-  }
-
-  .d3-tip {
-    padding-left: 1rem 2rem;
-    background-color: #fff;
-    position: absolute;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .1); 
-    border: 1px solid #DFE3E6;
-    padding: .25rem .5rem;
-    pointer-events: none;
-  }
-
-  /* Creates a small triangle extender for the tooltip */
-  .d3-tip:after {
-    content: "\25BC";
-    margin: -3px 0 0 0;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    font-size: 10px;
-    width: 100%;
-    position: absolute;
-    pointer-events: none;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    color: #fff;
-  }
-
-.axis {
-	font-size: 14px;
 }
 
-.toolbar-container .toolbar { 
+.d3-tip {
+  padding-left: 1rem 2rem;
+  background-color: #fff;
+  position: absolute;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid #dfe3e6;
+  padding: 0.25rem 0.5rem;
+  pointer-events: none;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  content: '\25BC';
+  margin: -3px 0 0 0;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 10px;
+  width: 100%;
+  position: absolute;
+  pointer-events: none;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  color: #fff;
+}
+
+.axis {
+  font-size: 14px;
+}
+
+.toolbar-container .toolbar {
   width: auto;
   float: left;
 }
 
 .footer {
-	text-align: center;
+  text-align: center;
 }
 
 .toolbar {
   width: 100%;
-	padding: 10px;
+  padding: 10px;
   white-space: nowrap;
   overflow-x: auto;
   display: flex;
 }
 
 .button {
-	color: #999;
-	font-size: 12px;
-	cursor: pointer;
-	float: left;
-	padding: 12px 12px;
-	border-top: solid 1px #CCC;
-	border-bottom: solid 1px #CCC;
-	border-left: solid 1px #CCC;
-	background: #f9f9f9;
-	margin: 0 0;
-	text-decoration: none;
+  color: #999;
+  font-size: 12px;
+  cursor: pointer;
+  float: left;
+  padding: 12px 12px;
+  border-top: solid 1px #ccc;
+  border-bottom: solid 1px #ccc;
+  border-left: solid 1px #ccc;
+  background: #f9f9f9;
+  margin: 0 0;
+  text-decoration: none;
   display: inline-block;
 }
 
 .button.active {
-	color: #000;
-	background: #e9e9e9;
-	border-color: #AAA;
-	box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.2);
+  color: #000;
+  background: #e9e9e9;
+  border-color: #aaa;
+  box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
 
 a.button:first-of-type {
-	border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
 }
 
-a.button:last-of-type { 
-	border-right: solid 1px #CCC;
-	border-radius: 0 4px 4px 0;
- }
+a.button:last-of-type {
+  border-right: solid 1px #ccc;
+  border-radius: 0 4px 4px 0;
+}
 
 .select-style {
-	 display: inline-block;
-    padding: 0;
-    margin-left: 10px;
-    border: 1px solid #ccc;
-    width: 70px;
-    min-width: 70px;
-    border-radius: 4px;
-    overflow: hidden;
-    background-color: #fff;
-    background: #fff;
-    position: relative;
-    /*font-size: 12px;*/
+  display: inline-block;
+  padding: 0;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  width: 70px;
+  min-width: 70px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #fff;
+  background: #fff;
+  position: relative;
+  /*font-size: 12px;*/
 }
 
 .select-style:after {
-    top: 50%;
-    left: 75%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    border-color: rgba(0, 0, 0, 0);
-    border-top-color: #000000;
-    border-width: 5px;
-    margin-top: -2px;
-    z-index: 100;
+  top: 50%;
+  left: 75%;
+  border: solid transparent;
+  content: ' ';
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(0, 0, 0, 0);
+  border-top-color: #000000;
+  border-width: 5px;
+  margin-top: -2px;
+  z-index: 100;
 }
 
 .select-style select {
-    font-size: 12px;
-    padding: 11px 8px;
-    width: 100%;
-    border: none;
-    color: #999;
-    box-shadow: none;
-    background-image: none;
-    -webkit-appearance: none;
-       -moz-appearance: none;
-            appearance: none;
+  font-size: 12px;
+  padding: 11px 8px;
+  width: 100%;
+  border: none;
+  color: #999;
+  box-shadow: none;
+  background-image: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .select-style select:focus {
-    outline: none;
+  outline: none;
 }
 
 td {
-	padding: 2rem;
+  padding: 2rem;
 }
 
 .bx--data-table-v2-container {
-	overflow-y: hidden;
+  overflow-y: hidden;
 }
 
 .pagination li {
   display: inline-block;
-  padding: 0 .25rem;
+  padding: 0 0.25rem;
 }
 
 .bx--pagination .bx--select--inline {
@@ -543,7 +362,8 @@ td {
 }
 
 .tick text {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   fill: #152935;
   stroke: none;
   font-size: 16px;
@@ -553,7 +373,8 @@ td {
   transform: translateY(5px);
 }
 
-.country text, text.total {
+.country text,
+text.total {
   font-size: 20px;
 }
 
@@ -563,7 +384,7 @@ li.disabled {
 
 li.active a {
   text-decoration: none;
-  padding: .25rem;
+  padding: 0.25rem;
   color: #3d70b2;
   font-weight: 600;
 }
@@ -580,4 +401,8 @@ ul.pagination li:not(.active):not(:first-child) a {
 }
 
 ul.pagination li:not(.active):not(:first-child) a::after {
+}
+
+.d3-tip {
+  max-width: 32rem;
 }

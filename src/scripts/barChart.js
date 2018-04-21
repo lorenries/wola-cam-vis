@@ -1,12 +1,11 @@
-import {fillColor} from './fillColor.js'
-import {addCommas} from './addCommas.js';
+import { fillColor } from './fillColor.js';
+import { addCommas } from './addCommas.js';
 import tip from 'd3-tip';
-import pym from 'pym.js';
+import pymChild from './pymChild.js';
 // d3.tip = d3Tip;
 
 function barChart(data) {
-
-  var margin = {top: 5, right: 5, bottom: 50, left: 80};
+  var margin = { top: 20, right: 5, bottom: 65, left: 80 };
   // here, we want the full chart to be 700x200, so we determine
   // the width and height by subtracting the margins from those values
   var fullWidth = 900;
@@ -15,201 +14,327 @@ function barChart(data) {
   var width = fullWidth - margin.right - margin.left;
   var height = fullHeight - margin.top - margin.bottom;
 
-  var svg = d3.select('#bar-chart')
-  .append('svg')
-  .attr('viewBox', '0 0 ' + fullWidth + ' ' + fullHeight)
-  .append('g')
-      // translate it to leave room for the left and top margins
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+  var svg = d3
+    .select('#bar-chart')
+    .append('svg')
+    .attr('viewBox', '0 0 ' + fullWidth + ' ' + fullHeight)
+    .append('g')
+    // translate it to leave room for the left and top margins
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-  var barHolder = svg.append('g')
-    .classed('bar-holder', true);
+  var barHolder = svg.append('g').classed('bar-holder', true);
 
   var chartState = {
-    country: 'all-countries',
-    year: 'all-years'
-  }
+    country: 'all-countries'
+  };
 
-  var years = allYears();
-
-  function allYears() {
-    var set = new Set();
-    data.forEach(function(val) { set.add(val.year )});
-    return Array.from(set).sort(function(a,b) { return a - b });
-  }
-
-  function nestData(country, year) {
-
-    function total(valueArray) {
-
-      if (country === 'all-countries') {
-        country = false;
-      } 
-
-      if (year === 'all-years') {
-        year = false;
+  function nestData(country) {
+    var dataByCountry = data.filter(function(d) {
+      if (country === 'all-countries' || !country) {
+        return true;
+      } else {
+        return d.country === country;
       }
+    });
 
-      return valueArray.filter(function(val) { return country && !year ? val.country === country : year && !country ? +val.year === +year : country && year ? val.country === country && +val.year === +year : true }).reduce(function(acc,cur) { return acc + cur.total }, 0);
-    }
+    var grouped = d3
+      .nest()
+      .key(function(d) {
+        return d.category;
+      })
+      .key(function(d) {
+        return d.year;
+      })
+      .sortKeys(d3.ascending)
+      .rollup(function(v) {
+        return d3.sum(v, function(d) {
+          return d.total;
+        });
+      })
+      .entries(dataByCountry);
 
-    var filtered = d3.nest()
-      .key(function(d) { return d.category; })
-      .entries(data)
-      .map(function(currentValue) {
-        return {
-          key: currentValue.key,
-          total: total(currentValue.values)
-        }
-      });
+    return grouped;
+  }
 
-    return filtered;
-  } 
+  var initializedData = nestData('all-countries');
+
+  var max = d3.max(nestData('all-countries'), function(d) {
+    return d3.max(d.values, function(val) {
+      return val.value;
+    });
+  });
+
+  var categories = initializedData.map(function(val) {
+    return val.key;
+  });
+
+  var years = initializedData.reduce(function(acc, curr) {
+    curr.values.forEach(val => {
+      if (!acc.includes(val.key)) {
+        acc.push(val.key);
+      }
+    });
+    return acc;
+  }, []);
+
+  var xScale = d3
+    .scaleBand()
+    .domain(categories)
+    .range([0, width])
+    .paddingInner(0.25);
+
+  var x0 = d3
+    .scaleBand()
+    .rangeRound([0, width])
+    .paddingInner(0.05);
+
+  var x1 = d3.scaleBand().padding(0.1);
+
+  x0.domain(categories);
+  x1.domain(years).rangeRound([0, x0.bandwidth()]);
+
+  var yScale = d3
+    .scaleLinear()
+    .domain([0, max])
+    .range([height, 0]);
+
+  var formatValue = d3.format('.0s');
+
+  var xAxis = d3.axisBottom(x0);
+
+  var yAxis = d3
+    .axisLeft(yScale)
+    .ticks(4)
+    .tickFormat(function(d) {
+      return '$' + formatValue(d);
+    });
+
+  var xAxisEle = svg
+    .append('g')
+    .classed('x axis', true)
+    .attr('transform', 'translate(0,' + (height + 22) + ')')
+    .call(xAxis);
+
+  var yAxisEle = svg
+    .append('g')
+    .classed('y axis', true)
+    .call(yAxis)
+    .attr('transform', 'translate(-15, 0)');
+
+  var tooltip = tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      return `$${addCommas(d.value)}`;
+    });
+
+  svg.call(tooltip);
 
   function setupButtons() {
-
-      d3.select('#countries-toolbar')
+    d3
+      .select('#countries-toolbar')
       .selectAll('.button')
-      .on('click', function () {
-          d3.event.preventDefault();
-          // Remove active class from all buttons
-          d3.selectAll('#countries-toolbar .button').classed('active', false);
-          // Find the button just clicked
-          var button = d3.select(this);
-          // Set it as the active button
-          button.classed('active', true);
-          // Get the id of the button
-          var buttonId = button.attr('id');
-          chartState.country = buttonId;
-          // Toggle the bubble chart based on
-          // the currently clicked button.
-          updateChart(chartState.country, chartState.year);
-
+      .on('click', function() {
+        d3.event.preventDefault();
+        // Remove active class from all buttons
+        d3.selectAll('#countries-toolbar .button').classed('active', false);
+        // Find the button just clicked
+        var button = d3.select(this);
+        // Set it as the active button
+        button.classed('active', true);
+        // Get the id of the button
+        var buttonId = button.attr('id');
+        chartState.country = buttonId;
+        // Toggle the bubble chart based on
+        // the currently clicked button.
+        updateChart(chartState.country);
       });
-
-      d3.select('#years-toolbar')
-        .selectAll('.year')
-        .data(years)
-        .enter().append('a')
-        .attr('href', '#')
-        .attr('id', function(d) { return d; })
-        .classed('year button', true)
-        .text(function(d) { return d; });
-
-      d3.select('#years-toolbar')
-        .selectAll('.button')
-        .on('click', function () {
-            d3.event.preventDefault();
-            // Remove active class from all buttons
-            d3.selectAll('#years-toolbar .button').classed('active', false);
-            // Find the button just clicked
-            var button = d3.select(this);
-            // Set it as the active button
-            button.classed('active', true);
-            // Get the id of the button
-            var buttonId = button.attr('id');
-            chartState.year = buttonId;
-            // Toggle the bubble chart based on
-            // the currently clicked button.
-            updateChart(chartState.country, chartState.year);
-        });
-
-        updateChart();
   }
 
-  function updateChart(country, year) {
+  function updateChart(country) {
+    var initializedData = nestData(country);
+    var groups = barHolder.selectAll('.group').data(initializedData);
 
-    var initializedData = nestData(country, year);
-    var max = d3.max(nestData("all-countries", "all-years").map(function(val) { return val.total }));
-    var categories = initializedData.map(function(val) { return val.key });
+    var bars = groups
+      .enter()
+      .append('g')
+      .attr('class', 'group')
+      .attr('transform', function(d) {
+        return 'translate(' + x0(d.key) + ',0)';
+      });
 
-    var xScale = d3.scaleBand()
-      .domain(categories)
-      .range([0, width])
-      .paddingInner(0.25);
+    bars
+      .selectAll('rect')
+      .data(function(d) {
+        d.values.forEach(val => (val.category = d.key));
+        return d.values;
+      })
+      .enter()
+      .append('rect')
+      .attr('width', x1.bandwidth())
+      .attr('x', function(d) {
+        return x1(d.key);
+      })
+      .attr('y', function(d) {
+        return yScale(d.value);
+      })
+      .attr('height', function(d) {
+        console.log('enter');
+        return height - yScale(d.value);
+      })
+      .style('fill', function(d) {
+        return fillColor(d.category);
+      })
+      .attr('fill-opacity', 0.2)
+      .attr('stroke', function(d) {
+        return fillColor(d.category);
+      })
+      .attr('stroke-width', 1)
+      .classed('bar', true)
+      .on('mouseover', function(d) {
+        var target = d3.event.target;
+        let color = d3.color(fillColor(d.category)).darker();
+        d3
+          .select(this)
+          .attr('stroke', color)
+          .attr('stroke-width', 2);
+        tooltip.show(d, target);
+      })
+      .on('mouseout', function(d) {
+        d3
+          .select(this)
+          .attr('stroke', fillColor(d.category))
+          .attr('stroke-width', 1);
+        tooltip.hide(d);
+      });
 
-    var bandwidth = xScale.bandwidth();
+    bars
+      .selectAll('text')
+      .data(function(d) {
+        d.values.forEach(val => (val.category = d.key));
+        return d.values;
+      })
+      .enter()
+      .append('text')
+      .attr('y', function(d) {
+        return height + 19;
+      })
+      .attr('x', function(d) {
+        return x1(d.key) + x1.bandwidth() / 2;
+      })
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '14')
+      .text(function(d) {
+        return d.key;
+      });
 
-    var yScale = d3.scaleLinear()
-      .domain([0, max])
-      .range([height, 0]);
+    groups
+      .selectAll('rect')
+      .data(function(d) {
+        d.values.forEach(val => (val.category = d.key));
+        return d.values;
+      })
+      .transition()
+      .attr('y', function(d) {
+        return yScale(d.value);
+      })
+      .attr('height', function(d) {
+        return height - yScale(d.value);
+      });
 
-      var formatValue = d3.format(".0s");
+    // groups
+    //   .selectAll('text')
+    //   .data(function(d) {
+    //     d.values.forEach(val => (val.category = d.key));
+    //     return d.values;
+    //   })
+    //   .transition()
+    //   .attr('y', function(d) {
+    //     return yScale(d.value) + -7;
+    //   })
+    //   .text(function(d) {
+    //     return '$' + addCommas(d.value);
+    //   });
 
-      var xAxis = d3.axisBottom(xScale);
-      var yAxis = d3.axisLeft(yScale).ticks(4).tickFormat(function(d) { return "$" + formatValue(d) });
+    // bars.exit().remove();
 
-      // draw the axes
-      svg.append('g')
-        .classed('x axis', true)
-        .attr('transform', 'translate(0,' + height + ')')
-        .call(xAxis);
+    // .on("mouseover", function(d) {
+    //     d3.select(this).style("fill", d3.rgb(color(d.rate)).darker(2));
+    // })
+    // .on("mouseout", function(d) {
+    //     d3.select(this).style("fill", color(d.rate));
+    // });
 
-      var yAxisEle = svg.append('g')
-        .classed('y axis', true)
-        .call(yAxis)
-        .attr('transform', 'translate(-15, 0)');
+    // group.selectAll("rect")
+    //     .attr("y", function(d) { return yScale(d.value); })
+    //     .attr("height", function(d) { return height - y(d.value); });
 
-    const tooltip = tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) { return `$${addCommas(d.total)}` });
+    //   barHolder
+    //     .selectAll('rect.bar')
+    //     .data(initializedData)
+    //     .transition()
+    //     .duration(250)
+    //     .attr('y', function(d) {
+    //       // the y position is determined by the datum's temp
+    //       // this value is the top edge of the rectangle
+    //       return yScale(d.total);
+    //     })
+    //     .attr('height', function(d) {
+    //       // the bar's height should align it with the base of the chart (y=0)
+    //       return height - yScale(d.total);
+    //     });
 
-    svg.call(tooltip);
+    //   barHolder
+    //     .selectAll('rect.bar')
+    //     .data(initializedData)
+    //     .enter()
+    //     .append('rect')
+    //     .classed('bar', true)
+    //     .attr('x', function(d, i) {
+    //       // the x value is determined using the
+    //       // month of the datum
+    //       return xScale(d.key);
+    //     })
+    //     .attr('width', bandwidth)
+    //     .attr('y', function(d) {
+    //       // the y position is determined by the datum's temp
+    //       // this value is the top edge of the rectangle
+    //       return yScale(d.total);
+    //     })
+    //     .attr('height', function(d) {
+    //       // the bar's height should align it with the base of the chart (y=0)
+    //       return height - yScale(d.total);
+    //     })
+    //     .attr('fill', function(d) {
+    //       return fillColor(d.key);
+    //     })
+    //     .attr('fill-opacity', 0.2)
+    //     .attr('stroke', function(d) {
+    //       return fillColor(d.key);
+    //     })
+    //     .attr('stroke-width', 1)
+    // .on('mouseover', function(d) {
+    //   var target = d3.event.target;
+    //   let color = d3.color(fillColor(d.key)).darker();
+    //   d3
+    //     .select(this)
+    //     .attr('stroke', color)
+    //     .attr('stroke-width', 2);
+    //   tooltip.show(d, target);
+    // })
+    // .on('mouseout', function(d) {
+    //   d3
+    //     .select(this)
+    //     .attr('stroke', fillColor(d.key))
+    //     .attr('stroke-width', 1);
+    //   tooltip.hide(d);
+    // });
 
-    barHolder.selectAll('rect.bar')
-        .data(initializedData)
-        .transition().duration(250)
-        .attr('y', function(d) {
-          // the y position is determined by the datum's temp
-          // this value is the top edge of the rectangle
-          return yScale(d.total);
-        })
-        .attr('height', function(d) {
-          // the bar's height should align it with the base of the chart (y=0)
-          return height - yScale(d.total);
-        });
-
-    barHolder.selectAll('rect.bar')
-        .data(initializedData)
-        .enter().append('rect')
-        .classed('bar', true)
-        .attr('x', function(d, i) {
-          // the x value is determined using the
-          // month of the datum
-          return xScale(d.key);
-        })
-        .attr('width', bandwidth)
-        .attr('y', function(d) {
-          // the y position is determined by the datum's temp
-          // this value is the top edge of the rectangle
-          return yScale(d.total);
-        })
-        .attr('height', function(d) {
-          // the bar's height should align it with the base of the chart (y=0)
-          return height - yScale(d.total);
-        })
-        .attr('fill', function (d) { return fillColor(d.key); })
-        .attr('fill-opacity', 0.2)
-        .attr('stroke', function (d) { return fillColor(d.key); })
-        .attr('stroke-width', 1)
-        .on('mouseover', function(d) {  
-          var target = d3.event.target;
-            let color = d3.color(fillColor(d.key)).darker();
-            d3.select(this)
-              .attr('stroke', color)
-              .attr('stroke-width', 2);
-            tooltip.show(d, target);
-          })
-        .on('mouseout', function(d) {
-          d3.select(this)
-            .attr('stroke', fillColor(d.key))
-            .attr('stroke-width', 1);
-          tooltip.hide(d)
-        });
-
-        // pymChild.sendHeight()
+    //   // pymChild.sendHeight()
   }
 
   setupButtons();
-
+  updateChart('all-countries');
 }
 
 export default barChart;

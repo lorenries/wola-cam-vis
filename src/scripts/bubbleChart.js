@@ -1,9 +1,10 @@
-import {fillColor} from './fillColor.js';
-import {addCommas} from './addCommas.js';
+import { fillColor } from './fillColor.js';
+import { addCommas } from './addCommas.js';
 import tip from 'd3-tip';
 import pym from 'pym.js';
 // d3.tip = d3Tip;
-import {legendColor} from 'd3-svg-legend';
+import { legendColor } from 'd3-svg-legend';
+import pymChild from './pymChild.js';
 
 function bubbleChart() {
   // Constants for sizing
@@ -11,11 +12,16 @@ function bubbleChart() {
   var height = 700;
 
   // tooltip for mouseover functionality
-  const tooltip = tip().attr('class', 'd3-tip').offset([-10, 0]).html(function(d) { return showDetail(d) })
+  const tooltip = tip()
+    .attr('class', 'd3-tip bubble-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      return showDetail(d);
+    });
 
   // Locations to move bubbles towards, depending
   // on which view mode is selected.
-  var center = { x: width / 2, y: height / 2 - 100 };
+  var center = { x: width / 2, y: height / 2 + 200 };
 
   var countryCenters = {
     Guatemala: { x: width / 6, y: height / 2 },
@@ -27,34 +33,49 @@ function bubbleChart() {
   var forceStrength = 0.03;
 
   // These will be set in create_nodes and create_vis
-  var svg = d3.select('#vis')
-  .append('svg')
-  .attr('viewBox', '0 0 ' + width + ' ' + height);
+  var svg = d3
+    .select('#vis')
+    .append('svg')
+    .attr('viewBox', '0 0 ' + width + ' ' + height);
   var bubbles = null;
   var nodes = [];
 
   var filterState = {
     display: null,
-    year: null,
-  }
+    year: null
+  };
 
-  var maxRadius = height*0.06;
+  var maxRadius = height * 0.06;
   var maxDatum;
   var scale;
 
   // Here we create a force layout and
   // @v4 We create a force simulation now and
   //  add forces to it.
-  var simulation = d3.forceSimulation()
-  .velocityDecay(0.6)
-  .force('x', d3.forceX(nodeCountryPos).strength(0.4))
-  .force('y-center', d3.forceY(center.y).strength(0.1))
-  .force('y', d3.forceY(function(d) {
-    var yScale = d3.scaleLinear().domain([1, 5]).range([200,height-200]);
-    return yScale(d.group)
-  }).strength(0.8))
-  .force("collide", d3.forceCollide(function(d) { return d.radius + 2 }))
-  .on('tick', ticked);
+  var simulation = d3
+    .forceSimulation()
+    .velocityDecay(0.6)
+    .force('x', d3.forceX(nodeCountryPos).strength(0.4))
+    .force('y-center', d3.forceY(center.y).strength(0.1))
+    .force(
+      'y',
+      d3
+        .forceY(function(d) {
+          var yScale = d3
+            .scaleLinear()
+            .domain([1, 5])
+            .range([300, height - 100]);
+          return yScale(d.group);
+        })
+        .strength(0.8)
+    )
+    .force(
+      'collide',
+      d3.forceCollide(function(d) {
+        return d.radius + 2;
+      })
+    )
+    .on('tick', ticked);
 
   // @v4 Force starts up automatically,
   //  which we don't want as there aren't any nodes yet.
@@ -72,16 +93,19 @@ function bubbleChart() {
    * This function returns the new node array, with a node in that
    * array for each element in the rawData input.
    */
-   function createNodes(rawData) {
+  function createNodes(rawData) {
     // Use the max total_amount in the data as the max in the scale's domain
     // note we have to ensure the total_amount is a number.
-    var maxAmount = d3.max(rawData, function (d) { return +d.total; });
+    var maxAmount = d3.max(rawData, function(d) {
+      return +d.total;
+    });
     maxDatum = maxAmount;
     // Sizes bubbles based on area.
     // @v4: new flattened scale names.
-    var radiusScale = d3.scaleSqrt()
-    .range([4, maxRadius])
-    .domain([0, maxAmount]);
+    var radiusScale = d3
+      .scaleSqrt()
+      .range([4, maxRadius])
+      .domain([0, maxAmount]);
 
     // Use map() to convert raw data into node data.
     // Checkout http://learnjsdata.com/ for more on
@@ -98,13 +122,16 @@ function bubbleChart() {
         year: d.year,
         group: +d.cluster_code,
         x: width / 2,
-        y: height / 2
+        y: height / 2,
+        description: d.description
       };
       return d;
     });
 
     // sort them to prevent occlusion of smaller nodes.
-    myNodes.sort(function (a, b) { return b.value - a.value; });
+    myNodes.sort(function(a, b) {
+      return b.value - a.value;
+    });
 
     scale = radiusScale;
 
@@ -124,7 +151,7 @@ function bubbleChart() {
    * rawData is expected to be an array of data objects as provided by
    * a d3 loading function like d3.csv.
    */
-   var chart = function chart(rawData) {
+  var chart = function chart(rawData) {
     // convert raw data into nodes data
     nodes = createNodes(rawData);
     showCountryTitles();
@@ -140,142 +167,183 @@ function bubbleChart() {
    *
    * displayName is expected to be a string and either 'year' or 'all'.
    */
-   chart.updateData = function(displayFilter, yearFilter) {
+  chart.updateData = function(displayFilter, yearFilter) {
+    // Bind nodes data to what will become DOM elements to represent them.
 
-     // Bind nodes data to what will become DOM elements to represent them.
-
-     if (displayFilter && displayFilter !== 'all') {
-      var filtered = nodes.filter(function(val) { return val.category === displayFilter && +val.year === +yearFilter});
-      simulation.force("y", d3.forceY(center.y).strength(0.05));
+    if (displayFilter && displayFilter !== 'all') {
+      var filtered = nodes.filter(function(val) {
+        return val.category === displayFilter && +val.year === +yearFilter;
+      });
+      simulation.force('y', d3.forceY(center.y).strength(0.05));
     } else {
-      var filtered = nodes.filter(function(val) { return +val.year === +yearFilter});
-      simulation.force('y', d3.forceY(function(d) {
-        var yScale = d3.scaleLinear().domain([1, 5]).range([250,height-250]);
-        return yScale(d.group)
-      }).strength(0.4));
+      var filtered = nodes.filter(function(val) {
+        return +val.year === +yearFilter;
+      });
+      simulation.force(
+        'y',
+        d3
+          .forceY(function(d) {
+            var yScale = d3
+              .scaleLinear()
+              .domain([1, 5])
+              .range([300, height - 150]);
+            return yScale(d.group);
+          })
+          .strength(0.4)
+      );
     }
 
-    bubbles = svg.selectAll('.bubble')
-    .data(filtered || nodes, function(d) { return d.id });
+    bubbles = svg.selectAll('.bubble').data(filtered || nodes, function(d) {
+      return d.id;
+    });
 
     bubbles.exit().remove();
 
-    svg.call(tooltip)
+    svg.call(tooltip);
 
-     // Create new circle elements each with class `bubble`.
-     // There will be one circle.bubble for each object in the nodes array.
-     // Initially, their radius (r attribute) will be 0.
-     // @v4 Selections are immutable, so lets capture the
-     //  enter selection to apply our transtition to below.
+    // Create new circle elements each with class `bubble`.
+    // There will be one circle.bubble for each object in the nodes array.
+    // Initially, their radius (r attribute) will be 0.
+    // @v4 Selections are immutable, so lets capture the
+    //  enter selection to apply our transtition to below.
 
-     var tooltipOpen = false;
+    var tooltipOpen = false;
 
-     d3.select("body").on("click", function() {
+    d3.select('body').on('click', function() {
+      var inside = d3.selectAll('.selected, .d3-tip, .d3-tip *');
 
-        var inside = d3.selectAll('.selected, .d3-tip, .d3-tip *');
+      var outside = inside
+        .filter(function() {
+          return this === d3.event.target;
+        })
+        .empty();
 
-        var outside = inside.filter( function() { return this === d3.event.target } ).empty();
+      if (outside && tooltipOpen) {
+        d3.select('.selected').attr('stroke', function(d) {
+          return fillColor(d.category);
+        });
+        d3.select('.selected').attr('stroke-width', 1);
+        d3.select('.selected').classed('selected', false);
+        tooltip.hide(d3.select('.selected'));
+        tooltipOpen = false;
+      }
+    });
 
-        if (outside && tooltipOpen) {
-          d3.select('.selected').attr('stroke', function(d) {
-            return fillColor(d.category)
-          });
-          d3.select('.selected').attr('stroke-width', 1);
-          d3.select('.selected').classed('selected', false)
-          tooltip.hide(d3.select('.selected'));
-          tooltipOpen = false;
-        }
-     });
-
-     var bubblesE = bubbles.enter().append('circle')
-     .classed('bubble', true)
-     .attr('r', 0)
-     .attr('fill', function (d) { return fillColor(d.category); })
-     .attr('fill-opacity', 0.2)
-     .attr('stroke', function (d) { return fillColor(d.category); })
-     .attr('stroke-width', 1)
-     .on('mouseover', (d) => { 
+    var bubblesE = bubbles
+      .enter()
+      .append('circle')
+      .classed('bubble', true)
+      .attr('r', 0)
+      .attr('fill', function(d) {
+        return fillColor(d.category);
+      })
+      .attr('fill-opacity', 0.2)
+      .attr('stroke', function(d) {
+        return fillColor(d.category);
+      })
+      .attr('stroke-width', 1)
+      .on('mouseover', d => {
         if (!tooltipOpen) {
-          d3.select(d3.event.target).attr('stroke', d3.rgb(fillColor(d.category)).darker());
+          d3
+            .select(d3.event.target)
+            .attr('stroke', d3.rgb(fillColor(d.category)).darker());
           d3.select(d3.event.target).attr('stroke-width', 1.5);
           tooltip.show(d, d3.event.target);
         }
       })
-     .on('mouseout', (d) => {
-       if (!tooltipOpen) {
+      .on('mouseout', d => {
+        if (!tooltipOpen) {
           d3.select(d3.event.target).attr('stroke', fillColor(d.category));
           d3.select(d3.event.target).attr('stroke-width', 1);
           tooltip.hide(d, d3.event.target);
         }
-     })
-     .on('click', (d) => {
+      })
+      .on('click', d => {
         var target = d3.select(d3.event.target);
+        var eventTarget = d3.event.target;
         target.attr('stroke', d3.rgb(fillColor(d.category)).darker());
         target.attr('stroke-width', 1.5);
         target.classed('selected', true);
         tooltipOpen = true;
         tooltip.show(d, d3.event.target);
-     });
+        var tooltipEl = document.querySelector('.bubble-tip');
+        var tooltipInitialHeight = tooltipEl.offsetHeight;
+        document
+          .querySelector('.js-read-more')
+          .addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.js-description').innerHTML = d.description;
+            var tooltipAfterHeight = tooltipEl.offsetHeight;
+            var offset = tooltipAfterHeight - tooltipInitialHeight;
+            tooltipEl.style.top = tooltipEl.offsetTop - offset + 'px';
+          });
+      });
 
-     // @v4 Merge the original empty selection and the enter selection
-     bubbles = bubbles.merge(bubblesE);
+    // @v4 Merge the original empty selection and the enter selection
+    bubbles = bubbles.merge(bubblesE);
 
-     // Fancy transition to make bubbles appear, ending with the
-     // correct radius
-     bubbles.transition()
-     .duration(2000)
-     .attr('r', function (d) { return d.radius; });
-       // .style('opacity', 1)
+    // Fancy transition to make bubbles appear, ending with the
+    // correct radius
+    bubbles
+      .transition()
+      .duration(2000)
+      .attr('r', function(d) {
+        return d.radius;
+      });
+    // .style('opacity', 1)
 
-     // Set the simulation's nodes to our newly created nodes array.
-     // @v4 Once we set the nodes, the simulation will start running automatically!
-     simulation.nodes(filtered || nodes);
+    // Set the simulation's nodes to our newly created nodes array.
+    // @v4 Once we set the nodes, the simulation will start running automatically!
+    simulation.nodes(filtered || nodes);
 
-     // Set initial layout to single group.
-     showCountryTotals(filtered || nodes);
-     simulation.alpha(1).restart();
+    // Set initial layout to single group.
+    showCountryTotals(filtered || nodes);
+    simulation.alpha(1).restart();
 
-     var l = circleLegend(svg)
-         .domain([0, maxDatum]) // the dataset min and max
-         .range([4, maxRadius]) // the circle area/size mapping
-         .values( [3000000, 30000000] ) // pass in values (e.g. min,mean/median & max)
-         // optional
-         .width(300) // it centers to this
-         .height(1200) // it centers to this
-         .suffix('') // ability to pass in a suffix e.g. '%'
-         .circleColor( '#888') // stroke of the circles
-         .textPadding(25) // left padding on text
-         .textColor( '#454545') // the fill for text
+    var l = circleLegend(svg)
+      .domain([0, maxDatum]) // the dataset min and max
+      .range([4, maxRadius]) // the circle area/size mapping
+      .values([3000000, 30000000]) // pass in values (e.g. min,mean/median & max)
+      // optional
+      .width(300) // it centers to this
+      .height(125) // it centers to this
+      .suffix('') // ability to pass in a suffix e.g. '%'
+      .circleColor('#888') // stroke of the circles
+      .textPadding(25) // left padding on text
+      .textColor('#454545'); // the fill for text
 
-     // and render it
-     l.render()
+    // and render it
+    l.render();
 
-     svg.append("g")
-       .attr("class", "legendOrdinal")
-       .attr("transform", "translate(440,590)");
+    svg
+      .append('g')
+      .attr('class', 'legendOrdinal')
+      .attr('transform', 'translate(440,50)');
 
-     var legendOrdinal = legendColor()
-       //d3 symbol creates a path-string, for example
-       //"M0,-8.059274488676564L9.306048591020996,
-       //8.059274488676564 -9.306048591020996,8.059274488676564Z"
-       .shapePadding(160)
-       .shapeWidth(45)
-       .shapeHeight(20)
-       .labelOffset(15)
-       .orient('horizontal')
-       // .labelWrap(40)
-       //use cellFilter to hide the "e" cell
-       .scale(fillColor);
+    var legendOrdinal = legendColor()
+      //d3 symbol creates a path-string, for example
+      //"M0,-8.059274488676564L9.306048591020996,
+      //8.059274488676564 -9.306048591020996,8.059274488676564Z"
+      .shapePadding(160)
+      .shapeWidth(45)
+      .shapeHeight(20)
+      .labelOffset(15)
+      .orient('horizontal')
+      // .labelWrap(40)
+      //use cellFilter to hide the "e" cell
+      .scale(fillColor);
 
-     svg.select(".legendOrdinal")
-       .call(legendOrdinal);
+    svg.select('.legendOrdinal').call(legendOrdinal);
 
-     svg.selectAll(".legendOrdinal .swatch")
-        .style('fill-opacity', 0.2)
-        .style('stroke', function(d) { return fillColor(d) })
+    svg
+      .selectAll('.legendOrdinal .swatch')
+      .style('fill-opacity', 0.2)
+      .style('stroke', function(d) {
+        return fillColor(d);
+      });
 
-     // pymChild.sendHeight()
-   };
+    pymChild.sendHeight();
+  };
 
   /*
    * Callback function that is called after every tick of the
@@ -284,27 +352,32 @@ function bubbleChart() {
    * based on the current x and y values of their bound node data.
    * These x and y values are modified by the force simulation.
    */
-   function ticked() {
+  function ticked() {
     bubbles
-    .attr('cx', function (d) { return d.x; })
-    .attr('cy', function (d) { return d.y; });
+      .attr('cx', function(d) {
+        return d.x;
+      })
+      .attr('cy', function(d) {
+        return d.y;
+      });
   }
 
   /*
    * Provides a x value for each node to be used with the split by year
    * x force.
    */
-   function nodeCountryPos(d) {
+  function nodeCountryPos(d) {
     return countryCenters[d.country].x;
   }
 
   /*
    * Sets up the layout buttons to allow for toggling between view modes.
    */
-   function displayFilter() {
-    d3.select('#bubble-toolbar')
-    .selectAll('.button')
-    .on('click', function () {
+  function displayFilter() {
+    d3
+      .select('#bubble-toolbar')
+      .selectAll('.button')
+      .on('click', function() {
         d3.event.preventDefault();
         // Remove active class from all buttons
         d3.selectAll('#bubble-toolbar .button').classed('active', false);
@@ -324,50 +397,66 @@ function bubbleChart() {
         chart.updateData(filterState.display, filterState.year);
       });
 
-    filterState.display = d3.select('#bubble-toolbar').select('.active').attr('id');
+    filterState.display = d3
+      .select('#bubble-toolbar')
+      .select('.active')
+      .attr('id');
   }
 
   function yearFilter() {
-
     var yearsSet = new Set();
-    nodes.forEach(function(val) { yearsSet.add(val.year) })
-    var yearsArr = Array.from(yearsSet).sort(function(a,b) {return b-a;});
-    
-    var select = d3.select('#year')
-    .on('change', function() { 
-      filterState.year = this.value;
-      chart.updateData(filterState.display, filterState.year) 
-    })
-    .selectAll('option')
-    .data(yearsArr)
-    .enter()
-    .append('option')
-    .property('value', function(d) { return d; })
-    .text(function(d) { return d; });
+    nodes.forEach(function(val) {
+      yearsSet.add(val.year);
+    });
+    var yearsArr = Array.from(yearsSet).sort(function(a, b) {
+      return b - a;
+    });
+
+    var select = d3
+      .select('#year')
+      .on('change', function() {
+        filterState.year = this.value;
+        chart.updateData(filterState.display, filterState.year);
+      })
+      .selectAll('option')
+      .data(yearsArr)
+      .enter()
+      .append('option')
+      .property('value', function(d) {
+        return d;
+      })
+      .text(function(d) {
+        return d;
+      });
 
     filterState.year = document.querySelector('#year').value;
-
   }
 
   /*
    * Shows Year title displays.
    */
-   function showCountryTitles() {
+  function showCountryTitles() {
     // Another way to do this would be to create
     // the year texts once and then just hide them.
     // var total = nodes.reduce(function(acc, cur) {  })
     var countryData = d3.keys(countryCenters);
 
-    var countries = svg.selectAll('.country')
-    .data(countryData);
+    var countries = svg.selectAll('.country').data(countryData);
 
-    countries.enter().append('g')
-    .attr('class', 'country')
-    .append('text')
-    .attr('text-anchor', 'middle')
-    .attr('x', function (d) { return countryCenters[d].x; })
-    .attr('y', 50)
-    .text(function (d) { if (d === 'ElSalvador') return 'El Salvador'; else return d });
+    countries
+      .enter()
+      .append('g')
+      .attr('class', 'country')
+      .append('text')
+      .attr('text-anchor', 'middle')
+      .attr('x', function(d) {
+        return countryCenters[d].x;
+      })
+      .attr('y', 170)
+      .text(function(d) {
+        if (d === 'ElSalvador') return 'El Salvador';
+        else return d;
+      });
   }
 
   function showCountryTotals(inputNodes) {
@@ -377,131 +466,159 @@ function bubbleChart() {
     var countryData = d3.keys(countryCenters);
 
     function countryTotal(country) {
-      return inputNodes.filter(function(val) { return val.country === country }).reduce(function(acc, cur) { return acc + cur.value; }, 0);
+      return inputNodes
+        .filter(function(val) {
+          return val.country === country;
+        })
+        .reduce(function(acc, cur) {
+          return acc + cur.value;
+        }, 0);
     }
 
-    var totals = svg.selectAll('.total')
-    .data(countryData)
-    .text(function (d) { return '$' + addCommas(countryTotal(d).toString()); });
+    var totals = svg
+      .selectAll('.total')
+      .data(countryData)
+      .text(function(d) {
+        return '$' + addCommas(countryTotal(d).toString());
+      });
 
     totals.exit().remove();
 
-    totals.enter().append('text')
-    .attr('class', 'total')
-    .attr('x', function (d) { return countryCenters[d].x; })
-    .attr('y', 75)
-    .attr('text-anchor', 'middle')
-    .text(function (d) { return '$' + addCommas(countryTotal(d).toString()); })
-    .merge(totals);
+    totals
+      .enter()
+      .append('text')
+      .attr('class', 'total')
+      .attr('x', function(d) {
+        return countryCenters[d].x;
+      })
+      .attr('y', 195)
+      .attr('text-anchor', 'middle')
+      .text(function(d) {
+        return '$' + addCommas(countryTotal(d).toString());
+      })
+      .merge(totals);
   }
-
 
   /*
    * Function called on mouseover to display the
    * details of a bubble in the tooltip.
    */
-   function showDetail(d) {
-
+  function showDetail(d) {
     var content = `
       <div class="pa1 lh-title">
-        <div class=""><span class="name b">Program: </span><span class="value">${d.name}</span></div>
-        <div class=""><span class="name b">Total: </span><span class="value">$${addCommas((d.value))}</span></div>
-        <div class=""><span class="name b">Year: </span><span class="value">${d.year}</span></div>
+        <div class=""><span class="name b">Program: </span><span class="value">${
+          d.name
+        }</span></div>
+        <div class=""><span class="name b">Total: </span><span class="value">$${addCommas(
+          d.value
+        )}</span></div>
+        <div class="pb1"><span class="name b">Year: </span><span class="value">${
+          d.year
+        }</span></div>
+        <div class="pt2 mt2 bt b--light-gray overflow-scroll" style="max-height: 8rem;"><span class="name b f6">Description: </span><span class="value f6 js-description">${d.description.substring(
+          0,
+          120
+        )}...</span><a href="#" class="link f7 mv1 dim underline-hover wola-blue pl1 js-read-more">Read More</a></div>
       </div>
-    `
+    `;
 
     return content;
   }
 
   function circleLegend(selection) {
+    let instance = {};
 
-      let instance = {}
+    // set some defaults
+    const api = {
+      domain: [0, 100], // the values min and max
+      range: [0, 80], // the circle area/size mapping
+      values: [8, 34, 89], // values for circles
+      width: 500,
+      height: 500,
+      suffix: '', // ability to pass in a suffix
+      circleColor: '#888',
+      textPadding: 40,
+      textColor: '#454545'
+    };
 
-      // set some defaults 
-      const api = {
-          domain: [0, 100], // the values min and max
-          range: [0, 80], // the circle area/size mapping
-          values: [8, 34, 89], // values for circles
-          width: 500,
-          height: 500,
-          suffix:'', // ability to pass in a suffix
-          circleColor: '#888',
-          textPadding: 40,
-          textColor: '#454545'
-      }
-      
-      const sqrtScale = scale;
+    const sqrtScale = scale;
 
-      instance.render = function () {
+    instance.render = function() {
+      const s = selection
+        .append('g')
+        .attr('class', 'legend-wrap')
+        // push down to radius of largest circle
+        .attr(
+          'transform',
+          'translate(0,' + sqrtScale(d3.max(api.values)) + ')'
+        );
 
-          const s = selection.append('g')
-              .attr('class', 'legend-wrap')
-              // push down to radius of largest circle
-              .attr('transform', 'translate(0,' + sqrtScale(d3.max(api.values)) + ')')
+      // append the values for circles
+      s
+        .append('g')
+        .attr('class', 'values-wrap')
+        .selectAll('circle')
+        .data(api.values)
+        .enter()
+        .append('circle')
+        .attr('class', d => 'values values-' + d)
+        .attr('r', d => sqrtScale(d))
+        .attr('cx', api.width / 2)
+        .attr('cy', d => api.height / 2 - sqrtScale(d))
+        .style('fill', 'none')
+        .style('stroke', api.circleColor)
+        .style('opacity', 0.5);
 
-          // append the values for circles
-          s.append('g')
-              .attr('class', 'values-wrap')
-              .selectAll('circle')
-              .data(api.values)
-              .enter().append('circle')
-              .attr('class', d => 'values values-' + d)
-              .attr('r', d => sqrtScale(d))
-              .attr('cx', api.width/2)
-              .attr('cy', d => api.height/2 - sqrtScale(d))
-              .style('fill', 'none') 
-              .style('stroke', api.circleColor) 
-              .style('opacity', 0.5) 
+      // append some lines based on values
+      s
+        .append('g')
+        .attr('class', 'values-line-wrap')
+        .selectAll('.values-labels')
+        .data(api.values)
+        .enter()
+        .append('line')
+        .attr('x1', d => api.width / 2 + sqrtScale(d))
+        .attr('x2', api.width / 2 + sqrtScale(api.domain[1]) + 20)
+        .attr('y1', d => api.height / 2 - sqrtScale(d))
+        .attr('y2', d => api.height / 2 - sqrtScale(d))
+        .style('stroke', api.textColor)
+        .style('stroke-dasharray', '2,2');
 
-          // append some lines based on values
-          s.append('g')
-              .attr('class', 'values-line-wrap')
-              .selectAll('.values-labels')
-              .data(api.values)
-              .enter().append('line')
-              .attr('x1', d => api.width/2 + sqrtScale(d))
-              .attr('x2', api.width/2 + sqrtScale(api.domain[1]) + 20)
-              .attr('y1', d => api.height/2 - sqrtScale(d))
-              .attr('y2', d => api.height/2 - sqrtScale(d))
-              .style('stroke', api.textColor)
-              .style('stroke-dasharray', ('2,2'))
-
-          // append some labels from values
-          s.append('g')
-              .attr('class', 'values-labels-wrap')
-              .selectAll('.values-labels')
-              .data(api.values)
-              .enter().append('text')
-              .attr('x', api.width/2 + sqrtScale(api.domain[1]) + api.textPadding)
-              .attr('y', d => (api.height/2 - sqrtScale(d)) + 5)
-              .attr('shape-rendering', 'crispEdges')
-              .style('text-anchor', 'start')
-              .style('fill', api.textColor)
-              .text(d => d3.format("$.0s")(d) + api.suffix )
-
-          return instance;
-      }
-
-      for (let key in api) {
-          instance[key] = getSet(key, instance).bind(api)
-      }
+      // append some labels from values
+      s
+        .append('g')
+        .attr('class', 'values-labels-wrap')
+        .selectAll('.values-labels')
+        .data(api.values)
+        .enter()
+        .append('text')
+        .attr('x', api.width / 2 + sqrtScale(api.domain[1]) + api.textPadding)
+        .attr('y', d => api.height / 2 - sqrtScale(d) + 5)
+        .attr('shape-rendering', 'crispEdges')
+        .style('text-anchor', 'start')
+        .style('fill', api.textColor)
+        .text(d => d3.format('$.0s')(d) + api.suffix);
 
       return instance;
+    };
 
-      // https://gist.github.com/gneatgeek/5892586
-      function getSet(option, component) {
-          return function (_) {
-              if (! arguments.length) {
-                  return this[option];
-              }
-          this[option] = _;
-          return component;
+    for (let key in api) {
+      instance[key] = getSet(key, instance).bind(api);
+    }
+
+    return instance;
+
+    // https://gist.github.com/gneatgeek/5892586
+    function getSet(option, component) {
+      return function(_) {
+        if (!arguments.length) {
+          return this[option];
         }
-      }
-      
-  };
-
-
+        this[option] = _;
+        return component;
+      };
+    }
+  }
 
   // return the chart function from closure.
   return chart;

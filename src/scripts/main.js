@@ -7,16 +7,14 @@
  */
 import DataTableV2 from 'carbon-components/es/components/data-table-v2/data-table-v2';
 import Pagination from 'carbon-components/es/components/pagination/pagination';
-import {addCommas} from './addCommas.js';
+import { addCommas } from './addCommas.js';
 import barChart from './barChart.js';
 import bubbleChart from './bubbleChart.js';
 import List from 'list.js';
-import pym from 'pym.js';
+import pymChild from './pymChild.js';
 
 function pivotTable(data) {
-
   function rowTemplate(d) {
-
     var country;
 
     if (d.country === 'ElSalvador') {
@@ -39,8 +37,9 @@ function pivotTable(data) {
       <td class="year">${d.year}</td>
       <td class="category">${d.category}</td>
       <td class="country">${country}</td>
-      <td class="account">${ d.account ? d.account : '' }</td>
-      <td class="source">${ d.source ? d.source : '' }</td>
+      <td class="account">${d.account ? d.account : ''}</td>
+      <td class="description dn">${d.description}</td>
+      <td class="source">${d.source ? d.source : ''}</td>
     </tr>
     <tr class="bx--expandable-row-v2 bx--expandable-row--hidden-v2" data-child-row>
       <td colspan="8">
@@ -53,24 +52,36 @@ function pivotTable(data) {
     `;
   }
 
-  d3.select('#table-body').selectAll('.temp-wrapper')
+  d3
+    .select('#table-body')
+    .selectAll('.temp-wrapper')
     .data(data)
-    .enter().append('tbody')
+    .enter()
+    .append('tbody')
     .classed('temp-wrapper', true)
     .html(rowTemplate);
 
   document.querySelectorAll('tbody.temp-wrapper').forEach(function(val) {
     while (val.firstChild) {
-        val.parentNode.insertBefore(val.firstChild, val);
+      val.parentNode.insertBefore(val.firstChild, val);
     }
     val.parentNode.removeChild(val);
-  })
+  });
 
   const tableElement = document.querySelector('[data-table-v2]');
-  const tableInstance = DataTableV2.create(tableElement)
+  const tableInstance = DataTableV2.create(tableElement);
 
   var options = {
-    valueNames: [ "program", { name: 'total', attr: 'data-total'}, "year", "category", "country", "account", "source" ],
+    valueNames: [
+      'program',
+      { name: 'total', attr: 'data-total' },
+      'year',
+      'category',
+      'country',
+      'account',
+      'source',
+      'description'
+    ],
     page: 10
   };
   var list = new List('sort', options);
@@ -82,8 +93,10 @@ function pivotTable(data) {
   var forwardPaginationButton = document.querySelector('[data-page-forward]');
   var backwardPaginationButton = document.querySelector('[data-page-backward]');
   var paginationSelect = document.querySelector('[data-page-number-input]');
-  var displayedPageNumber = document.querySelector('[data-displayed-page-number]');
-  var totalPages = document.querySelector('[data-total-pages]')
+  var displayedPageNumber = document.querySelector(
+    '[data-displayed-page-number]'
+  );
+  var totalPages = document.querySelector('[data-total-pages]');
 
   // update pagination function
   // number of pages = number of items / items per page
@@ -114,7 +127,7 @@ function pivotTable(data) {
 
   forwardPaginationButton.addEventListener('click', function(e) {
     if (paginationSelect.value != paginationSelect.length) {
-      list.i = (paginationSelect.value * list.page) + 1;
+      list.i = paginationSelect.value * list.page + 1;
       paginationSelect.selectedIndex++;
       list.show(list.i, list.page);
     }
@@ -129,7 +142,7 @@ function pivotTable(data) {
     if (paginationSelect.value != 1) {
       list.i = list.i - list.page;
       paginationSelect.selectedIndex--;
-      list.show(list.i, list.page); 
+      list.show(list.i, list.page);
     }
   });
 
@@ -138,7 +151,7 @@ function pivotTable(data) {
   // table.show(list.i, list.page)
 
   paginationSelect.addEventListener('change', function(e) {
-    list.i = ((e.target.value - 1) * list.page) + 1;
+    list.i = (e.target.value - 1) * list.page + 1;
     list.show(list.i, list.page);
   });
 
@@ -153,15 +166,15 @@ function pivotTable(data) {
     updatePagination();
     updatePaginationRange();
     tableInstance.refreshRows();
-    // pymChild.sendHeight()
+    pymChild.sendHeight();
   });
 
-  selectItemsPerPage.addEventListener('change', (e) => {
+  selectItemsPerPage.addEventListener('change', e => {
     var numItems = e.target.value;
     list.page = numItems;
     updateRange();
     list.update();
-  })
+  });
 
   function updatePaginationRange() {
     var numberOfPages = Math.ceil(list.matchingItems.length / list.page);
@@ -172,21 +185,22 @@ function pivotTable(data) {
 
   function updateRange() {
     var numberOfItems = list.page;
-    var displayedItemRange = document.querySelector('[data-displayed-item-range]')
+    var displayedItemRange = document.querySelector(
+      '[data-displayed-item-range]'
+    );
     var range = +list.i + +numberOfItems - 1;
     if (range > list.matchingItems.length) {
       range = list.matchingItems.length;
     }
     displayedItemRange.innerHTML = `${list.i}-${range}`;
   }
-
 }
 
 /*
  * Function called once data is loaded from CSV.
  * Calls bubble chart function to display inside #vis div.
  */
- function display(error, data) {
+function display(error, data) {
   if (error) {
     console.log(error);
   }
@@ -196,10 +210,11 @@ function pivotTable(data) {
   bubbleChart(data);
   barChart(data);
   pivotTable(data);
-  var pymChild = new pym.Child();
+  pymChild.sendHeight();
 }
 
-var dataUrl = 'https://s3.amazonaws.com/wola-cam//19dwn5dI7bjj0hS4SNY-uE-lfPq0NrbRMZh5p2ofU4Zo';
+var dataUrl =
+  'https://s3.amazonaws.com/wola-cam//19dwn5dI7bjj0hS4SNY-uE-lfPq0NrbRMZh5p2ofU4Zo';
 
 var localJson = '../data/data.json';
 // Load the data.

@@ -1,6 +1,6 @@
 export { select, selectAll, selection, event, style, selector, create } from 'd3-selection';
 export { scaleLinear, scaleOrdinal, scaleImplicit, scaleSqrt, scaleBand } from 'd3-scale';
-export { max } from 'd3-array';
+export { max, sum } from 'd3-array';
 export { map, nest, keys, values, entries } from 'd3-collection';
 export { axisBottom, axisLeft } from 'd3-axis';
 export { format } from 'd3-format';
