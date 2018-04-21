@@ -22,6 +22,7 @@ function bubbleChart() {
   // Locations to move bubbles towards, depending
   // on which view mode is selected.
   var center = { x: width / 2, y: height / 2 + 200 };
+  var trueCenterY = height / 2;
 
   var countryCenters = {
     Guatemala: { x: width / 6, y: height / 2 },
@@ -174,7 +175,7 @@ function bubbleChart() {
       var filtered = nodes.filter(function(val) {
         return val.category === displayFilter && +val.year === +yearFilter;
       });
-      simulation.force('y', d3.forceY(center.y).strength(0.05));
+      simulation.force('y', d3.forceY(trueCenterY).strength(0.25));
     } else {
       var filtered = nodes.filter(function(val) {
         return +val.year === +yearFilter;
