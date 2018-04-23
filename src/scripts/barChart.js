@@ -98,7 +98,7 @@ function barChart(data) {
     .domain([0, max])
     .range([height, 0]);
 
-  var formatValue = d3.format('.0s');
+  var formatValue = d3.format('.2s');
 
   var xAxis = d3.axisBottom(x0);
 

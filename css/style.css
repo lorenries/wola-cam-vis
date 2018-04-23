@@ -263,7 +263,7 @@ body {
 
 .button {
   color: #999;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   float: left;
   padding: 12px 12px;
@@ -304,7 +304,6 @@ a.button:last-of-type {
   background-color: #fff;
   background: #fff;
   position: relative;
-  /*font-size: 12px;*/
 }
 
 .select-style:after {
@@ -324,7 +323,7 @@ a.button:last-of-type {
 }
 
 .select-style select {
-  font-size: 12px;
+  font-size: 14px;
   padding: 11px 8px;
   width: 100%;
   border: none;

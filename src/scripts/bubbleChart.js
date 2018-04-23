@@ -158,6 +158,7 @@ function bubbleChart() {
     showCountryTitles();
     yearFilter();
     displayFilter();
+    createLegend();
     chart.updateData(filterState.display, filterState.year);
   };
 
@@ -277,6 +278,7 @@ function bubbleChart() {
             var tooltipAfterHeight = tooltipEl.offsetHeight;
             var offset = tooltipAfterHeight - tooltipInitialHeight;
             tooltipEl.style.top = tooltipEl.offsetTop - offset + 'px';
+            this.classList.add('dn');
           });
       });
 
@@ -301,6 +303,10 @@ function bubbleChart() {
     showCountryTotals(filtered || nodes);
     simulation.alpha(1).restart();
 
+    pymChild.sendHeight();
+  };
+
+  function createLegend() {
     var l = circleLegend(svg)
       .domain([0, maxDatum]) // the dataset min and max
       .range([4, maxRadius]) // the circle area/size mapping
@@ -342,9 +348,7 @@ function bubbleChart() {
       .style('stroke', function(d) {
         return fillColor(d);
       });
-
-    pymChild.sendHeight();
-  };
+  }
 
   /*
    * Callback function that is called after every tick of the
