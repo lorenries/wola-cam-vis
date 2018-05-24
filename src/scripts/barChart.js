@@ -187,7 +187,6 @@ function barChart(data) {
         return yScale(d.value);
       })
       .attr('height', function(d) {
-        console.log('enter');
         return height - yScale(d.value);
       })
       .style('fill', function(d) {
@@ -249,96 +248,6 @@ function barChart(data) {
       .attr('height', function(d) {
         return height - yScale(d.value);
       });
-
-    // groups
-    //   .selectAll('text')
-    //   .data(function(d) {
-    //     d.values.forEach(val => (val.category = d.key));
-    //     return d.values;
-    //   })
-    //   .transition()
-    //   .attr('y', function(d) {
-    //     return yScale(d.value) + -7;
-    //   })
-    //   .text(function(d) {
-    //     return '$' + addCommas(d.value);
-    //   });
-
-    // bars.exit().remove();
-
-    // .on("mouseover", function(d) {
-    //     d3.select(this).style("fill", d3.rgb(color(d.rate)).darker(2));
-    // })
-    // .on("mouseout", function(d) {
-    //     d3.select(this).style("fill", color(d.rate));
-    // });
-
-    // group.selectAll("rect")
-    //     .attr("y", function(d) { return yScale(d.value); })
-    //     .attr("height", function(d) { return height - y(d.value); });
-
-    //   barHolder
-    //     .selectAll('rect.bar')
-    //     .data(initializedData)
-    //     .transition()
-    //     .duration(250)
-    //     .attr('y', function(d) {
-    //       // the y position is determined by the datum's temp
-    //       // this value is the top edge of the rectangle
-    //       return yScale(d.total);
-    //     })
-    //     .attr('height', function(d) {
-    //       // the bar's height should align it with the base of the chart (y=0)
-    //       return height - yScale(d.total);
-    //     });
-
-    //   barHolder
-    //     .selectAll('rect.bar')
-    //     .data(initializedData)
-    //     .enter()
-    //     .append('rect')
-    //     .classed('bar', true)
-    //     .attr('x', function(d, i) {
-    //       // the x value is determined using the
-    //       // month of the datum
-    //       return xScale(d.key);
-    //     })
-    //     .attr('width', bandwidth)
-    //     .attr('y', function(d) {
-    //       // the y position is determined by the datum's temp
-    //       // this value is the top edge of the rectangle
-    //       return yScale(d.total);
-    //     })
-    //     .attr('height', function(d) {
-    //       // the bar's height should align it with the base of the chart (y=0)
-    //       return height - yScale(d.total);
-    //     })
-    //     .attr('fill', function(d) {
-    //       return fillColor(d.key);
-    //     })
-    //     .attr('fill-opacity', 0.2)
-    //     .attr('stroke', function(d) {
-    //       return fillColor(d.key);
-    //     })
-    //     .attr('stroke-width', 1)
-    // .on('mouseover', function(d) {
-    //   var target = d3.event.target;
-    //   let color = d3.color(fillColor(d.key)).darker();
-    //   d3
-    //     .select(this)
-    //     .attr('stroke', color)
-    //     .attr('stroke-width', 2);
-    //   tooltip.show(d, target);
-    // })
-    // .on('mouseout', function(d) {
-    //   d3
-    //     .select(this)
-    //     .attr('stroke', fillColor(d.key))
-    //     .attr('stroke-width', 1);
-    //   tooltip.hide(d);
-    // });
-
-    //   // pymChild.sendHeight()
   }
 
   setupButtons();
