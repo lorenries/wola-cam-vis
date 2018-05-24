@@ -11,19 +11,19 @@ const production = !process.env.ROLLUP_WATCH;
 
 export default [
 	{
-		input: "src/scripts/index.js",
+		input: 'src/scripts/index.js',
 		output: {
-			format: "umd",
-			name: "d3",
-			file: "src/lib/d3.rollup.js",
+			format: 'umd',
+			name: 'd3',
+			file: 'src/lib/d3.rollup.js',
 			globals: {
 				d3: 'd3'
 			}
 		},
 		plugins: [
 			babel({
-			      exclude: 'node_modules/**' // only transpile our source code
-			  }),
+				exclude: 'node_modules/**' // only transpile our source code
+			}),
 			resolve({
 				jsnext: true,
 				module: true
@@ -40,18 +40,15 @@ export default [
 		},
 		plugins: [
 			babel({
-			      exclude: 'node_modules/**' // only transpile our source code
-			  }),
+				exclude: 'node_modules/**' // only transpile our source code
+			}),
 			resolve({
 				jsnext: true
-				}),
-			legacy({
-				'node_modules/d3-tip/index.js': 'd3.tip'
 			}),
 			commonjs(),
 			production && uglify() // minify, but only in production
-		],
-		context: 'window',
-		external: ['d3']
+		]
+		// context: 'window',
+		// external: ['d3']
 	}
 ];
