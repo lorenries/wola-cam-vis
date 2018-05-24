@@ -2,10 +2,9 @@ import { fillColor } from './fillColor.js';
 import { addCommas } from './addCommas.js';
 import tip from 'd3-tip';
 import pymChild from './pymChild.js';
-// d3.tip = d3Tip;
 
 function barChart(data) {
-  var margin = { top: 20, right: 5, bottom: 65, left: 80 };
+  var margin = { top: 20, right: 5, bottom: 65, left: 110 };
   // here, we want the full chart to be 700x200, so we determine
   // the width and height by subtracting the margins from those values
   var fullWidth = 900;
@@ -120,6 +119,15 @@ function barChart(data) {
     .classed('y axis', true)
     .call(yAxis)
     .attr('transform', 'translate(-15, 0)');
+
+  svg
+    .append('text')
+    .attr('transform', 'rotate(-90)')
+    .attr('y', -90)
+    .attr('x', -height / 2)
+    .attr('font-size', '14')
+    .style('text-anchor', 'middle')
+    .text('Amount in US Dollars');
 
   var tooltip = tip()
     .attr('class', 'd3-tip')
