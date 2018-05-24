@@ -27,7 +27,7 @@ function pivotTable(data) {
     <tr class="bx--parent-row-v2" data-parent-row>
       <td class="bx--table-expand-v2" data-event="expand">
         <button class="bx--table-expand-v2__button">
-          <svg class="bx--table-expand-v2__svg" width="8" height="12" viewBox="0 0 8 12" fill-rule="evenodd">
+          <svg class="bx--table-expand-v2__svg" width="7" height="12" viewBox="0 0 8 12" fill-rule="evenodd">
             <path d="M0 10.6L4.7 6 0 1.4 1.4 0l6.1 6-6.1 6z"></path>
           </svg>
         </button>
@@ -39,7 +39,6 @@ function pivotTable(data) {
       <td class="country">${country}</td>
       <td class="account">${d.account ? d.account : ''}</td>
       <td class="description dn">${d.description}</td>
-      <td class="source">${d.source ? d.source : ''}</td>
     </tr>
     <tr class="bx--expandable-row-v2 bx--expandable-row--hidden-v2" data-child-row>
       <td colspan="8">
@@ -79,7 +78,6 @@ function pivotTable(data) {
       'category',
       'country',
       'account',
-      'source',
       'description'
     ],
     page: 10
@@ -87,6 +85,9 @@ function pivotTable(data) {
   var list = new List('sort', options);
 
   tableInstance.refreshRows();
+  tableElement.addEventListener('data-table-v2-aftertoggleexpand', function(e) {
+    pymChild.sendHeight();
+  });
 
   var numberOfItems = document.querySelector('[data-total-items]');
   var selectItemsPerPage = document.querySelector('[data-items-per-page]');
@@ -196,26 +197,50 @@ function pivotTable(data) {
   }
 }
 
+function displayContent(content) {
+  for (var prop in content) {
+    content[prop] = content[prop].replace(/\n/g, '<br />');
+  }
+
+  var headline1 = document.querySelector('.headline1');
+  var description1 = document.querySelector('.description1');
+  var headline2 = document.querySelector('.headline2');
+  var description2 = document.querySelector('.description2');
+
+  headline1.innerHTML = content.headline1;
+  description1.innerHTML = content.description1;
+  headline2.innerHTML = content.headline2;
+  description2.innerHTML = content.description2;
+}
+
 /*
  * Function called once data is loaded from CSV.
  * Calls bubble chart function to display inside #vis div.
  */
-function display(error, data) {
+function display(error, content) {
   if (error) {
     console.log(error);
   }
 
-  // Create a SVG element inside the provided selector
-  // with desired size.
-  bubbleChart(data);
-  barChart(data);
-  pivotTable(data);
-  pymChild.sendHeight();
+  displayContent(content);
+
+  d3.json(dataUrl, function(error, data) {
+    if (error) {
+      console.log(error);
+    }
+    bubbleChart(data);
+    barChart(data);
+    pivotTable(data);
+    pymChild.sendHeight();
+  });
 }
 
 var dataUrl =
   'https://s3.amazonaws.com/wola-cam//19dwn5dI7bjj0hS4SNY-uE-lfPq0NrbRMZh5p2ofU4Zo';
 
+var contentUrl =
+  'https://wola-cam.s3.amazonaws.com//1ok_GgQXsQgkaTcOQ-80hSJ8Vpc-s0d817M2B3IWW_20';
+
 var localJson = '../data/data.json';
 // Load the data.
-d3.json(dataUrl, display);
+d3.json(contentUrl, display);
