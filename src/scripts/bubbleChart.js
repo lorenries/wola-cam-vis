@@ -131,6 +131,7 @@ function bubbleChart() {
         category: d.category,
         year: d.year,
         group: +d.cluster_code,
+        account: d.account,
         x: width / 2,
         y: height / 2,
         description: d.description
@@ -522,6 +523,8 @@ function bubbleChart() {
    * details of a bubble in the tooltip.
    */
   function showDetail(d) {
+    console.log(d);
+
     var content = `
       <div class="pa1 lh-title">
         <div class=""><span class="name b">Program: </span><span class="value">${
@@ -551,9 +554,13 @@ function bubbleChart() {
       d.year
     }</span></div>
         <div class="pv2 f3">$${addCommas(d.value)}</div>
-        <div class="pb1 mid-gray f7"><span class="name">Funding Source: </span><span class="value">${
-          d.source
-        }</span></div>
+        ${
+          d.account
+            ? `<div class="pb1 mid-gray f7"><span class="name">Funding Source: </span><span class="value">${
+                d.account
+              }</span></div>`
+            : ''
+        }
         <div class="pt2 mt2 bt b--light-gray overflow-scroll" style="max-height: 8rem;"><span class="name b f6">Description: </span><span class="value f6 js-description">${d.description.substring(
           0,
           120
