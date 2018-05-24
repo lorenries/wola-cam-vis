@@ -14,9 +14,18 @@ function bubbleChart() {
   // tooltip for mouseover functionality
   const tooltip = tip()
     .attr('class', 'd3-tip bubble-tip')
-    .offset([-10, 0])
+    .offset(function(d) {
+      if (d.country === 'Guatemala') return [0, 10];
+      if (d.country === 'Honduras') return [-10, 0];
+      if (d.country === 'ElSalvador') return [0, -10];
+    })
     .html(function(d) {
       return showDetail(d);
+    })
+    .direction(function(d) {
+      if (d.country === 'Guatemala') return 'e';
+      if (d.country === 'Honduras') return 'n';
+      if (d.country === 'ElSalvador') return 'w';
     });
 
   // Locations to move bubbles towards, depending
@@ -277,7 +286,11 @@ function bubbleChart() {
             document.querySelector('.js-description').innerHTML = d.description;
             var tooltipAfterHeight = tooltipEl.offsetHeight;
             var offset = tooltipAfterHeight - tooltipInitialHeight;
-            tooltipEl.style.top = tooltipEl.offsetTop - offset + 'px';
+            if (d.country !== 'Honduras') {
+              tooltipEl.style.top = tooltipEl.offsetTop - offset / 2 + 'px';
+            } else {
+              tooltipEl.style.top = tooltipEl.offsetTop - offset + 'px';
+            }
             this.classList.add('dn');
           });
       });
@@ -520,6 +533,9 @@ function bubbleChart() {
         <div class="pb1"><span class="name b">Year: </span><span class="value">${
           d.year
         }</span></div>
+        <div class="pb1"><span class="name b">Funding Source: </span><span class="value">${
+          d.source
+        }</span></div>
         <div class="pt2 mt2 bt b--light-gray overflow-scroll" style="max-height: 8rem;"><span class="name b f6">Description: </span><span class="value f6 js-description">${d.description.substring(
           0,
           120
@@ -527,7 +543,25 @@ function bubbleChart() {
       </div>
     `;
 
-    return content;
+    var content2 = `
+      <div class="pa1 lh-title">
+        <div class="ttu mid-gray f6"><span class="pr1">${
+          d.name
+        }</span><span class="ph1">&#8226;</span><span class="pl1">${
+      d.year
+    }</span></div>
+        <div class="pv2 f3">$${addCommas(d.value)}</div>
+        <div class="pb1 mid-gray f7"><span class="name">Funding Source: </span><span class="value">${
+          d.source
+        }</span></div>
+        <div class="pt2 mt2 bt b--light-gray overflow-scroll" style="max-height: 8rem;"><span class="name b f6">Description: </span><span class="value f6 js-description">${d.description.substring(
+          0,
+          120
+        )}...</span><a href="#" class="link f7 mv1 dim underline-hover wola-blue pl1 js-read-more">Read More</a></div>
+      </div>
+    `;
+
+    return content2;
   }
 
   function circleLegend(selection) {
