@@ -42,11 +42,11 @@ function pivotTable(data) {
       <td class="account">${d.account ? d.account : ''}</td>
     </tr>
     <tr class="bx--expandable-row-v2 bx--expandable-row--hidden-v2" data-child-row>
-      <td colspan="8">
-        <h4>
+      <td colspan="8" class="pt2">
+        <h4 class="f6">
           <strong>Description</strong>
         </h4>
-        <p>${d.description}</p>
+        <p class="lh-title f6">${d.description}</p>
       </td>
     </tr>
     `;
