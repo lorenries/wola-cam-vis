@@ -2,5 +2,5 @@ node_modules
 .DS_Store
 src/main.min.css
 src/main.min.js
-src/main.min.map
+src/main.min.js.map
 package-lock.json
