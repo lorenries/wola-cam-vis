@@ -523,8 +523,6 @@ function bubbleChart() {
    * details of a bubble in the tooltip.
    */
   function showDetail(d) {
-    console.log(d);
-
     var content = `
       <div class="pa1 lh-title">
         <div class=""><span class="name b">Program: </span><span class="value">${
@@ -548,7 +546,7 @@ function bubbleChart() {
 
     var content2 = `
       <div class="pa1 lh-title">
-        <div class="ttu mid-gray f6"><span class="pr1">${
+        <div class="ttu mid-gray f6 fw6"><span class="pr1">${
           d.name
         }</span><span class="ph1">&#8226;</span><span class="pl1">${
       d.year
@@ -556,7 +554,7 @@ function bubbleChart() {
         <div class="pv2 f3">$${addCommas(d.value)}</div>
         ${
           d.account
-            ? `<div class="pb1 mid-gray f7"><span class="name">Funding Source: </span><span class="value">${
+            ? `<div class="pb1 mid-gray f6"><span class="name">Funding Source: </span><span class="value">${
                 d.account
               }</span></div>`
             : ''
