@@ -4,6 +4,8 @@ import commonjs from 'rollup-plugin-commonjs';
 import globals from 'rollup-plugin-node-globals';
 import babel from 'rollup-plugin-babel';
 import legacy from 'rollup-plugin-legacy';
+import postcss from 'rollup-plugin-postcss';
+import autoprefixer from 'autoprefixer';
 
 // `npm run build` -> `production` is true
 // `npm run dev` -> `production` is false
@@ -39,6 +41,12 @@ export default [
 			sourcemap: true
 		},
 		plugins: [
+			postcss({
+				modules: false,
+				extract: true,
+				minimize: true,
+				plugins: [autoprefixer()]
+			}),
 			babel({
 				exclude: 'node_modules/**' // only transpile our source code
 			}),
@@ -48,7 +56,5 @@ export default [
 			commonjs(),
 			production && uglify() // minify, but only in production
 		]
-		// context: 'window',
-		// external: ['d3']
 	}
 ];
