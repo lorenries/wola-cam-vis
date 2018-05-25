@@ -12,6 +12,7 @@ import barChart from './barChart.js';
 import bubbleChart from './bubbleChart.js';
 import List from 'list.js';
 import pymChild from './pymChild.js';
+import style from '../css/style.scss';
 
 function pivotTable(data) {
   function rowTemplate(d) {
@@ -37,8 +38,8 @@ function pivotTable(data) {
       <td class="year">${d.year}</td>
       <td class="category">${d.category}</td>
       <td class="country">${country}</td>
-      <td class="account">${d.account ? d.account : ''}</td>
       <td class="description dn">${d.description}</td>
+      <td class="account">${d.account ? d.account : ''}</td>
     </tr>
     <tr class="bx--expandable-row-v2 bx--expandable-row--hidden-v2" data-child-row>
       <td colspan="8">
