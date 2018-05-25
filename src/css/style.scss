@@ -1,17 +1,5 @@
-$css--font-face: false;
-$css--helpers: false;
-$css--body: false;
-$css--use-experimental-grid: false;
-$css--use-experimental-grid-fallback: false;
-$css--use-layer: false;
-$css--reset: false;
-$css--typography: false;
-$css--plex: false;
-
-@import '~tachyons/css/tachyons.min.css';
-@import '~carbon-components/scss/components/pagination/pagination';
-@import '~carbon-components/scss/components/data-table-v2/data-table-v2';
-@import '~carbon-components/scss/components/search/search';
+@import './tachyons';
+@import './carbon';
 @import './wola-colors';
 
 body {
