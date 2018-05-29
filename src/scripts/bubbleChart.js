@@ -1,10 +1,10 @@
-import { fillColor } from './fillColor.js';
+import { fillColor, colors } from './fillColor.js';
 import { addCommas } from './addCommas.js';
-import tip from 'd3-tip';
-import pym from 'pym.js';
-// d3.tip = d3Tip;
 import { legendColor } from 'd3-svg-legend';
+import tip from 'd3-tip';
 import pymChild from './pymChild.js';
+import translations from './translations';
+import { english, spanish } from './language'
 
 function bubbleChart() {
   // Constants for sizing
@@ -58,6 +58,9 @@ function bubbleChart() {
   var maxRadius = height * 0.06;
   var maxDatum;
   var scale;
+
+  var categoriesSet = new Set();
+  var yearsSet = new Set();
 
   // Here we create a force layout and
   // @v4 We create a force simulation now and
@@ -136,6 +139,8 @@ function bubbleChart() {
         y: height / 2,
         description: d.description
       };
+      categoriesSet.add(d.category);
+      yearsSet.add(d.year);
       return d;
     });
 
@@ -321,6 +326,10 @@ function bubbleChart() {
   };
 
   function createLegend() {
+    var scale = d3.scaleOrdinal()
+      .domain(Array.from(categoriesSet))
+      .range(colors);
+
     var l = circleLegend(svg)
       .domain([0, maxDatum]) // the dataset min and max
       .range([4, maxRadius]) // the circle area/size mapping
@@ -350,9 +359,9 @@ function bubbleChart() {
       .shapeHeight(20)
       .labelOffset(15)
       .orient('horizontal')
-      // .labelWrap(40)
+      .labelWrap(260)
       //use cellFilter to hide the "e" cell
-      .scale(fillColor);
+      .scale(scale);
 
     svg.select('.legendOrdinal').call(legendOrdinal);
 
@@ -393,40 +402,34 @@ function bubbleChart() {
    * Sets up the layout buttons to allow for toggling between view modes.
    */
   function displayFilter() {
+    var categoriesArr = Array.from(categoriesSet);
+    console.log(categoriesArr)
     d3
-      .select('#bubble-toolbar')
-      .selectAll('.button')
-      .on('click', function() {
+      .select('#category')
+      .on('change', function() {
         d3.event.preventDefault();
-        // Remove active class from all buttons
-        d3.selectAll('#bubble-toolbar .button').classed('active', false);
-        // Find the button just clicked
-        var button = d3.select(this);
 
-        // Set it as the active button
-        button.classed('active', true);
-
-        // Get the id of the button
-        var buttonId = button.attr('id');
-
-        filterState.display = buttonId;
+        filterState.display = this.value;
 
         // Toggle the bubble chart based on
         // the currently clicked button.
         chart.updateData(filterState.display, filterState.year);
+      })
+      .selectAll('option.category')
+      .data(categoriesArr)
+      .enter()
+      .append('option')
+      .property('value', function(d) {
+        return d;
+      })
+      .text(function(d) {
+        return d;
       });
-
-    filterState.display = d3
-      .select('#bubble-toolbar')
-      .select('.active')
-      .attr('id');
+    filterState.display = d3.select('#category').value;
   }
 
   function yearFilter() {
-    var yearsSet = new Set();
-    nodes.forEach(function(val) {
-      yearsSet.add(val.year);
-    });
+
     var yearsArr = Array.from(yearsSet).sort(function(a, b) {
       return b - a;
     });
@@ -523,28 +526,28 @@ function bubbleChart() {
    * details of a bubble in the tooltip.
    */
   function showDetail(d) {
-    var content = `
-      <div class="pa1 lh-title">
-        <div class=""><span class="name b">Program: </span><span class="value">${
-          d.name
-        }</span></div>
-        <div class=""><span class="name b">Total: </span><span class="value">$${addCommas(
-          d.value
-        )}</span></div>
-        <div class="pb1"><span class="name b">Year: </span><span class="value">${
-          d.year
-        }</span></div>
-        <div class="pb1"><span class="name b">Funding Source: </span><span class="value">${
-          d.source
-        }</span></div>
-        <div class="pt2 mt2 bt b--light-gray overflow-scroll" style="max-height: 8rem;"><span class="name b f6">Description: </span><span class="value f6 js-description">${d.description.substring(
-          0,
-          120
-        )}...</span><a href="#" class="link f7 mv1 dim underline-hover wola-blue pl1 js-read-more">Read More</a></div>
-      </div>
-    `;
+    // var content = `
+    //   <div class="pa1 lh-title">
+    //     <div class=""><span class="name b">Program: </span><span class="value">${
+    //       d.name
+    //     }</span></div>
+    //     <div class=""><span class="name b">Total: </span><span class="value">$${addCommas(
+    //       d.value
+    //     )}</span></div>
+    //     <div class="pb1"><span class="name b">Year: </span><span class="value">${
+    //       d.year
+    //     }</span></div>
+    //     <div class="pb1"><span class="name b">Funding Source: </span><span class="value">${
+    //       d.source
+    //     }</span></div>
+    //     <div class="pt2 mt2 bt b--light-gray overflow-scroll" style="max-height: 8rem;"><span class="name b f6">Description: </span><span class="value f6 js-description">${d.description.substring(
+    //       0,
+    //       120
+    //     )}...</span><a href="#" class="link f7 mv1 dim underline-hover wola-blue pl1 js-read-more">Read More</a></div>
+    //   </div>
+    // `;
 
-    var content2 = `
+    var content = `
       <div class="pa1 lh-title">
         <div class="ttu mid-gray f6 fw6"><span class="pr1">${
           d.name
@@ -552,21 +555,15 @@ function bubbleChart() {
       d.year
     }</span></div>
         <div class="pv2 f3">$${addCommas(d.value)}</div>
-        ${
-          d.account
-            ? `<div class="pb1 mid-gray f6"><span class="name">Funding Source: </span><span class="value">${
-                d.account
-              }</span></div>`
-            : ''
-        }
-        <div class="pt2 mt2 bt b--light-gray overflow-scroll" style="max-height: 8rem;"><span class="name b f6">Description: </span><span class="value f6 js-description">${d.description.substring(
+        ${ d.account ? `<div class="pb1 mid-gray f6"><span class="name">${ english ? translations.fundingSource.eng : translations.fundingSource.esp }: </span><span class="value">${ d.account }</span></div>` : '' }
+        <div class="pt2 mt2 bt b--light-gray overflow-scroll" style="max-height: 8rem;"><span class="name b f6">${ english ? translations.description.eng : translations.description.esp }: </span><span class="value f6 js-description">${d.description.substring(
           0,
           120
-        )}...</span><a href="#" class="link f7 mv1 dim underline-hover wola-blue pl1 js-read-more">Read More</a></div>
+        )}...</span><a href="#" class="link f7 mv1 dim underline-hover wola-blue pl1 js-read-more">${ english ? translations.readMore.eng : translations.readMore.esp }</a></div>
       </div>
     `;
 
-    return content2;
+    return content;
   }
 
   function circleLegend(selection) {
