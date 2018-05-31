@@ -1,10 +1,10 @@
-import { fillColor, colors } from './fillColor.js';
+import { colors } from './colors.js';
 import { addCommas } from './addCommas.js';
 import { legendColor } from 'd3-svg-legend';
 import tip from 'd3-tip';
 import pymChild from './pymChild.js';
 import translations from './translations';
-import { english, spanish } from './language'
+import { english, spanish } from './language';
 
 function bubbleChart() {
   // Constants for sizing
@@ -58,9 +58,12 @@ function bubbleChart() {
   var maxRadius = height * 0.06;
   var maxDatum;
   var scale;
+  var fillColor;
 
   var categoriesSet = new Set();
   var yearsSet = new Set();
+  var categories;
+  var years;
 
   // Here we create a force layout and
   // @v4 We create a force simulation now and
@@ -75,10 +78,10 @@ function bubbleChart() {
       d3
         .forceY(function(d) {
           var yScale = d3
-            .scaleLinear()
-            .domain([1, 5])
+            .scalePoint()
+            .domain(categories)
             .range([300, height - 100]);
-          return yScale(d.group);
+          return yScale(d.category);
         })
         .strength(0.8)
     )
@@ -133,7 +136,6 @@ function bubbleChart() {
         country: d.country,
         category: d.category,
         year: d.year,
-        group: +d.cluster_code,
         account: d.account,
         x: width / 2,
         y: height / 2,
@@ -148,6 +150,18 @@ function bubbleChart() {
     myNodes.sort(function(a, b) {
       return b.value - a.value;
     });
+
+    categories = Array.from(categoriesSet).sort(function(a, b) {
+      return d3.ascending(a, b);
+    });
+    years = Array.from(yearsSet).sort(function(a, b) {
+      return b - a;
+    });
+
+    fillColor = d3
+      .scaleOrdinal()
+      .domain(categories)
+      .range(colors);
 
     scale = radiusScale;
 
@@ -201,10 +215,10 @@ function bubbleChart() {
         d3
           .forceY(function(d) {
             var yScale = d3
-              .scaleLinear()
-              .domain([1, 5])
-              .range([300, height - 150]);
-            return yScale(d.group);
+              .scalePoint()
+              .domain(categories)
+              .rangeRound([300, height - 150]);
+            return yScale(d.category);
           })
           .strength(0.4)
       );
@@ -326,8 +340,9 @@ function bubbleChart() {
   };
 
   function createLegend() {
-    var scale = d3.scaleOrdinal()
-      .domain(Array.from(categoriesSet))
+    var scale = d3
+      .scaleOrdinal()
+      .domain(categories)
       .range(colors);
 
     var l = circleLegend(svg)
@@ -402,8 +417,6 @@ function bubbleChart() {
    * Sets up the layout buttons to allow for toggling between view modes.
    */
   function displayFilter() {
-    var categoriesArr = Array.from(categoriesSet);
-    console.log(categoriesArr)
     d3
       .select('#category')
       .on('change', function() {
@@ -416,7 +429,7 @@ function bubbleChart() {
         chart.updateData(filterState.display, filterState.year);
       })
       .selectAll('option.category')
-      .data(categoriesArr)
+      .data(categories)
       .enter()
       .append('option')
       .property('value', function(d) {
@@ -429,11 +442,6 @@ function bubbleChart() {
   }
 
   function yearFilter() {
-
-    var yearsArr = Array.from(yearsSet).sort(function(a, b) {
-      return b - a;
-    });
-
     var select = d3
       .select('#year')
       .on('change', function() {
@@ -441,7 +449,7 @@ function bubbleChart() {
         chart.updateData(filterState.display, filterState.year);
       })
       .selectAll('option')
-      .data(yearsArr)
+      .data(years)
       .enter()
       .append('option')
       .property('value', function(d) {
@@ -526,27 +534,6 @@ function bubbleChart() {
    * details of a bubble in the tooltip.
    */
   function showDetail(d) {
-    // var content = `
-    //   <div class="pa1 lh-title">
-    //     <div class=""><span class="name b">Program: </span><span class="value">${
-    //       d.name
-    //     }</span></div>
-    //     <div class=""><span class="name b">Total: </span><span class="value">$${addCommas(
-    //       d.value
-    //     )}</span></div>
-    //     <div class="pb1"><span class="name b">Year: </span><span class="value">${
-    //       d.year
-    //     }</span></div>
-    //     <div class="pb1"><span class="name b">Funding Source: </span><span class="value">${
-    //       d.source
-    //     }</span></div>
-    //     <div class="pt2 mt2 bt b--light-gray overflow-scroll" style="max-height: 8rem;"><span class="name b f6">Description: </span><span class="value f6 js-description">${d.description.substring(
-    //       0,
-    //       120
-    //     )}...</span><a href="#" class="link f7 mv1 dim underline-hover wola-blue pl1 js-read-more">Read More</a></div>
-    //   </div>
-    // `;
-
     var content = `
       <div class="pa1 lh-title">
         <div class="ttu mid-gray f6 fw6"><span class="pr1">${
@@ -555,11 +542,28 @@ function bubbleChart() {
       d.year
     }</span></div>
         <div class="pv2 f3">$${addCommas(d.value)}</div>
-        ${ d.account ? `<div class="pb1 mid-gray f6"><span class="name">${ english ? translations.fundingSource.eng : translations.fundingSource.esp }: </span><span class="value">${ d.account }</span></div>` : '' }
-        <div class="pt2 mt2 bt b--light-gray overflow-scroll" style="max-height: 8rem;"><span class="name b f6">${ english ? translations.description.eng : translations.description.esp }: </span><span class="value f6 js-description">${d.description.substring(
-          0,
-          120
-        )}...</span><a href="#" class="link f7 mv1 dim underline-hover wola-blue pl1 js-read-more">${ english ? translations.readMore.eng : translations.readMore.esp }</a></div>
+        ${
+          d.account
+            ? `<div class="pb1 mid-gray f6"><span class="name">${
+                english
+                  ? translations.fundingSource.eng
+                  : translations.fundingSource.esp
+              }: </span><span class="value">${d.account}</span></div>`
+            : ''
+        }
+        ${
+          d.description
+            ? `<div class="pt2 mt2 bt b--light-gray overflow-scroll" style="max-height: 8rem;"><span class="name b f6">${
+                english
+                  ? translations.description.eng
+                  : translations.description.esp
+              }: </span><span class="value f6 js-description">${
+                d.description ? d.description.substring(0, 120) : ''
+              }...</span><a href="#" class="link f7 mv1 dim underline-hover wola-blue pl1 js-read-more">${
+                english ? translations.readMore.eng : translations.readMore.esp
+              }</a></div>`
+            : ''
+        }
       </div>
     `;
 
