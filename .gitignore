@@ -1,5 +1,6 @@
 node_modules
 .DS_Store
+src/lib/d3.rollup.js
 src/main.min.css
 src/main.min.js
 src/main.min.js.map
