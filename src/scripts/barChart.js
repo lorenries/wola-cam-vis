@@ -1,4 +1,4 @@
-import { fillColor } from './fillColor.js';
+import { colors } from './colors.js';
 import { addCommas } from './addCommas.js';
 import tip from 'd3-tip';
 import pymChild from './pymChild.js';
@@ -6,7 +6,7 @@ import { english, spanish } from './language';
 import translations from './translations';
 
 function barChart(data) {
-  var margin = { top: 20, right: 5, bottom: 85, left: 110 };
+  var margin = { top: 20, right: 5, bottom: 89, left: 110 };
   // here, we want the full chart to be 700x200, so we determine
   // the width and height by subtracting the margins from those values
   var fullWidth = 900;
@@ -65,9 +65,13 @@ function barChart(data) {
     });
   });
 
-  var categories = initializedData.map(function(val) {
-    return val.key;
-  });
+  var categories = initializedData
+    .map(function(val) {
+      return val.key;
+    })
+    .sort(function(a, b) {
+      return d3.ascending(a, b);
+    });
 
   var years = initializedData.reduce(function(acc, curr) {
     curr.values.forEach(val => {
@@ -77,6 +81,11 @@ function barChart(data) {
     });
     return acc;
   }, []);
+
+  var fillColor = d3
+    .scaleOrdinal()
+    .domain(categories)
+    .range(colors);
 
   var xScale = d3
     .scaleBand()
@@ -130,7 +139,9 @@ function barChart(data) {
     .attr('font-size', '14')
     .style('text-anchor', 'middle')
     .text(function(d) {
-      return english ? translations.amountUsDollars.eng : translations.amountUsDollars.esp;
+      return english
+        ? translations.amountUsDollars.eng
+        : translations.amountUsDollars.esp;
     });
 
   var tooltip = tip()
@@ -239,8 +250,7 @@ function barChart(data) {
         return d.key;
       });
 
-      svg.selectAll(".x .tick text")
-      .call(wrap, x0.bandwidth());
+    svg.selectAll('.x .tick text').call(wrap, x0.bandwidth());
 
     groups
       .selectAll('rect')
@@ -260,25 +270,38 @@ function barChart(data) {
   function wrap(text, width) {
     text.each(function() {
       var text = d3.select(this),
-          words = text.text().split(/\s+/).reverse(),
-          word,
-          line = [],
-          lineNumber = 0,
-          lineHeight = 1.1, // ems
-          y = text.attr("y"),
-          dy = parseFloat(text.attr("dy")),
-          tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em")
-      while (word = words.pop()) {
-        line.push(word)
-        tspan.text(line.join(" "))
+        words = text
+          .text()
+          .split(/\s+/)
+          .reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr('y'),
+        dy = parseFloat(text.attr('dy')),
+        tspan = text
+          .text(null)
+          .append('tspan')
+          .attr('x', 0)
+          .attr('y', y)
+          .attr('dy', dy + 'em');
+      while ((word = words.pop())) {
+        line.push(word);
+        tspan.text(line.join(' '));
         if (tspan.node().getComputedTextLength() > width) {
-          line.pop()
-          tspan.text(line.join(" "))
-          line = [word]
-          tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", `${++lineNumber * lineHeight + dy}em`).text(word)
+          line.pop();
+          tspan.text(line.join(' '));
+          line = [word];
+          tspan = text
+            .append('tspan')
+            .attr('x', 0)
+            .attr('y', y)
+            .attr('dy', `${++lineNumber * lineHeight + dy}em`)
+            .text(word);
         }
       }
-    })
+    });
   }
 
   setupButtons();
