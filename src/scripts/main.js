@@ -9,7 +9,8 @@ import barChart from './barChart';
 import bubbleChart from './bubbleChart';
 import pivotTable from './pivotTable';
 import pymChild from './pymChild';
-import { english, spanish } from './language'
+import Loading from 'carbon-components/es/components/loading/loading';
+import { english, spanish } from './language';
 import style from '../css/style.scss';
 
 function displayContent(content) {
@@ -36,13 +37,14 @@ function display(error, content) {
   if (error) {
     console.log(error);
   }
-  displayContent(content);
 
   //Load the data
   d3.json(data, function(error, data) {
     if (error) {
       console.log(error);
     }
+    LoadingInstance.end();
+    displayContent(content);
     bubbleChart(data);
     barChart(data);
     pivotTable(data);
@@ -71,6 +73,9 @@ if (english) {
   content = sources.contentEsp;
   data = sources.dataEsp;
 }
+
+const LoadingElement = document.querySelector('[data-loading]');
+const LoadingInstance = Loading.create(LoadingElement);
 
 // Load the content.
 d3.json(content, display);
