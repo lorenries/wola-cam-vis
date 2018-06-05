@@ -144,6 +144,8 @@ function barChart(data) {
         : translations.amountUsDollars.esp;
     });
 
+  svg.selectAll('.x .tick text').call(wrap, x0.bandwidth());
+
   var tooltip = tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
@@ -249,8 +251,6 @@ function barChart(data) {
       .text(function(d) {
         return d.key;
       });
-
-    svg.selectAll('.x .tick text').call(wrap, x0.bandwidth());
 
     groups
       .selectAll('rect')
