@@ -7,9 +7,11 @@ $css--use-layer: false;
 $css--reset: false;
 $css--typography: false;
 $css--plex: false;
-
-@import '~carbon-components/scss/components/pagination/pagination';
-@import '~carbon-components/scss/components/data-table-v2/data-table-v2';
-@import '~carbon-components/scss/components/search/search';
-@import '~carbon-components/scss/components/select/select';
-@import '~carbon-components/scss/components/loading/loading';
+@import "../../node_modules/carbon-components/scss/components/pagination/pagination";
+@import "../../node_modules/carbon-components/scss/components/data-table-v2/data-table-v2";
+@import "../../node_modules/carbon-components/scss/components/search/search";
+@import "../../node_modules/carbon-components/scss/components/select/select";
+@import "../../node_modules/carbon-components/scss/components/loading/loading";
+@import "../../node_modules/carbon-components/scss/components/overflow-menu/overflow-menu";
+@import "../../node_modules/carbon-components/scss/components/checkbox/checkbox";
+@import "../../node_modules/carbon-components/scss/components/toolbar/toolbar";

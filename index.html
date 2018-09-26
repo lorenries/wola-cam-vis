@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<title>WOLA Central America Monitor</title>
 	<meta charset="utf-8">
@@ -8,15 +9,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="src/main.min.css">
 </head>
+
 <body>
 
 	<div class="bx--loading-overlay">
-	<div data-loading class="bx--loading">
-	  <svg class="bx--loading__svg" viewBox="-75 -75 150 150">
-	    <title>Loading</title>
-	    <circle cx="0" cy="0" r="37.5" />
-	  </svg>
-	</div>
+		<div data-loading class="bx--loading">
+			<svg class="bx--loading__svg" viewBox="-75 -75 150 150">
+				<title>Loading</title>
+				<circle cx="0" cy="0" r="37.5" />
+			</svg>
+		</div>
 	</div>
 
 	<div class="text-container measure-wide center pb2">
@@ -28,8 +30,8 @@
 
 		<div id="countries-toolbar" class="toolbar">
 			<a href="#" id="all-countries" class="button active">All Countries</a>
-			<a href="#" id="Guatemala" class="button">Guatemala</a>		  
-			<a href="#" id="ElSalvador" class="button">El Salvador</a>
+			<a href="#" id="Guatemala" class="button">Guatemala</a>
+			<a href="#" id="El Salvador" class="button">El Salvador</a>
 			<a href="#" id="Honduras" class="button">Honduras</a>
 		</div>
 	</div>
@@ -43,32 +45,32 @@
 
 	<div id="bubble-toolbar" class="toolbar flex justify-center pb4">
 		<div class="mh2 w-70-ns w-50">
-		  <label for="category" class="bx--label">Category</label>
-		  <div class="bx--select">
-		    <select id="category" class="bx--select-input">
-		      <option class="bx--select-option" value="all" selected>All Categories</option>
-		    </select>
-		    <svg class="bx--select__arrow" width="10" height="5" viewBox="0 0 10 5" fill-rule="evenodd">
-		      <path d="M10 0L5 5 0 0z"></path>
-		    </svg>
-		  </div>
+			<label for="category" class="bx--label">Category</label>
+			<div class="bx--select">
+				<select id="category" class="bx--select-input">
+					<option class="bx--select-option" value="all" selected>All Categories</option>
+				</select>
+				<svg class="bx--select__arrow" width="10" height="5" viewBox="0 0 10 5" fill-rule="evenodd">
+					<path d="M10 0L5 5 0 0z"></path>
+				</svg>
+			</div>
 		</div>
 
 		<div class="mh2 w-30-ns w-50">
-		  <label for="Year" class="bx--label">Year</label>
-		  <div class="bx--select">
-		    <select id="year" class="bx--select-input" name="year">
-		    </select>
-		    <svg class="bx--select__arrow" width="10" height="5" viewBox="0 0 10 5" fill-rule="evenodd">
-		      <path d="M10 0L5 5 0 0z"></path>
-		    </svg>
-		  </div>
+			<label for="Year" class="bx--label">Year</label>
+			<div class="bx--select">
+				<select id="year" class="bx--select-input" name="year">
+				</select>
+				<svg class="bx--select__arrow" width="10" height="5" viewBox="0 0 10 5" fill-rule="evenodd">
+					<path d="M10 0L5 5 0 0z"></path>
+				</svg>
+			</div>
 		</div>
 	</div>
 
 	<div id="vis"></div>
 
-	<div class="bx--data-table-v2-container" data-table-v2 id="sort">
+	<div class="bx--data-table-v2-container" data-table-v2>
 		<h4 class="bx--data-table-v2-header">All Programs</h4>
 		<div class="bx--table-toolbar">
 			<div class="bx--toolbar-search-container">
@@ -78,13 +80,30 @@
 						<path d="M16 13.8L13.8 16l-3.6-3.6 2.2-2.2z"></path>
 					</svg>
 					<label id="search-input-label-10" class="bx--label" for="search__input-10">Search</label>
-					<input class="bx--search-input search" type="text" id="search__input-10" role="search" placeholder="Search" aria-labelledby="search-input-label-10">
+					<input class="bx--search-input search" type="text" id="search__input-10" role="search" placeholder="Search"
+					 aria-labelledby="search-input-label-10">
 					<svg class="bx--search-close bx--search-close--hidden" width="10" height="10" viewBox="0 0 10 10" fill-rule="evenodd">
 						<path d="M9.8 8.6L8.4 10 5 6.4 1.4 10 0 8.6 3.6 5 .1 1.4 1.5 0 5 3.6 8.6 0 10 1.4 6.4 5z"></path>
 					</svg>
 				</div>
 			</div>
-			<a id="download-data" class="pl3 f7 flex items-center link dark-gray" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSO236d-Xyzqh0oRWb4hPzyGXHj0Is8UyFpEvsRJuB0Lm-HjGKkiFlMfgCHSYITmhdg6VPObX_Kq9wO/pub?gid=0&single=true&output=csv" target=""><svg class="w1 h1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> <span class="pl1">Download Data</span></a>
+			<div data-overflow-menu class="bx--overflow-menu w-auto flex items-center" tabindex="0" aria-label="List of options">
+				<div class="pl3 f7 flex items-center link dark-gray">
+					<svg class="bx--overflow-menu__icon bx--toolbar-filter-icon w1 h-auto dark-gray" viewBox="0 0 16 12" style="fill: #333;">
+						<g fill-rule="nonzero">
+							<path d="M8.05 2a2.5 2.5 0 0 1 4.9 0H16v1h-3.05a2.5 2.5 0 0 1-4.9 0H0V2h8.05zm2.45 2a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM3.05 9a2.5 2.5 0 0 1 4.9 0H16v1H7.95a2.5 2.5 0 0 1-4.9 0H0V9h3.05zm2.45 2a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+						</g>
+					</svg>
+					<span class="pl1">Filtering options</span>
+				</div>
+			</div>
+			<a id="download-data" class="pl3 f7 flex items-center link dark-gray" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSO236d-Xyzqh0oRWb4hPzyGXHj0Is8UyFpEvsRJuB0Lm-HjGKkiFlMfgCHSYITmhdg6VPObX_Kq9wO/pub?gid=0&single=true&output=csv"
+			 target=""><svg class="w1 h1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+				 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download">
+					<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+					<polyline points="7 10 12 15 17 10"></polyline>
+					<line x1="12" y1="15" x2="12" y2="3"></line>
+				</svg> <span class="pl1">Download Data</span></a>
 		</div>
 
 		<table class="bx--data-table-v2" id="table">
@@ -133,7 +152,7 @@
 					</th>
 					<th class="account">
 						<button class="bx--table-sort-v2 sort" data-event="sort" data-sort="account">
-							<span class="bx--table-header-label">Funding Source</span>
+							<span class="bx--table-header-label">Funding Account</span>
 							<svg class="bx--table-sort-v2__icon" width='10' height='5' viewBox='0 0 10 5' fill-rule='evenodd'>
 								<path d='M10 0L5 5 0 0z'></path>
 							</svg>
@@ -164,38 +183,62 @@
 					<span>|&nbsp;</span>
 					<span data-displayed-item-range>1-10</span> of
 					<span data-total-items>40</span> items</span>
-				</div>
-				<div class="bx--pagination__right bx--pagination--inline">
-					<span class="bx--pagination__text">
-						<span data-displayed-page-number>1</span> of
-						<span data-total-pages>4</span> pages</span>
-						<button class="bx--pagination__button bx--pagination__button--backward" data-page-backward aria-label="Backward button">
-							<svg class="bx--pagination__button-icon" width="8" height="12" viewBox="0 0 8 12" fill-rule="evenodd">
-								<path d="M7.5 10.6L2.8 6l4.7-4.6L6.1 0 0 6l6.1 6z"></path>
-							</svg>
-						</button>
-						<label for="page-number-input" class="bx--visually-hidden">Page number input</label>
-						<div class="bx--select bx--select--inline">
-							<label for="select-id-pagination" class="bx--visually-hidden">Number of items per page</label>
-							<select id="select-id-pagination" class="bx--select-input" data-page-number-input>
-								<!-- <option class="bx--select-option" value="1" selected>1</option> -->
-							</select>
-							<svg class="bx--select__arrow" width="10" height="5" viewBox="0 0 10 5" fill-rule="evenodd">
-								<path d="M10 0L5 5 0 0z"></path>
-							</svg>
-						</div>
-						<button class="bx--pagination__button bx--pagination__button--forward" data-page-forward aria-label="Forward button">
-							<svg class="bx--pagination__button-icon" width="8" height="12" viewBox="0 0 8 12" fill-rule="evenodd">
-								<path d="M0 10.6L4.7 6 0 1.4 1.4 0l6.1 6-6.1 6z"></path>
-							</svg>
-						</button>
-					</div>
-				</div>
 			</div>
+			<div class="bx--pagination__right bx--pagination--inline">
+				<span class="bx--pagination__text">
+					<span data-displayed-page-number>1</span> of
+					<span data-total-pages>4</span> pages</span>
+				<button class="bx--pagination__button bx--pagination__button--backward" data-page-backward aria-label="Backward button">
+					<svg class="bx--pagination__button-icon" width="8" height="12" viewBox="0 0 8 12" fill-rule="evenodd">
+						<path d="M7.5 10.6L2.8 6l4.7-4.6L6.1 0 0 6l6.1 6z"></path>
+					</svg>
+				</button>
+				<label for="page-number-input" class="bx--visually-hidden">Page number input</label>
+				<div class="bx--select bx--select--inline">
+					<label for="select-id-pagination" class="bx--visually-hidden">Number of items per page</label>
+					<select id="select-id-pagination" class="bx--select-input" data-page-number-input>
+						<!-- <option class="bx--select-option" value="1" selected>1</option> -->
+					</select>
+					<svg class="bx--select__arrow" width="10" height="5" viewBox="0 0 10 5" fill-rule="evenodd">
+						<path d="M10 0L5 5 0 0z"></path>
+					</svg>
+				</div>
+				<button class="bx--pagination__button bx--pagination__button--forward" data-page-forward aria-label="Forward button">
+					<svg class="bx--pagination__button-icon" width="8" height="12" viewBox="0 0 8 12" fill-rule="evenodd">
+						<path d="M0 10.6L4.7 6 0 1.4 1.4 0l6.1 6-6.1 6z"></path>
+					</svg>
+				</button>
+			</div>
+		</div>
+	</div>
 
-			<!-- <script src="assets/lib/d3.v4.min.js"></script> -->
-			<script src="src/lib/d3.rollup.js"></script>
-			<!-- <script src="assets/lib/d3-legend.min.js"></script> -->
-			<script src="src/main.min.js"></script>
-		</body>
-		</html>
+	<div class="overflow-menu" style="min-width: 50%">
+		<div class="flex flex-wrap">
+			<div class="w-100 flex flex-wrap">
+				<ul class="list pl0 w-30-l w-100" id="year-filter">
+					<li class="bx--toolbar-menu__title">FILTER BY YEAR</li>
+				</ul>
+				<ul class="list pl0 w-70-l w-100" id="category-filter">
+					<li class="bx--toolbar-menu__title">FILTER BY CATEGORY</li>
+				</ul>
+			</div>
+			<div class="w-100 flex flex-wrap">
+				<ul class="list pl0 w-30-l w-100" id="country-filter">
+					<li class="bx--toolbar-menu__title">FILTER BY COUNTRY</li>
+				</ul>
+				<ul class="list pl0 w-70-l w-100" id="account-filter">
+					<li class="bx--toolbar-menu__title">FILTER BY FUNDING ACCOUNT</li>
+				</ul>
+			</div>
+			<button class="filter-apply bx--btn bx--btn--primary ml3 mr3" type="button">Apply</button>
+			<button class="filter-reset bx--btn bx--btn--secondary mb3" type="button">Reset</button>
+		</div>
+	</div>
+
+	<!-- <script src="assets/lib/d3.v4.min.js"></script> -->
+	<script src="src/lib/d3.rollup.js"></script>
+	<!-- <script src="assets/lib/d3-legend.min.js"></script> -->
+	<script src="src/main.min.js"></script>
+</body>
+
+</html>

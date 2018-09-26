@@ -1,10 +1,8 @@
-@import './tachyons';
-@import './carbon';
-@import './wola-colors';
-
+@import "./carbon";
+@import "./tachyons";
+@import "./wola-colors";
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   padding: 2rem 3%;
   color: #152935;
   background-color: #f5f7fa;
@@ -47,7 +45,7 @@ body {
 }
 
 .bar-tooltip:after {
-  content: '';
+  content: "";
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
@@ -70,8 +68,9 @@ body {
 }
 
 /* Creates a small triangle extender for the tooltip */
+
 .d3-tip.n:after {
-  content: '\25BC';
+  content: "\25BC";
   margin: -3px 0 0 0;
   top: 100%;
   left: 50%;
@@ -87,7 +86,7 @@ body {
 }
 
 .d3-tip.e:after {
-  content: '\25C0';
+  content: "\25C0";
   margin: 0 0 0 -3px;
   top: 50%;
   left: 0%;
@@ -103,7 +102,7 @@ body {
 }
 
 .d3-tip.w:after {
-  content: '\25B6';
+  content: "\25B6";
   margin: 0 -3px 0 0;
   top: 50%;
   left: 100%;
@@ -187,7 +186,7 @@ a.button:last-of-type {
   top: 50%;
   left: 75%;
   border: solid transparent;
-  content: ' ';
+  content: " ";
   height: 0;
   width: 0;
   position: absolute;
@@ -238,8 +237,7 @@ td {
 }
 
 .tick text {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   fill: #152935;
   stroke: none;
   font-size: 16px;
@@ -276,9 +274,25 @@ ul.pagination li:not(.active):not(:first-child) a {
   background: none;
 }
 
-ul.pagination li:not(.active):not(:first-child) a::after {
-}
+ul.pagination li:not(.active):not(:first-child) a::after {}
 
 .d3-tip {
   max-width: 32rem;
+}
+
+.tippy-backdrop {
+  background-color: white;
+  height: 100%;
+}
+
+.tippy-tooltip {
+  color: #111;
+  text-align: left;
+  border: 1px solid #dfe3e6;
+  max-width: 48rem;
+}
+
+.bx--overflow-menu:focus {
+  outline: none;
+  box-shadow: none;
 }

@@ -5,23 +5,25 @@
  * https://bost.ocks.org/mike/chart/
  *
  */
-import barChart from './barChart';
-import bubbleChart from './bubbleChart';
-import pivotTable from './pivotTable';
-import pymChild from './pymChild';
-import Loading from 'carbon-components/es/components/loading/loading';
-import { english, spanish } from './language';
-import style from '../css/style.scss';
+import barChart from "./barChart";
+import bubbleChart from "./bubbleChart";
+import pivotTable from "./pivotTable";
+import pymChild from "./pymChild";
+import Loading from "carbon-components/es/components/loading/loading";
+import { english, spanish } from "./language";
+import style from "../css/style.scss";
+
+console.log("hello");
 
 function displayContent(content) {
   for (var prop in content) {
-    content[prop] = content[prop].replace(/\n/g, '<br />');
+    content[prop] = content[prop].replace(/\n/g, "<br />");
   }
 
-  var headline1 = document.querySelector('.headline1');
-  var description1 = document.querySelector('.description1');
-  var headline2 = document.querySelector('.headline2');
-  var description2 = document.querySelector('.description2');
+  var headline1 = document.querySelector(".headline1");
+  var description1 = document.querySelector(".description1");
+  var headline2 = document.querySelector(".headline2");
+  var description2 = document.querySelector(".description2");
 
   headline1.innerHTML = content.headline1;
   description1.innerHTML = content.description1;
@@ -54,13 +56,13 @@ function display(error, content) {
 
 var sources = {
   contentEng:
-    'https://wola-cam.s3.amazonaws.com//1ok_GgQXsQgkaTcOQ-80hSJ8Vpc-s0d817M2B3IWW_20',
+    "https://wola-cam.s3.amazonaws.com//1ok_GgQXsQgkaTcOQ-80hSJ8Vpc-s0d817M2B3IWW_20",
   dataEng:
-    'https://s3.amazonaws.com/wola-cam//19dwn5dI7bjj0hS4SNY-uE-lfPq0NrbRMZh5p2ofU4Zo',
+    "https://s3.amazonaws.com/wola-cam/data/19dwn5dI7bjj0hS4SNY-uE-lfPq0NrbRMZh5p2ofU4Zo.json",
   contentEsp:
-    'https://wola-cam.s3.amazonaws.com//1CuTSneAwqTScwk5ibXCPko_1j8PisfehkKCXvtnakZg',
+    "https://wola-cam.s3.amazonaws.com//1CuTSneAwqTScwk5ibXCPko_1j8PisfehkKCXvtnakZg",
   dataEsp:
-    'https://wola-cam.s3.amazonaws.com//1EvYPlDYDC9jYWgYpQKfzDCaTtgmQ6yOBc7s1lP8TdT0'
+    "https://wola-cam.s3.amazonaws.com//1EvYPlDYDC9jYWgYpQKfzDCaTtgmQ6yOBc7s1lP8TdT0"
 };
 
 var content;
@@ -74,7 +76,7 @@ if (english) {
   data = sources.dataEsp;
 }
 
-const LoadingElement = document.querySelector('[data-loading]');
+const LoadingElement = document.querySelector("[data-loading]");
 const LoadingInstance = Loading.create(LoadingElement);
 
 // Load the content.
