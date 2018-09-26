@@ -17,7 +17,8 @@ function bubbleChart() {
     .offset(function(d) {
       if (d.country === "Guatemala") return [0, 10];
       if (d.country === "Honduras") return [-10, 0];
-      if (d.country === "El Salvador") return [0, -10];
+      if (d.country === "El Salvador") return [-10, 0];
+      if (d.country === "Other Countries/Regional") return [0, -10];
     })
     .html(function(d) {
       return showDetail(d);
@@ -25,7 +26,8 @@ function bubbleChart() {
     .direction(function(d) {
       if (d.country === "Guatemala") return "e";
       if (d.country === "Honduras") return "n";
-      if (d.country === "El Salvador") return "w";
+      if (d.country === "El Salvador") return "n";
+      if (d.country === "Other Countries/Regional") return "w";
     });
 
   // Locations to move bubbles towards, depending
