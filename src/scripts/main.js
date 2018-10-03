@@ -5,6 +5,7 @@
  * https://bost.ocks.org/mike/chart/
  *
  */
+import lineChart from "./lineChart";
 import barChart from "./barChart";
 import bubbleChart from "./bubbleChart";
 import pivotTable from "./pivotTable";
@@ -20,15 +21,21 @@ function displayContent(content) {
     content[prop] = content[prop].replace(/\n/g, "<br />");
   }
 
-  var headline1 = document.querySelector(".headline1");
-  var description1 = document.querySelector(".description1");
-  var headline2 = document.querySelector(".headline2");
-  var description2 = document.querySelector(".description2");
+  var linechart_headline = document.querySelector(".linechart_headline");
+  var linechart_description = document.querySelector(".linechart_description");
+  var barchart_headline = document.querySelector(".barchart_headline");
+  var barchart_description = document.querySelector(".barchart_description");
+  var bubblechart_headline = document.querySelector(".bubblechart_headline");
+  var bubblechart_description = document.querySelector(
+    ".bubblechart_description"
+  );
 
-  headline1.innerHTML = content.headline1;
-  description1.innerHTML = content.description1;
-  headline2.innerHTML = content.headline2;
-  description2.innerHTML = content.description2;
+  linechart_headline.innerHTML = content.linechart_headline;
+  linechart_description.innerHTML = content.linechart_description;
+  barchart_headline.innerHTML = content.barchart_headline;
+  barchart_description.innerHTML = content.barchart_description;
+  bubblechart_headline.innerHTML = content.bubblechart_headline;
+  bubblechart_description.innerHTML = content.bubblechart_description;
 }
 
 /*
@@ -47,6 +54,7 @@ function display(error, content) {
     }
     LoadingInstance.end();
     displayContent(content);
+    lineChart();
     bubbleChart(data);
     barChart(data);
     pivotTable(data);

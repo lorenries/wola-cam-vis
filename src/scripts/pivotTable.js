@@ -181,41 +181,16 @@ function pivotTable(data) {
       );
       return hasYear && hasCountry && hasAccount && hasCategory;
     });
+    list.update();
   }
 
-  // let close = false;
-  // let clickedBody = false;
+  const search = document.querySelector(".search");
 
-  // button.addEventListener("click", () => (close = true));
-  // document.addEventListener("click", e => {
-  //   console.log(e);
-  //   if (e.target.classList.contains("in-overflow")) {
-  //     clickedBody = false;
-  //     console.log("clicked inside of overflow");
-  //   } else {
-  //     clickedBody = true;
-  //   }
-  //   console.log(clickedBody);
-  // });
-
-  // document.addEventListener("floating-menu-beinghidden", function(e) {
-  //   console.log(e);
-  //   if (close) {
-  //     close = false;
-  //     // clickedBody = false;
-  //     return;
-  //   }
-  //   if (clickedBody) {
-  //     return;
-  //   }
-  //   console.log("prevented");
-  //   console.log(clickedBody);
-  //   e.preventDefault();
-  // });
-
-  // update pagination function
-  // number of pages = number of items / items per page
-  // append appropriate number to select
+  search.addEventListener("input", e => {
+    console.log(e);
+    list.search(e.target.value);
+    list.update();
+  });
 
   function updatePagination() {
     var numberOfPages = Math.ceil(list.matchingItems.length / list.page);
