@@ -1,9 +1,9 @@
-import { colors } from './colors.js';
-import { addCommas } from './addCommas.js';
-import tip from 'd3-tip';
-import pymChild from './pymChild.js';
-import { english, spanish } from './language';
-import translations from './translations';
+import { colors } from "./colors.js";
+import { addCommas } from "./addCommas.js";
+import tip from "d3-tip";
+import pymChild from "./pymChild.js";
+import { english, spanish } from "./language";
+import translations from "./translations";
 
 function barChart(data) {
   var margin = { top: 20, right: 5, bottom: 89, left: 110 };
@@ -16,22 +16,23 @@ function barChart(data) {
   var height = fullHeight - margin.top - margin.bottom;
 
   var svg = d3
-    .select('#bar-chart')
-    .append('svg')
-    .attr('viewBox', '0 0 ' + fullWidth + ' ' + fullHeight)
-    .append('g')
+    .select("#bar-chart")
+    .append("svg")
+    .attr("viewBox", "0 0 " + fullWidth + " " + fullHeight)
+    .append("g")
     // translate it to leave room for the left and top margins
-    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  var barHolder = svg.append('g').classed('bar-holder', true);
+  var barHolder = svg.append("g").classed("bar-holder", true);
 
   var chartState = {
-    country: 'all-countries'
+    country: "all-countries"
   };
 
   function nestData(country) {
+    console.log(data);
     var dataByCountry = data.filter(function(d) {
-      if (country === 'all-countries' || !country) {
+      if (country === "all-countries" || !country) {
         return true;
       } else {
         return d.country === country;
@@ -52,14 +53,15 @@ function barChart(data) {
           return d.total;
         });
       })
-      .entries(dataByCountry);
+      .entries(dataByCountry)
+      .sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
 
     return grouped;
   }
 
-  var initializedData = nestData('all-countries');
+  var initializedData = nestData("all-countries");
 
-  var max = d3.max(nestData('all-countries'), function(d) {
+  var max = d3.max(nestData("all-countries"), function(d) {
     return d3.max(d.values, function(val) {
       return val.value;
     });
@@ -108,7 +110,7 @@ function barChart(data) {
     .domain([0, max])
     .range([height, 0]);
 
-  var formatValue = d3.format('.2s');
+  var formatValue = d3.format(".2s");
 
   var xAxis = d3.axisBottom(x0);
 
@@ -116,38 +118,38 @@ function barChart(data) {
     .axisLeft(yScale)
     .ticks(4)
     .tickFormat(function(d) {
-      return '$' + formatValue(d);
+      return "$" + formatValue(d);
     });
 
   var xAxisEle = svg
-    .append('g')
-    .classed('x axis', true)
-    .attr('transform', 'translate(0,' + (height + 22) + ')')
+    .append("g")
+    .classed("x axis", true)
+    .attr("transform", "translate(0," + (height + 22) + ")")
     .call(xAxis);
 
   var yAxisEle = svg
-    .append('g')
-    .classed('y axis', true)
+    .append("g")
+    .classed("y axis", true)
     .call(yAxis)
-    .attr('transform', 'translate(-15, 0)');
+    .attr("transform", "translate(-15, 0)");
 
   svg
-    .append('text')
-    .attr('transform', 'rotate(-90)')
-    .attr('y', -90)
-    .attr('x', -height / 2)
-    .attr('font-size', '14')
-    .style('text-anchor', 'middle')
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -90)
+    .attr("x", -height / 2)
+    .attr("font-size", "14")
+    .style("text-anchor", "middle")
     .text(function(d) {
       return english
         ? translations.amountUsDollars.eng
         : translations.amountUsDollars.esp;
     });
 
-  svg.selectAll('.x .tick text').call(wrap, x0.bandwidth());
+  svg.selectAll(".x .tick text").call(wrap, x0.bandwidth());
 
   var tooltip = tip()
-    .attr('class', 'd3-tip')
+    .attr("class", "d3-tip")
     .offset([-10, 0])
     .html(function(d) {
       return `$${addCommas(d.value)}`;
@@ -156,19 +158,18 @@ function barChart(data) {
   svg.call(tooltip);
 
   function setupButtons() {
-    d3
-      .select('#countries-toolbar')
-      .selectAll('.button')
-      .on('click', function() {
+    d3.select("#countries-toolbar")
+      .selectAll(".button")
+      .on("click", function() {
         d3.event.preventDefault();
         // Remove active class from all buttons
-        d3.selectAll('#countries-toolbar .button').classed('active', false);
+        d3.selectAll("#countries-toolbar .button").classed("active", false);
         // Find the button just clicked
         var button = d3.select(this);
         // Set it as the active button
-        button.classed('active', true);
+        button.classed("active", true);
         // Get the id of the button
-        var buttonId = button.attr('id');
+        var buttonId = button.attr("id");
         chartState.country = buttonId;
         // Toggle the bubble chart based on
         // the currently clicked button.
@@ -178,91 +179,89 @@ function barChart(data) {
 
   function updateChart(country) {
     var initializedData = nestData(country);
-    var groups = barHolder.selectAll('.group').data(initializedData);
+    var groups = barHolder.selectAll(".group").data(initializedData);
 
     var bars = groups
       .enter()
-      .append('g')
-      .attr('class', 'group')
-      .attr('transform', function(d) {
-        return 'translate(' + x0(d.key) + ',0)';
+      .append("g")
+      .attr("class", "group")
+      .attr("transform", function(d) {
+        return "translate(" + x0(d.key) + ",0)";
       });
 
     bars
-      .selectAll('rect')
+      .selectAll("rect")
       .data(function(d) {
         d.values.forEach(val => (val.category = d.key));
         return d.values;
       })
       .enter()
-      .append('rect')
-      .attr('width', x1.bandwidth())
-      .attr('x', function(d) {
+      .append("rect")
+      .attr("width", x1.bandwidth())
+      .attr("x", function(d) {
         return x1(d.key);
       })
-      .attr('y', function(d) {
+      .attr("y", function(d) {
         return yScale(d.value);
       })
-      .attr('height', function(d) {
+      .attr("height", function(d) {
         return height - yScale(d.value);
       })
-      .style('fill', function(d) {
+      .style("fill", function(d) {
         return fillColor(d.category);
       })
-      .attr('fill-opacity', 0.2)
-      .attr('stroke', function(d) {
+      .attr("fill-opacity", 0.2)
+      .attr("stroke", function(d) {
         return fillColor(d.category);
       })
-      .attr('stroke-width', 1)
-      .classed('bar', true)
-      .on('mouseover', function(d) {
+      .attr("stroke-width", 1)
+      .classed("bar", true)
+      .on("mouseover", function(d) {
         var target = d3.event.target;
         let color = d3.color(fillColor(d.category)).darker();
-        d3
-          .select(this)
-          .attr('stroke', color)
-          .attr('stroke-width', 2);
+        d3.select(this)
+          .attr("stroke", color)
+          .attr("stroke-width", 2);
         tooltip.show(d, target);
       })
-      .on('mouseout', function(d) {
-        d3
-          .select(this)
-          .attr('stroke', fillColor(d.category))
-          .attr('stroke-width', 1);
+      .on("mouseout", function(d) {
+        d3.select(this)
+          .attr("stroke", fillColor(d.category))
+          .attr("stroke-width", 1);
         tooltip.hide(d);
       });
 
     bars
-      .selectAll('text')
+      .selectAll("text")
       .data(function(d) {
         d.values.forEach(val => (val.category = d.key));
         return d.values;
       })
       .enter()
-      .append('text')
-      .attr('y', function(d) {
+      .append("text")
+      .attr("y", function(d) {
         return height + 19;
       })
-      .attr('x', function(d) {
+      .attr("x", function(d) {
         return x1(d.key) + x1.bandwidth() / 2;
       })
-      .attr('text-anchor', 'middle')
-      .attr('font-size', '14')
+      .attr("text-anchor", "middle")
+      .attr("font-size", "14")
       .text(function(d) {
         return d.key;
       });
 
     groups
-      .selectAll('rect')
+      .selectAll("rect")
       .data(function(d) {
         d.values.forEach(val => (val.category = d.key));
         return d.values;
       })
       .transition()
-      .attr('y', function(d) {
+      .attr("y", function(d) {
         return yScale(d.value);
       })
-      .attr('height', function(d) {
+      .attr("height", function(d) {
         return height - yScale(d.value);
       });
   }
@@ -278,26 +277,26 @@ function barChart(data) {
         line = [],
         lineNumber = 0,
         lineHeight = 1.1, // ems
-        y = text.attr('y'),
-        dy = parseFloat(text.attr('dy')),
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
         tspan = text
           .text(null)
-          .append('tspan')
-          .attr('x', 0)
-          .attr('y', y)
-          .attr('dy', dy + 'em');
+          .append("tspan")
+          .attr("x", 0)
+          .attr("y", y)
+          .attr("dy", dy + "em");
       while ((word = words.pop())) {
         line.push(word);
-        tspan.text(line.join(' '));
+        tspan.text(line.join(" "));
         if (tspan.node().getComputedTextLength() > width) {
           line.pop();
-          tspan.text(line.join(' '));
+          tspan.text(line.join(" "));
           line = [word];
           tspan = text
-            .append('tspan')
-            .attr('x', 0)
-            .attr('y', y)
-            .attr('dy', `${++lineNumber * lineHeight + dy}em`)
+            .append("tspan")
+            .attr("x", 0)
+            .attr("y", y)
+            .attr("dy", `${++lineNumber * lineHeight + dy}em`)
             .text(word);
         }
       }
@@ -305,7 +304,7 @@ function barChart(data) {
   }
 
   setupButtons();
-  updateChart('all-countries');
+  updateChart("all-countries");
 }
 
 export default barChart;

@@ -27,7 +27,11 @@ function bubbleChart() {
       if (d.country === "Guatemala") return "e";
       if (d.country === "Honduras") return "n";
       if (d.country === "El Salvador") return "n";
-      if (d.country === "Other Countries/Regional") return "w";
+      if (
+        d.country === "Other Countries/Regional" ||
+        d.country === "Otros Países/Regional"
+      )
+        return "w";
     });
 
   // Locations to move bubbles towards, depending
