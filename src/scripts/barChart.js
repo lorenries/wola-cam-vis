@@ -30,7 +30,6 @@ function barChart(data) {
   };
 
   function nestData(country) {
-    console.log(data);
     var dataByCountry = data.filter(function(d) {
       if (country === "all-countries" || !country) {
         return true;

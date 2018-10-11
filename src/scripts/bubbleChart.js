@@ -27,11 +27,7 @@ function bubbleChart() {
       if (d.country === "Guatemala") return "e";
       if (d.country === "Honduras") return "n";
       if (d.country === "El Salvador") return "n";
-      if (
-        d.country === "Other Countries/Regional" ||
-        d.country === "Otros Países/Regional"
-      )
-        return "w";
+      if (d.country === "Other Countries/Regional") return "w";
     });
 
   // Locations to move bubbles towards, depending
@@ -152,8 +148,6 @@ function bubbleChart() {
       yearsSet.add(d.year);
       return d;
     });
-
-    console.log(categoriesSet);
 
     // sort them to prevent occlusion of smaller nodes.
     myNodes.sort(function(a, b) {
@@ -350,6 +344,7 @@ function bubbleChart() {
   };
 
   function createLegend() {
+    console.log(categories);
     var scale = d3
       .scaleOrdinal()
       .domain(categories)
@@ -480,6 +475,8 @@ function bubbleChart() {
     // var total = nodes.reduce(function(acc, cur) {  })
     var countryData = d3.keys(countryCenters);
 
+    console.log(countryData);
+
     var countries = svg.selectAll(".country").data(countryData);
 
     countries
@@ -493,7 +490,11 @@ function bubbleChart() {
       })
       .attr("y", 170)
       .text(function(d) {
-        return d;
+        if (spanish && d === "Other Countries/Regional") {
+          return "Otros Países/Regional";
+        } else {
+          return d;
+        }
       });
   }
 
@@ -542,7 +543,6 @@ function bubbleChart() {
    * details of a bubble in the tooltip.
    */
   function showDetail(d) {
-    console.log(d);
     var content = `
       <div class="pa1 lh-title">
         <div class="ttu mid-gray f6 fw6"><span class="pr1">${
