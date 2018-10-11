@@ -344,7 +344,6 @@ function bubbleChart() {
   };
 
   function createLegend() {
-    console.log(categories);
     var scale = d3
       .scaleOrdinal()
       .domain(categories)

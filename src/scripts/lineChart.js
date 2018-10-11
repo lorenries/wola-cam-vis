@@ -1,5 +1,7 @@
 import tip from "d3-tip";
 import { addCommas } from "./addCommas";
+import { english, spanish } from "./language";
+import translations from "./translations";
 
 export default function lineChart() {
   d3.json(
@@ -8,7 +10,7 @@ export default function lineChart() {
   );
 
   function render(data) {
-    var margin = { top: 20, right: 0, bottom: 50, left: 70 };
+    var margin = { top: 20, right: 0, bottom: 50, left: 90 };
     // here, we want the full chart to be 700x200, so we determine
     // the width and height by subtracting the margins from those values
     var fullWidth = 900;
@@ -108,6 +110,19 @@ export default function lineChart() {
           .attr("stroke", "#00B5EF")
           .attr("stroke-width", 1);
         tooltip.hide(d);
+      });
+
+    svg
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", -80)
+      .attr("x", -height / 2)
+      .attr("font-size", "14")
+      .style("text-anchor", "middle")
+      .text(function(d) {
+        return english
+          ? translations.amountUsDollars.eng
+          : translations.amountUsDollars.esp;
       });
   }
 }

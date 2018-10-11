@@ -55,6 +55,8 @@ function barChart(data) {
       .entries(dataByCountry)
       .sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
 
+    console.log(grouped);
+
     return grouped;
   }
 
