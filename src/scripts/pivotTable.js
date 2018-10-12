@@ -43,6 +43,70 @@ function pivotTable(data) {
     `;
   }
 
+  d3.select("#table-body")
+    .selectAll(".temp-wrapper")
+    .data(data)
+    .enter()
+    .append("tbody")
+    .classed("temp-wrapper", true)
+    .html(rowTemplate);
+
+  document.querySelectorAll("tbody.temp-wrapper").forEach(function(val) {
+    while (val.firstChild) {
+      val.parentNode.insertBefore(val.firstChild, val);
+    }
+    val.parentNode.removeChild(val);
+  });
+
+  // data.forEach((val, i) => {
+  //   console.log(val);
+  //   const tbody = document.querySelector("#table-body");
+  //   const tr1inner = d => {
+  //     return `
+  //       <td class="bx--table-expand-v2" data-event="expand">
+  //         <button class="bx--table-expand-v2__button">
+  //           <svg class="bx--table-expand-v2__svg" width="7" height="12" viewBox="0 0 8 12" fill-rule="evenodd">
+  //             <path d="M0 10.6L4.7 6 0 1.4 1.4 0l6.1 6-6.1 6z"></path>
+  //           </svg>
+  //         </button>
+  //       </td>
+  //       <td class="program">${d.program_name}</td>
+  //       <td class="total" data-total="${d.total}">$${addCommas(d.total)}</td>
+  //       <td class="year">${d.year}</td>
+  //       <td class="category">${d.category}</td>
+  //       <td class="country">${d.country}</td>
+  //       <td class="description dn">${d.description ? d.description : null}</td>
+  //       <td class="account">${d.account ? d.account : ""}</td>`;
+  //   };
+  //   const tr2inner = d => {
+  //     return `
+  //       <td colspan="8" class="pt2" data-key="${d.program_name}">
+  //         <h4 class="f6">
+  //           <strong>${
+  //             english
+  //               ? translations.description.eng
+  //               : translations.description.esp
+  //           }</strong>
+  //         </h4>
+  //         <p class="lh-title f6">${d.description ? d.description : `n/a`}</p>
+  //       </td>`;
+  //   };
+  //   const tr1 = document.createElement("tr");
+  //   tr1.classList.add("bx--parent-row-v2", `parent-${i}`);
+  //   tr1.setAttribute("data-parent-row", "");
+  //   tr1.innerHTML = tr1inner(val);
+  //   const tr2 = document.createElement("tr");
+  //   tr2.classList.add(
+  //     "bx--expandable-row-v2",
+  //     "bx--expandable-row--hidden-v2",
+  //     `child-${i}`
+  //   );
+  //   tr2.setAttribute("data-child-row", "");
+  //   tr2.innerHTML = tr2inner(val);
+  //   tbody.appendChild(tr1);
+  //   tbody.appendChild(tr2);
+  // });
+
   ["year", "category", "country", "account"].forEach(val => createFilters(val));
 
   function createFilters(key) {
@@ -74,21 +138,6 @@ function pivotTable(data) {
     });
   }
 
-  d3.select("#table-body")
-    .selectAll(".temp-wrapper")
-    .data(data)
-    .enter()
-    .append("tbody")
-    .classed("temp-wrapper", true)
-    .html(rowTemplate);
-
-  document.querySelectorAll("tbody.temp-wrapper").forEach(function(val) {
-    while (val.firstChild) {
-      val.parentNode.insertBefore(val.firstChild, val);
-    }
-    val.parentNode.removeChild(val);
-  });
-
   const tableElement = document.querySelector("[data-table-v2]");
   const tableInstance = DataTableV2.create(tableElement);
 
@@ -105,6 +154,7 @@ function pivotTable(data) {
     page: 10
   };
   var list = new List("table", options);
+  pymChild.sendHeight();
 
   tableInstance.refreshRows();
   tableElement.addEventListener("data-table-v2-aftertoggleexpand", function(e) {
