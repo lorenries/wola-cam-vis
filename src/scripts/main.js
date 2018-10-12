@@ -59,6 +59,7 @@ function display(error, content) {
     barChart(data);
     pivotTable(data);
     pymChild.sendHeight();
+    setTimeout(() => pymChild.sendHeight(), 200);
   });
 }
 
