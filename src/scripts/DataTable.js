@@ -200,6 +200,7 @@ export default class DataTable extends React.Component {
                 }
                 interactive={true}
                 onCreate={tip => (this.tip = tip)}
+                placement="bottom"
               >
                 <div className="pl3 f7 flex items-center link dark-gray">
                   <svg
