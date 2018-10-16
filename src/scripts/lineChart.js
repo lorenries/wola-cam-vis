@@ -1,3 +1,4 @@
+import * as d3 from "d3";
 import tip from "d3-tip";
 import { addCommas } from "./addCommas";
 import { english, spanish } from "./language";
@@ -5,9 +6,8 @@ import translations from "./translations";
 
 export default function lineChart() {
   d3.json(
-    "https://wola-cam.s3.amazonaws.com/line-chart/1OPJ98qPzTRvW1E12mfdYXWtFBmwSp37vakrG-hfJay8",
-    render
-  );
+    "https://wola-cam.s3.amazonaws.com/line-chart/1OPJ98qPzTRvW1E12mfdYXWtFBmwSp37vakrG-hfJay8"
+  ).then(data => render(data));
 
   function render(data) {
     var margin = { top: 20, right: 0, bottom: 50, left: 90 };

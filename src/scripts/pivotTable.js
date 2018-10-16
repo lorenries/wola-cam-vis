@@ -1,3 +1,4 @@
+import * as d3 from "d3";
 import DataTableV2 from "carbon-components/es/components/data-table-v2/data-table-v2";
 import { addCommas } from "./addCommas";
 import List from "list.js";

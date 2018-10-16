@@ -5,16 +5,17 @@
  * https://bost.ocks.org/mike/chart/
  *
  */
+import * as d3 from "d3";
 import lineChart from "./lineChart";
 import barChart from "./barChart";
 import bubbleChart from "./bubbleChart";
-import pivotTable from "./pivotTable";
 import pymChild from "./pymChild";
 import Loading from "carbon-components/es/components/loading/loading";
 import { english, spanish } from "./language";
-import style from "../css/style.scss";
-
-console.log("hello");
+import React from "react";
+import ReactDOM from "react-dom";
+import DataTable from "./DataTable";
+import "../css/style.scss";
 
 function displayContent(content) {
   for (var prop in content) {
@@ -42,23 +43,18 @@ function displayContent(content) {
  * Function called once data is loaded from CSV.
  * Calls bubble chart function to display inside #vis div.
  */
-function display(error, content) {
-  if (error) {
-    console.log(error);
-  }
+function display(content) {
+  displayContent(content);
 
   //Load the data
-  d3.json(data, function(error, data) {
-    if (error) {
-      console.log(error);
-    }
+  d3.json(data).then(data => {
     LoadingInstance.end();
-    displayContent(content);
     lineChart();
     bubbleChart(data);
     barChart(data);
-    pivotTable(data);
     pymChild.sendHeight();
+    const table = document.querySelector("#data-table");
+    ReactDOM.render(<DataTable data={data} />, table);
     setTimeout(() => pymChild.sendHeight(), 200);
   });
 }
@@ -89,4 +85,4 @@ const LoadingElement = document.querySelector("[data-loading]");
 const LoadingInstance = Loading.create(LoadingElement);
 
 // Load the content.
-d3.json(content, display);
+d3.json(content).then(content => display(content));

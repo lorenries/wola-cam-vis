@@ -1,3 +1,4 @@
+import * as d3 from "d3";
 import { colors } from "./colors.js";
 import { addCommas } from "./addCommas.js";
 import { legendColor } from "d3-svg-legend";
