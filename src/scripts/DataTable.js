@@ -62,6 +62,10 @@ export default class DataTable extends React.Component {
     pymChild.sendHeight();
   }
 
+  componentDidUpdate() {
+    pymChild.sendHeight();
+  }
+
   handleSearch(e) {
     this.setState({ search: e.target.value });
   }
