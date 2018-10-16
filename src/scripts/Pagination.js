@@ -1,4 +1,5 @@
 import React from "react";
+import pymChild from "./pymChild";
 
 const defaultButton = props => (
   <button type="button" {...props} className="pagination__btn">
@@ -35,6 +36,7 @@ export default class Pagination extends React.Component {
     this.setState({ page });
     if (this.props.page !== page) {
       this.props.onPageChange(page);
+      pymChild.sendHeight();
     }
   }
 
