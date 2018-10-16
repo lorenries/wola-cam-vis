@@ -33,7 +33,7 @@ export default class Pagination extends React.Component {
 
   changePage(page) {
     page = this.getSafePage(page);
-    this.setState({ page });
+    this.setState({ page }, pymChild.sendHeight());
     if (this.props.page !== page) {
       this.props.onPageChange(page);
       pymChild.sendHeight();
@@ -46,6 +46,10 @@ export default class Pagination extends React.Component {
     }
     const page = this.state.page;
     this.changePage(page === "" ? this.props.page : page);
+  }
+
+  componentDidUpdate() {
+    pymChild.sendHeight();
   }
 
   render() {
