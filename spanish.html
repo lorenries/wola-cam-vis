@@ -1,86 +1,97 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <title>WOLA Central America Monitor</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="WOLA Central America Monitor" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
 
-<head>
-	<title>WOLA Central America Monitor</title>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="description" content="WOLA Central America Monitor">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+  <body>
+    <div class="bx--loading-overlay">
+      <div data-loading class="bx--loading">
+        <svg class="bx--loading__svg" viewBox="-75 -75 150 150">
+          <title>Loading</title>
+          <circle cx="0" cy="0" r="37.5" />
+        </svg>
+      </div>
+    </div>
 
-<body>
+    <div class="text-container">
+      <div class="measure-wide center">
+        <h1 class="linechart_headline lh-title f2 fw3 tc"></h1>
+        <p class="linechart_description lh-copy f5"></p>
+      </div>
+      <div id="line-chart" class="center mw7 pb3 bb b--light-gray"></div>
+    </div>
 
-	<div class="bx--loading-overlay">
-		<div data-loading class="bx--loading">
-			<svg class="bx--loading__svg" viewBox="-75 -75 150 150">
-				<title>Loading</title>
-				<circle cx="0" cy="0" r="37.5" />
-			</svg>
-		</div>
-	</div>
+    <div class="text-container measure-wide center pb2">
+      <h1 class="barchart_headline lh-title f2 fw3 tc"></h1>
+      <p class="barchart_description lh-copy f5"></p>
+    </div>
 
-	<div class="text-container">
-		<div class="measure-wide center">
-			<h1 class="linechart_headline lh-title f2 fw3 tc"></h1>
-			<p class="linechart_description lh-copy f5"></p>
-		</div>
-		<div id="line-chart" class="center mw7 pb3 bb b--light-gray"></div>
-	</div>
+    <div class="toolbar-container flex justify-center pb3">
+      <div id="countries-toolbar" class="toolbar">
+        <a href="#" data-id="all-countries" class="button active">Total</a>
+        <a href="#" data-id="Guatemala" class="button">Guatemala</a>
+        <a href="#" data-id="El Salvador" class="button">El Salvador</a>
+        <a href="#" data-id="Honduras" class="button">Honduras</a>
+        <a href="#" data-id="Otros Países/Regional" class="button"
+          >Otros Países/Regional</a
+        >
+      </div>
+    </div>
 
-	<div class="text-container measure-wide center pb2">
-		<h1 class="barchart_headline lh-title f2 fw3 tc"></h1>
-		<p class="barchart_description lh-copy f5"></p>
-	</div>
+    <div id="bar-chart" class="center mw7 bb b--light-gray pb4"></div>
 
-	<div class="toolbar-container flex justify-center pb3">
+    <div class="text-container measure-wide center pb2">
+      <h1 class="bubblechart_headline lh-title f2 fw3 tc"></h1>
+      <p class="bubblechart_description lh-copy f5"></p>
+    </div>
 
-		<div id="countries-toolbar" class="toolbar">
-			<a href="#" id="all-countries" class="button active">Total</a>
-			<a href="#" id="Guatemala" class="button">Guatemala</a>
-			<a href="#" id="El Salvador" class="button">El Salvador</a>
-			<a href="#" id="Honduras" class="button">Honduras</a>
-			<a href="#" id="Otros Países/Regional" class="button">Otros Países/Regional</a>
-		</div>
-	</div>
+    <div id="bubble-toolbar" class="toolbar flex justify-center pb4">
+      <div class="mh2 w-70-ns w-50">
+        <label for="category" class="bx--label">Categoría</label>
+        <div class="bx--select">
+          <select id="category" class="bx--select-input">
+            <option class="bx--select-option" value="all" selected
+              >Todas las Categorías</option
+            >
+          </select>
+          <svg
+            class="bx--select__arrow"
+            width="10"
+            height="5"
+            viewBox="0 0 10 5"
+            fill-rule="evenodd"
+          >
+            <path d="M10 0L5 5 0 0z"></path>
+          </svg>
+        </div>
+      </div>
 
-	<div id="bar-chart" class="center mw7 bb b--light-gray pb4"></div>
+      <div class="mh2 w-30-ns w-50">
+        <label for="Year" class="bx--label">Año</label>
+        <div class="bx--select">
+          <select id="year" class="bx--select-input" name="year"> </select>
+          <svg
+            class="bx--select__arrow"
+            width="10"
+            height="5"
+            viewBox="0 0 10 5"
+            fill-rule="evenodd"
+          >
+            <path d="M10 0L5 5 0 0z"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
 
-	<div class="text-container measure-wide center pb2">
-		<h1 class="bubblechart_headline lh-title f2 fw3 tc"></h1>
-		<p class="bubblechart_description lh-copy f5"></p>
-	</div>
+    <div id="vis"></div>
 
-	<div id="bubble-toolbar" class="toolbar flex justify-center pb4">
-		<div class="mh2 w-70-ns w-50">
-			<label for="category" class="bx--label">Categoría</label>
-			<div class="bx--select">
-				<select id="category" class="bx--select-input">
-					<option class="bx--select-option" value="all" selected>Todas las Categorías</option>
-				</select>
-				<svg class="bx--select__arrow" width="10" height="5" viewBox="0 0 10 5" fill-rule="evenodd">
-					<path d="M10 0L5 5 0 0z"></path>
-				</svg>
-			</div>
-		</div>
+    <div id="data-table"></div>
 
-		<div class="mh2 w-30-ns w-50">
-			<label for="Year" class="bx--label">Año</label>
-			<div class="bx--select">
-				<select id="year" class="bx--select-input" name="year">
-				</select>
-				<svg class="bx--select__arrow" width="10" height="5" viewBox="0 0 10 5" fill-rule="evenodd">
-					<path d="M10 0L5 5 0 0z"></path>
-				</svg>
-			</div>
-		</div>
-	</div>
-
-	<div id="vis"></div>
-
-	<div id="data-table"></div>
-
-	<script src="dist/bundle.js"></script>
-</body>
-
+    <script src="dist/bundle.js"></script>
+  </body>
 </html>

@@ -56,8 +56,6 @@ function barChart(data) {
       .entries(dataByCountry)
       .sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
 
-    console.log(grouped);
-
     return grouped;
   }
 
@@ -171,7 +169,7 @@ function barChart(data) {
         // Set it as the active button
         button.classed("active", true);
         // Get the id of the button
-        var buttonId = button.attr("id");
+        var buttonId = button.attr("data-id");
         chartState.country = buttonId;
         // Toggle the bubble chart based on
         // the currently clicked button.

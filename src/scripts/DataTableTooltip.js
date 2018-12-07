@@ -17,13 +17,13 @@ const Checkbox = props => (
   <li className="bx--toolbar-menu__option">
     <input
       checked={props.checked}
-      id={props.val}
+      id={slugify(props.val)}
       className="bx--checkbox"
       type="checkbox"
       name="checkbox"
-      onChange={props.onChange}
+      onChange={e => props.onChange(e, props.val)}
     />
-    <label htmlFor={props.val} className="bx--checkbox-label">
+    <label htmlFor={slugify(props.val)} className="bx--checkbox-label">
       <span className="bx--checkbox-appearance">
         <svg
           className="bx--checkbox-checkmark"
@@ -70,8 +70,8 @@ export default class DataTableTooltip extends React.Component {
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
 
-  handleCheckboxChange(e) {
-    this.props.onFilterChange(e.target.id, e.target.checked);
+  handleCheckboxChange(e, val) {
+    this.props.onFilterChange(val, e.target.checked);
   }
 
   render() {
@@ -87,7 +87,7 @@ export default class DataTableTooltip extends React.Component {
                 val={val}
                 onChange={this.handleCheckboxChange}
                 checked={this.props.filter[val]}
-                key={val}
+                key={slugify(val)}
               />
             ))}
           </ul>
@@ -100,7 +100,7 @@ export default class DataTableTooltip extends React.Component {
                 val={val}
                 onChange={this.handleCheckboxChange}
                 checked={this.props.filter[val]}
-                key={val}
+                key={slugify(val)}
               />
             ))}
           </ul>
@@ -110,13 +110,13 @@ export default class DataTableTooltip extends React.Component {
             <li className="bx--toolbar-menu__title">
               {spanish ? "FILTRAR DATOS POR PAÍS" : "FILTER BY COUNTRY"}
             </li>
-            {this.countries.map(val => {
+            {this.props.countries.map(val => {
               return (
                 <Checkbox
                   val={val}
                   onChange={this.handleCheckboxChange}
                   checked={this.props.filter[val]}
-                  key={val}
+                  key={slugify(val)}
                 />
               );
             })}
@@ -132,7 +132,7 @@ export default class DataTableTooltip extends React.Component {
                 val={val}
                 onChange={this.handleCheckboxChange}
                 checked={this.props.filter[val]}
-                key={val}
+                key={slugify(val)}
               />
             ))}
           </ul>

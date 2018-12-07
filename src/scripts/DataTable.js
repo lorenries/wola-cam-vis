@@ -10,7 +10,6 @@ import "react-table/react-table.css";
 import pymChild from "./pymChild";
 
 const Description = row => {
-  console.log(row);
   return (
     <div className="description">
       <h1 style={{ fontSize: "0.875rem" }}>Description</h1>
@@ -75,7 +74,6 @@ export default class DataTable extends React.Component {
   }
 
   onFilterChange(id, val) {
-    console.log(id, val);
     this.setState(prevState => ({
       filter: {
         ...prevState.filter,
@@ -92,7 +90,6 @@ export default class DataTable extends React.Component {
 
   render() {
     const { search, filter } = this.state;
-    console.log(filter);
     const { data } = this.props;
     let _data = data.filter(row => {
       return (
@@ -192,6 +189,7 @@ export default class DataTable extends React.Component {
                 content={
                   <DataTableTooltip
                     data={data}
+                    countries={this.countries}
                     onApply={this.onApply}
                     onReset={this.onReset}
                     onFilterChange={this.onFilterChange}
@@ -212,7 +210,7 @@ export default class DataTable extends React.Component {
                       <path d="M8.05 2a2.5 2.5 0 0 1 4.9 0H16v1h-3.05a2.5 2.5 0 0 1-4.9 0H0V2h8.05zm2.45 2a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM3.05 9a2.5 2.5 0 0 1 4.9 0H16v1H7.95a2.5 2.5 0 0 1-4.9 0H0V9h3.05zm2.45 2a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
                     </g>
                   </svg>
-                  <span className="pl1">
+                  <span className="pl1 pointer">
                     {spanish ? "Filtrar Datos" : "Filtering options"}
                   </span>
                 </div>

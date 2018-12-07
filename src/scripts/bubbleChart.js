@@ -19,7 +19,11 @@ function bubbleChart() {
       if (d.country === "Guatemala") return [0, 10];
       if (d.country === "Honduras") return [-10, 0];
       if (d.country === "El Salvador") return [-10, 0];
-      if (d.country === "Other Countries/Regional") return [0, -10];
+      if (
+        d.country === "Other Countries/Regional" ||
+        d.country === "Otros Países/Regional"
+      )
+        return [0, -10];
     })
     .html(function(d) {
       return showDetail(d);
@@ -28,7 +32,11 @@ function bubbleChart() {
       if (d.country === "Guatemala") return "e";
       if (d.country === "Honduras") return "n";
       if (d.country === "El Salvador") return "n";
-      if (d.country === "Other Countries/Regional") return "w";
+      if (
+        d.country === "Other Countries/Regional" ||
+        d.country === "Otros Países/Regional"
+      )
+        return "w";
     });
 
   // Locations to move bubbles towards, depending
@@ -40,7 +48,10 @@ function bubbleChart() {
     Guatemala: { x: width / 5, y: height / 2 },
     Honduras: { x: (2 * width) / 5, y: height / 2 },
     "El Salvador": { x: (3 * width) / 5, y: height / 2 },
-    "Other Countries/Regional": { x: (4 * width) / 5, y: height / 2 }
+    [spanish ? "Otros Países/Regional" : "Other Countries/Regional"]: {
+      x: (4 * width) / 5,
+      y: height / 2
+    }
   };
 
   // @v4 strength to apply to the position forces
@@ -474,8 +485,6 @@ function bubbleChart() {
     // the year texts once and then just hide them.
     // var total = nodes.reduce(function(acc, cur) {  })
     var countryData = d3.keys(countryCenters);
-
-    console.log(countryData);
 
     var countries = svg.selectAll(".country").data(countryData);
 
