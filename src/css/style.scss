@@ -274,14 +274,11 @@ ul.pagination li:not(.active):not(:first-child) a {
   background: none;
 }
 
-ul.pagination li:not(.active):not(:first-child) a::after {}
-
 .d3-tip {
   max-width: 32rem;
 }
 
 .tippy-backdrop {
-  background-color: white;
   height: 100%;
 }
 
@@ -290,6 +287,7 @@ ul.pagination li:not(.active):not(:first-child) a::after {}
   text-align: left;
   border: 1px solid #dfe3e6;
   max-width: 48rem;
+  background-color: #fff !important;
 }
 
 .bx--overflow-menu:focus {
