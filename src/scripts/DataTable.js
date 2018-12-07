@@ -194,6 +194,7 @@ export default class DataTable extends React.Component {
                     onReset={this.onReset}
                     onFilterChange={this.onFilterChange}
                     filter={this.state.filter}
+                    theme="light"
                   />
                 }
                 interactive={true}

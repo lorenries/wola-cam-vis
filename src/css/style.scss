@@ -290,6 +290,10 @@ ul.pagination li:not(.active):not(:first-child) a {
   background-color: #fff !important;
 }
 
+.tippy-backdrop {
+  background-color: #fff !important;
+}
+
 .bx--overflow-menu:focus {
   outline: none;
   box-shadow: none;
